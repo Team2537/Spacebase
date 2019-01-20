@@ -46,16 +46,45 @@ public class ClothoidGenerator {
     }
 
     public static final double TOLERANCE = 0.01;
+    public static final int ITERATIONS = 1024;
     public static void buildClothoid(Vec2 start, double startAngle, Vec2 end, double endAngle){
         final Vec2 diff = end.diff(start);
         final double r = Math.hypot(diff.y, diff.x);
         final double phi = Math.atan2(diff.y, diff.x);
-        final double dPhi = normalizeAngle(startAngle - phi);
-        final double dTheta = normalizeAngle(endAngle - startAngle);
-        final double A = findA(2.4674*dTheta + 5.2478*dPhi, dTheta, dPhi, TOLERANCE);
-        System.out.println(getG(A, dTheta, dPhi + Math.PI/2)); 
-        final double length = r/getG(A, dTheta, dPhi + Math.PI/2);
-        final double curvature = (dTheta - A)/length;
+        final double dPhi = startAngle - phi;
+        final double dTheta = endAngle - startAngle;
+
+        double A, length;
+
+        if(Math.abs(dTheta) > Math.PI/2){ 
+            A = findA(2.4674*normalizeAngle(dTheta) + 5.2478*normalizeAngle(dPhi), dTheta, dPhi, TOLERANCE);
+            System.out.println(getG(A, dTheta, dPhi + Math.PI/2)); 
+            length = r/getG(A, dTheta, dPhi + Math.PI/2);
+
+        } else {
+
+            double[] Aguess = new double[ITERATIONS+1];
+            for(int i = 0; i <= ITERATIONS; i++){
+                Aguess[i] = 40.0*i/ITERATIONS - 20;
+            }
+
+            A = 0;
+            length = Double.POSITIVE_INFINITY;
+            double Atemp, Ltemp;
+            for(int i = 1; i <= ITERATIONS; i++){
+                //if(getG(Aguess[i],dTheta,dPhi)*getG(Aguess[i-1],dTheta,dPhi) <= 0){
+                    Atemp = findA((Aguess[i] + Aguess[i-1])/2,dTheta,dPhi,TOLERANCE);
+                    Ltemp = 1/getG(Atemp,dTheta,dPhi + Math.PI/2);
+                    if(Ltemp > 0 && Ltemp < length){
+                        length = Ltemp;
+                        A = Atemp;
+                    }
+                //}
+            }
+        }
+
+
+        final double curvature = (normalizeAngle(dTheta) - A)/length;
         final double curvatureDerivative = (2*A)/(length*length);
         System.out.println("Length: "+length);
         System.out.println("Curvature: "+curvature);
