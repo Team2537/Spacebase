@@ -41,19 +41,21 @@ public class DriveSubsystem extends Subsystem {
 
   public DriveSubsystem(){
     motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
+    encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
     for(int i = 0; i < MOTOR_PORTS_LEFT.length; i++){
       motorsLeft[i] = new CANSparkMax(MOTOR_PORTS_LEFT[i],  MOTOR_TYPE);
-      encodersLeft[i] = new CANEncoder(motorsLeft[i]);
+      encodersLeft[i] = motorsLeft[i].getEncoder();
     }
-    motorGroupLeft = new SpeedControllerGroup(null, motorsLeft);
-
+    motorGroupLeft = new SpeedControllerGroup(motorsLeft[0], motorsLeft[1], motorsLeft[2]);
+    
     motorsRight = new CANSparkMax[MOTOR_PORTS_RIGHT.length];
+    encodersRight = new CANEncoder[MOTOR_PORTS_RIGHT.length];
     for(int i = 0; i < MOTOR_PORTS_RIGHT.length; i++){
       motorsRight[i] = new CANSparkMax(MOTOR_PORTS_RIGHT[i],  MOTOR_TYPE);
-      encodersRight[i] = new CANEncoder(motorsRight[i]);
+      encodersRight[i] = motorsRight[i].getEncoder();
     }
-    motorGroupRight = new SpeedControllerGroup(null, motorsRight);
-
+    motorGroupRight = new SpeedControllerGroup(motorsRight[0], motorsRight[1], motorsRight[2]);
+ 
     differentialDrive = new DifferentialDrive(motorGroupLeft, motorGroupRight);
 
     leftJoystick = new Joystick(0);
@@ -67,7 +69,7 @@ public class DriveSubsystem extends Subsystem {
 
 
   public void setMotors(double percentOutputLeft, double percentOutputRight){
-    differentialDrive.tankDrive(percentOutputLeft, percentOutputRight);
+    differentialDrive.tankDrive(-percentOutputLeft, -percentOutputRight);
   }
 
   public void setMotorsCurvature(double percentOutput, double curvature, boolean turningInPlace){

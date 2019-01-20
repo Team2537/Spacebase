@@ -46,9 +46,9 @@ public class DriveCommand extends Command {
      } catch (IOException e) {
           e.printStackTrace();
         }
-        writer.println("Time (ms),Current (amps)");
+        writer.println("Time (ms),Current One(amps),Current Two(amps),Current Three(amps),Current Four(amps),Current Five(amps),Current Six(amps)");
         startTime = System.currentTimeMillis();
-        writer.println(System.currentTimeMillis() - startTime + "," + Robot.pdp.getCurrent(12));
+        writer.println(System.currentTimeMillis() - startTime + "," + Robot.pdp.getCurrent(0) + "," + Robot.pdp.getCurrent(1) + "," + Robot.pdp.getCurrent(2) + "," + Robot.pdp.getCurrent(3) + "," + Robot.pdp.getCurrent(12) + "," + Robot.pdp.getCurrent(13));
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -57,7 +57,7 @@ public class DriveCommand extends Command {
     Robot.drivesys.setMotors(Robot.drivesys.getLeftJoystick(), Robot.drivesys.getRightJoystick());
     System.out.println(Robot.drivesys.encoderStatus());
 
-    writer.println(System.currentTimeMillis() - startTime + "," + Robot.pdp.getCurrent(12));
+    writer.println(System.currentTimeMillis() - startTime + "," + Robot.pdp.getCurrent(0) + "," + Robot.pdp.getCurrent(1) + "," + Robot.pdp.getCurrent(2) + "," + Robot.pdp.getCurrent(3) + "," + Robot.pdp.getCurrent(12) + "," + Robot.pdp.getCurrent(13));
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -69,11 +69,13 @@ public class DriveCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    writer.close();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    writer.close();
   }
 }
