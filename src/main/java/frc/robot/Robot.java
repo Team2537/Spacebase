@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.drive.DriveSubsystem;
@@ -14,6 +15,7 @@ import frc.robot.drive.DriveSubsystem;
 public class Robot extends TimedRobot {
   public static DriveSubsystem drivesys;
   double leftEncoderStartValue, rightEncoderStartValue;
+  public static PowerDistributionPanel pdp;
 
 
   // Use this function for all initialization code
@@ -21,6 +23,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     drivesys = new DriveSubsystem();
     drivesys.initDefaultCommand();
+
+    pdp = new PowerDistributionPanel();
   }
 
   // Called periodically regardless of the game period

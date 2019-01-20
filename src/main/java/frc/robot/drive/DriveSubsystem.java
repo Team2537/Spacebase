@@ -105,18 +105,20 @@ public class DriveSubsystem extends Subsystem {
   
   private double getEncoderPos(CANEncoder[] encoders){
     double total = 0;
+    int numEncoders = 0;
     double position;
     for(CANEncoder encoder : encoders){
       position = encoder.getPosition();
+      total += position;
       if(position != 0) {
-        total += position;
+        numEncoders++;
       }
     }
 
-    if(total == 0) {
+    if(numEncoders == 0) {
       return 0;
     } else {
-      return total / encoders.length;
+      return total / numEncoders;
     }
   }
 
