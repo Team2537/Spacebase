@@ -8,11 +8,12 @@
 package frc.robot.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.HumanInput;
 import frc.robot.Robot;
 
 public class DriveCommand extends Command {
   public DriveCommand() {
-    requires(Robot.drivesys);
+    requires(Robot.driveSys);
   }
 
   // Called just before this Command runs the first time
@@ -24,8 +25,11 @@ public class DriveCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.drivesys.setMotors(Robot.drivesys.getLeftJoystick(), Robot.drivesys.getRightJoystick());
-    System.out.println(Robot.drivesys.encoderStatus());
+    Robot.driveSys.setMotors(
+      HumanInput.getJoystickAxisLeft(HumanInput.AXIS_Y),
+      HumanInput.getJoystickAxisRight(HumanInput.AXIS_Y)
+    );
+    System.out.println(Robot.driveSys.encoderStatus());
   }
 
   // Make this return true when this Command no longer needs to run execute()

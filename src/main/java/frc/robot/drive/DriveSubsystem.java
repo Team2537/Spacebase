@@ -7,19 +7,14 @@
 
 package frc.robot.drive;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import frc.robot.Ports;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-/**
- * Add your docs here.
- */
+
 public class DriveSubsystem extends Subsystem {
   private static final MotorType MOTOR_TYPE = MotorType.kBrushless;
   private static final int[] MOTOR_PORTS_LEFT = {
@@ -34,10 +29,7 @@ public class DriveSubsystem extends Subsystem {
   };
 
   private CANSparkMax[] motorsLeft, motorsRight;
-  private SpeedControllerGroup motorGroupLeft, motorGroupRight;
   private CANEncoder[] encodersLeft, encodersRight;
-  private DifferentialDrive differentialDrive;
-  private static Joystick leftJoystick, rightJoystick;
 
   public DriveSubsystem(){
     motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
@@ -45,19 +37,12 @@ public class DriveSubsystem extends Subsystem {
       motorsLeft[i] = new CANSparkMax(MOTOR_PORTS_LEFT[i],  MOTOR_TYPE);
       encodersLeft[i] = new CANEncoder(motorsLeft[i]);
     }
-    motorGroupLeft = new SpeedControllerGroup(null, motorsLeft);
 
     motorsRight = new CANSparkMax[MOTOR_PORTS_RIGHT.length];
     for(int i = 0; i < MOTOR_PORTS_RIGHT.length; i++){
       motorsRight[i] = new CANSparkMax(MOTOR_PORTS_RIGHT[i],  MOTOR_TYPE);
       encodersRight[i] = new CANEncoder(motorsRight[i]);
     }
-    motorGroupRight = new SpeedControllerGroup(null, motorsRight);
-
-    differentialDrive = new DifferentialDrive(motorGroupLeft, motorGroupRight);
-
-    leftJoystick = new Joystick(0);
-    rightJoystick = new Joystick(1);
   }
 
   @Override
@@ -65,31 +50,23 @@ public class DriveSubsystem extends Subsystem {
     setDefaultCommand(new DriveCommand());
   }
 
+  private void setMotorsSide(double percentOutput, CANSparkMax[] motors){
+    for(CANSparkMax motor : motors){
+      motor.set(percentOutput);
+    }
+  }
+  
+  public void setMotorsLeft(double percentOutput){
+    setMotorsSide(percentOutput, motorsLeft);
+  }
+
+  public void setMotorsRight(double percentOutput){
+    setMotorsSide(percentOutput, motorsRight);
+  }
 
   public void setMotors(double percentOutputLeft, double percentOutputRight){
-    differentialDrive.tankDrive(percentOutputLeft, percentOutputRight);
-  }
-
-  public void setMotorsCurvature(double percentOutput, double curvature, boolean turningInPlace){
-    differentialDrive.curvatureDrive(percentOutput, curvature, turningInPlace);
-  }
-
-  public double getLeftJoystick(){
-    if (Math.abs(leftJoystick.getRawAxis(1)) >= 0.05){
-      return leftJoystick.getRawAxis(1);
-    }  else {
-      return 0;
-    }
-    
-  }
-
-  public double getRightJoystick(){
-    if (Math.abs(rightJoystick.getRawAxis(1)) >= 0.05) {
-      return rightJoystick.getRawAxis(1);
-    } else {
-      return 0;
-    }
-    
+    setMotorsLeft(percentOutputLeft);
+    setMotorsRight(percentOutputRight);
   }
 
   public String encoderStatus(){

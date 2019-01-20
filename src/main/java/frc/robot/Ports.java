@@ -10,4 +10,10 @@ public class Ports {
         DRIVE_MOTOR_LEFT_TOP    = 4,
         DRIVE_MOTOR_LEFT_BACK   = 5
     ;
+
+    // Drive station USB ports
+    public static final int
+        LEFT_JOYSTICK  = 0,
+        RIGHT_JOYSTICK = 1
+    ;
 }

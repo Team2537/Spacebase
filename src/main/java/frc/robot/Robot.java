@@ -12,15 +12,13 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.drive.DriveSubsystem;
 
 public class Robot extends TimedRobot {
-  public static DriveSubsystem drivesys;
+  public static DriveSubsystem driveSys;
   double leftEncoderStartValue, rightEncoderStartValue;
-
 
   // Use this function for all initialization code
   @Override
   public void robotInit() {
-    drivesys = new DriveSubsystem();
-    drivesys.initDefaultCommand();
+    driveSys = new DriveSubsystem();
   }
 
   // Called periodically regardless of the game period
@@ -34,29 +32,13 @@ public class Robot extends TimedRobot {
   // Called at the beginning of the Sandstorm
   @Override
   public void autonomousInit() {
-    leftEncoderStartValue = Robot.drivesys.getEncoderPosLeft();
-    rightEncoderStartValue = Robot.drivesys.getEncoderPosRight();
+    leftEncoderStartValue = Robot.driveSys.getEncoderPosLeft();
+    rightEncoderStartValue = Robot.driveSys.getEncoderPosRight();
   }
 
   // Called periodically during the Sandstorm
   @Override
   public void autonomousPeriodic() {
-    double leftSpeed, rightSpeed;
-    if((Robot.drivesys.getEncoderPosLeft() - leftEncoderStartValue) <= 50){
-      leftSpeed = 0.5;
-    } else {
-      leftSpeed = 0;
-    }
-
-    if((Robot.drivesys.getEncoderPosRight() - rightEncoderStartValue) <= 50){
-      rightSpeed = 0.5;
-    } else {
-      rightSpeed = 0;
-    }
-
-    Robot.drivesys.setMotors(leftSpeed,rightSpeed);
-
-    System.out.println(Robot.drivesys.encoderStatus());
   }
 
 
@@ -69,7 +51,6 @@ public class Robot extends TimedRobot {
   // Called periodically during the Teleop period
   @Override
   public void teleopPeriodic() {
-    Scheduler.getInstance().run();
   }
 
 
