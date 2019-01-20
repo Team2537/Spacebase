@@ -33,15 +33,17 @@ public class DriveSubsystem extends Subsystem {
 
   public DriveSubsystem(){
     motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
+    encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
     for(int i = 0; i < MOTOR_PORTS_LEFT.length; i++){
       motorsLeft[i] = new CANSparkMax(MOTOR_PORTS_LEFT[i],  MOTOR_TYPE);
-      encodersLeft[i] = new CANEncoder(motorsLeft[i]);
+      encodersLeft[i] = motorsLeft[i].getEncoder();
     }
 
     motorsRight = new CANSparkMax[MOTOR_PORTS_RIGHT.length];
+    encodersRight = new CANEncoder[MOTOR_PORTS_RIGHT.length];
     for(int i = 0; i < MOTOR_PORTS_RIGHT.length; i++){
       motorsRight[i] = new CANSparkMax(MOTOR_PORTS_RIGHT[i],  MOTOR_TYPE);
-      encodersRight[i] = new CANEncoder(motorsRight[i]);
+      encodersRight[i] = motorsRight[i].getEncoder();
     }
   }
 
@@ -57,7 +59,7 @@ public class DriveSubsystem extends Subsystem {
   }
   
   public void setMotorsLeft(double percentOutput){
-    setMotorsSide(percentOutput, motorsLeft);
+    setMotorsSide(-percentOutput, motorsLeft);
   }
 
   public void setMotorsRight(double percentOutput){
