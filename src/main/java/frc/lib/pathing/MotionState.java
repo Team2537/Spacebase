@@ -1,5 +1,6 @@
 package frc.lib.pathing;
 
+import frc.lib.util.ClothoidMath;
 import frc.lib.util.Util;
 import frc.lib.util.Vec2;
 
@@ -116,8 +117,8 @@ public class MotionState {
         return controlWheels(this, accL, accR);
     }
 
-    private static final double sqrtPi = Math.sqrt(Math.PI);
-    private double a_aA, sqrtAngAcc, scalar, sinS, cosS, o, inner0;
+    //private static final double sqrtPi = Math.sqrt(Math.PI);
+    //private double a_aA, sqrtAngAcc, scalar, sinS, cosS, o, inner0;
 
     /** Calculates and returns the new MotionState of the robot after driving for some time, 
      * given its previous state and the change in time.
@@ -157,28 +158,12 @@ public class MotionState {
                     dy = two*sin - one*cos;
                 }
             } else {
-                // Integrating: (a*t + v_0)*cos(0.5*angAcc*t*t + angVel_0*t + angle_0)
-                if(!start.kinematicsComputed){
-                    start.a_aA = start.acc/start.angAcc;
-                    start.sqrtAngAcc = Math.sqrt(Math.abs(start.angAcc));
-                    start.scalar = (sqrtPi/start.sqrtAngAcc)*(start.a_aA*start.angVel - start.vel);
-                    final double trigInner = start.angle - start.angVel*start.angVel/(2*start.angAcc);
-                    start.sinS = Math.sin(trigInner);
-                    start.cosS = Math.cos(trigInner);
-                    start.o = Math.signum(start.angAcc);
-                    start.inner0 = start.o*start.angVel/(sqrtPi*start.sqrtAngAcc);
-
-                    start.kinematicsComputed = true;
-                }
-
-                final double innerT = dt*(start.sqrtAngAcc/sqrtPi) + start.inner0;
-                final double fresnelC = Util.fresnelC(innerT) - Util.fresnelC(start.inner0);
-                final double fresnelS = start.o*(Util.fresnelS(innerT) - Util.fresnelS(start.inner0));
-                
-                dx =  start.a_aA*(Math.sin(angle)-Math.sin(start.angle)) 
-                    + start.scalar*(start.sinS*fresnelS - start.cosS*fresnelC);
-                dy = -start.a_aA*(Math.cos(angle)-Math.cos(start.angle)) 
-                    - start.scalar*(start.sinS*fresnelC + start.cosS*fresnelS);
+                // Integrating: (a*t + v_0)*cos(0.5*angAcc*t^2 + angVel_0*t + angle_0)
+                final double scalar = start.vel - start.angVel*start.acc/start.angAcc;
+                dx = (Math.sin(angle) - Math.sin(start.angle))*start.acc/start.angAcc
+                    + scalar*ClothoidMath.integrateC(start.angAcc, start.angVel, start.angle, 0, dt);
+                dy = -(Math.cos(angle) - Math.cos(start.angle))*start.acc/start.angAcc
+                    + scalar*ClothoidMath.integrateS(start.angAcc, start.angVel, start.angle, 0, dt);
             }
         }
 

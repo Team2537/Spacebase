@@ -1,5 +1,6 @@
 package frc.lib.pathing;
 
+import frc.lib.util.ClothoidMath;
 import frc.lib.util.Util;
 import frc.lib.util.Vec2;
 
@@ -215,7 +216,7 @@ public class PathProfileGenerator {
             // A turn will cover a distance over its PathSegments that's proportional to 
             // the starting velocity of that turn. "vmult" is the proportionality constant.
             double inner = Math.sqrt(theta/Math.PI);
-            double fC = Util.fresnelC(inner), fS = Util.fresnelS(inner);
+            double fC = ClothoidMath.fresnelC(inner), fS = ClothoidMath.fresnelS(inner);
             this.vmult = Math.sqrt(Math.PI*constraints.length/constraints.maxWheelAcc)
                              *(fC + fS*Math.tan(theta/2));
             
