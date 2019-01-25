@@ -1,6 +1,5 @@
 package frc.lib.pathing;
 
-import frc.lib.util.ClothoidMath;
 import frc.lib.util.Vec2;
 
 public class ClothoidGenerator {
@@ -22,7 +21,8 @@ public class ClothoidGenerator {
     }
 
     public static final double TOLERANCE = 0.001;
-    public static final int ITERATIONS = 1024;
+    public static final int SEARCH_ITERATIONS = 1024;
+    public static final double SEARCH_RANGE = 40;
     public static void buildClothoid(Vec2 start, double startAngle, Vec2 end, double endAngle){
         final Vec2 diff = end.diff(start);
         final double r = Math.hypot(diff.y, diff.x);
@@ -38,18 +38,19 @@ public class ClothoidGenerator {
         
         } else {
 
-            double[] Aguess = new double[ITERATIONS+1];
-            for(int i = 0; i <= ITERATIONS; i++){
-                Aguess[i] = 40.0*i/ITERATIONS - 20;
+            double[] Aguess = new double[SEARCH_ITERATIONS+1];
+            for(int i = 0; i <= SEARCH_ITERATIONS; i++){
+                Aguess[i] = SEARCH_RANGE*i/SEARCH_ITERATIONS - SEARCH_RANGE/2;
             }
 
             A = 0;
             length = Double.POSITIVE_INFINITY;
             double Atemp, Ltemp;
-            for(int i = 1; i <= ITERATIONS; i++){
+            for(int i = 1; i <= SEARCH_ITERATIONS; i++){
                 if(getG(Aguess[i],dTheta,dPhi)*getG(Aguess[i-1],dTheta,dPhi) <= 0){
                     Atemp = findA((Aguess[i] + Aguess[i-1])/2,dTheta,dPhi,TOLERANCE);
                     Ltemp = r/getG(Atemp,dTheta,dPhi + Math.PI/2);
+
                     if(Ltemp > 0 && Ltemp < length){
                         length = Ltemp;
                         A = Atemp;
@@ -67,6 +68,6 @@ public class ClothoidGenerator {
 
     public static void main(String[] args){
         //System.out.println(getG(-0.5,3,5));
-        buildClothoid(new Vec2(0,0), 0, new Vec2(3,2), 0);
+        buildClothoid(new Vec2(0,0), 0, new Vec2(3,2), Math.PI/4);
     }
 }

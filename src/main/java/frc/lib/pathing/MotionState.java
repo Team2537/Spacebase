@@ -1,6 +1,5 @@
 package frc.lib.pathing;
 
-import frc.lib.util.ClothoidMath;
 import frc.lib.util.Util;
 import frc.lib.util.Vec2;
 
@@ -12,14 +11,13 @@ public class MotionState {
     public final Vec2 pos;
     public final double t, angle, angVel, angAcc, vel, acc, velL, velR, accL, accR, curvature, length;
     public final boolean fitsConstraints;
-    private boolean kinematicsComputed;
+
     public MotionState(RobotConstraints constraints, 
                     double t, 
                     Vec2 pos, double vel, double acc, 
                     double angle, double angVel, double angAcc,
                     double velL, double velR, double accL, double accR,
                     double curvature){
-        kinematicsComputed = false;
         this.constraints = constraints;
         this.length = constraints.length;
         this.t = t;
@@ -117,9 +115,7 @@ public class MotionState {
         return controlWheels(this, accL, accR);
     }
 
-    //private static final double sqrtPi = Math.sqrt(Math.PI);
-    //private double a_aA, sqrtAngAcc, scalar, sinS, cosS, o, inner0;
-
+    
     /** Calculates and returns the new MotionState of the robot after driving for some time, 
      * given its previous state and the change in time.
      * @param start The previous MotionState.

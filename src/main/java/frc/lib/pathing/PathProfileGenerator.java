@@ -1,6 +1,5 @@
 package frc.lib.pathing;
 
-import frc.lib.util.ClothoidMath;
 import frc.lib.util.Util;
 import frc.lib.util.Vec2;
 

@@ -7,6 +7,9 @@ public class Vec2 {
         this.x = x;
         this.y = y;
     }
+    public Vec2(double angle){
+        this(Math.cos(angle), Math.sin(angle));
+    }
     /** Returns the sum of two vectors. */
     public static Vec2 add(Vec2 a, Vec2 b){
         return new Vec2(a.x + b.x, a.y + b.y);

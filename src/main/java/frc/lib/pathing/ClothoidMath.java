@@ -1,4 +1,8 @@
-package frc.lib.util;
+package frc.lib.pathing;
+
+import frc.lib.util.LookupTable;
+import frc.lib.util.Util;
+import frc.lib.util.Vec2;
 
 public class ClothoidMath {
     private static final double SQRT_PI = Math.sqrt(Math.PI);
@@ -28,6 +32,13 @@ public class ClothoidMath {
     /** calculate: integral of cos(0.5*Kp*t^2 + K0*t + h0)dt from lower to upper */
     public static double integrateC(double Kp, double K0, double h0, double lower, double upper){
         return integrateS(Kp,K0, h0 + Math.PI/2, lower,upper);
+    }
+
+    public static Vec2 integrate(double Kp, double K0, double h0, double lower, double upper){
+        return new Vec2(
+            integrateC(Kp,K0,h0,lower,upper),
+            integrateS(Kp,K0,h0,lower,upper)
+        );
     }
 
     /** calculate: integral of cos(t^2 * pi/2)dt from 0 to x */
