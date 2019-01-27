@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.lib.vision.VisionInput;
 import frc.robot.drive.DriveSubsystem;
 
 public class Robot extends TimedRobot {
@@ -19,6 +20,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     driveSys = new DriveSubsystem();
+    VisionInput.initialize();
   }
 
   // Called periodically regardless of the game period
