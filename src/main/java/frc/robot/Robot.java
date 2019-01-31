@@ -4,23 +4,29 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
+//PRINT EVERYTHING!!!
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.lib.vision.VisionInput;
+import frc.robot.auto.DriveTurnCommand;
 import frc.robot.drive.DriveSubsystem;
+
 
 public class Robot extends TimedRobot {
   public static DriveSubsystem driveSys;
+  public static DriveTurnCommand DriveTurn;
   double leftEncoderStartValue, rightEncoderStartValue;
 
   // Use this function for all initialization code
   @Override
   public void robotInit() {
     driveSys = new DriveSubsystem();
+    driveSys.initDefaultCommand();
     VisionInput.initialize();
+
+    DriveTurn = new DriveTurnCommand();
   }
 
   // Called periodically regardless of the game period
@@ -34,13 +40,18 @@ public class Robot extends TimedRobot {
   // Called at the beginning of the Sandstorm
   @Override
   public void autonomousInit() {
-    leftEncoderStartValue = Robot.driveSys.getEncoderPosLeft();
-    rightEncoderStartValue = Robot.driveSys.getEncoderPosRight();
+    //COMMENTED FOR PEANUT TESTING
+    //leftEncoderStartValue = Robot.driveSys.getEncoderPosLeft();
+    //rightEncoderStartValue = Robot.driveSys.getEncoderPosRight();
+    Scheduler.getInstance().add(new DriveTurnCommand());
+
   }
 
   // Called periodically during the Sandstorm
   @Override
   public void autonomousPeriodic() {
+    Scheduler.getInstance().run();
+     
   }
 
 
