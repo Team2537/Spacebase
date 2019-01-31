@@ -10,15 +10,18 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.drive.DriveSubsystem;
+import frc.robot.intake.IntakeSubsystem;
 
 public class Robot extends TimedRobot {
   public static DriveSubsystem driveSys;
+  public static IntakeSubsystem intakeSys;
   double leftEncoderStartValue, rightEncoderStartValue;
 
   // Use this function for all initialization code
   @Override
   public void robotInit() {
     driveSys = new DriveSubsystem();
+    intakeSys = new IntakeSubsystem();
   }
 
   // Called periodically regardless of the game period
