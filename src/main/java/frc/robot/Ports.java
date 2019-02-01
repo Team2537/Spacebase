@@ -34,6 +34,7 @@ public class Ports {
      //   INTAKE_PNEUMATIC_TWO = 1
     ;
 
+    //buttons for intake
     public static final int
         INTAKE_ON = 0,
         PNEUMATIC_EXTEND = 1,
