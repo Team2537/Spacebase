@@ -4,7 +4,6 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -12,10 +11,10 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.lib.vision.VisionInput;
 import frc.robot.drive.DriveSubsystem;
 
+
 public class Robot extends TimedRobot {
   public static DriveSubsystem driveSys;
   public static VisionInput visionInput;
-  double leftEncoderStartValue, rightEncoderStartValue;
 
   // Use this function for all initialization code
   @Override
@@ -37,13 +36,14 @@ public class Robot extends TimedRobot {
   // Called at the beginning of the Sandstorm
   @Override
   public void autonomousInit() {
-    leftEncoderStartValue = Robot.driveSys.getEncoderPosLeft();
-    rightEncoderStartValue = Robot.driveSys.getEncoderPosRight();
+
   }
 
   // Called periodically during the Sandstorm
   @Override
   public void autonomousPeriodic() {
+    Scheduler.getInstance().run();
+     
   }
 
 

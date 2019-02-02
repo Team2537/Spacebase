@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
+//check: drive, auto and teleop, why no print
 
 public class VisionInput extends Subsystem {
 	public final boolean DEBUG = true;
@@ -22,7 +23,7 @@ public class VisionInput extends Subsystem {
 	/* singleton pattern */
 	private static VisionInput instance;
 	public static void initialize() {
-		if(instance != null) instance = new VisionInput();
+		if(instance == null) instance = new VisionInput();
 	}
 	public static VisionInput getInstance(){
 		if(instance == null) throw new NullPointerException("Subsystem has not been initialized yet!");
