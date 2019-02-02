@@ -21,7 +21,11 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     //driveSys = new DriveSubsystem();
+
+    
     armSys = new ArmSubsystem();
+    /*armSys.initDefaultCommand();
+    armSys.registerButtons();*/
   }
 
   // Called periodically regardless of the game period

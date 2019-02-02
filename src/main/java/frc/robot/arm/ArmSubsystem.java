@@ -3,6 +3,7 @@ package frc.robot.arm;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.HumanInput;
 
 public class ArmSubsystem extends Subsystem {
 
@@ -62,8 +63,13 @@ public class ArmSubsystem extends Subsystem {
     }
 
     @Override
-    protected void initDefaultCommand() {
+    public void initDefaultCommand() {
         setDefaultCommand(new ArmCommand());
+    }
+
+    public void registerButtons(){
+        HumanInput.whenPressedCommand(HumanInput.increasearmbutton, new IncreaseArmCommand());
+        HumanInput.whenPressedCommand(HumanInput.decreasearmbutton, new DecreaseArmCommand());
     }
 
 }

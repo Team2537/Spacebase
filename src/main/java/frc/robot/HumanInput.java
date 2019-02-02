@@ -1,6 +1,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
 
 public class HumanInput {
     public static Joystick joystickLeft  = new Joystick(Ports.LEFT_JOYSTICK);
@@ -8,7 +11,8 @@ public class HumanInput {
 
     // Button aliases
     // public static Button 
-    
+    public static Button increasearmbutton = new JoystickButton(joystickRight, 1);
+    public static Button decreasearmbutton = new JoystickButton(joystickLeft, 1);
     public static final int AXIS_X = 0, AXIS_Y = 1;
 
     private static double getJoystickAxis(int axis, Joystick joystick){
@@ -21,5 +25,9 @@ public class HumanInput {
     }
     public static double getJoystickAxisRight(int axis){
         return getJoystickAxis(axis, joystickRight);
+    }
+
+    public static void whenPressedCommand(Button a, Command b){
+        a.whenPressed(b);
     }
 }
