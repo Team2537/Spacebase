@@ -10,9 +10,13 @@ package frc.robot.drive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Ports;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
 
 public class DriveSubsystem extends Subsystem {
@@ -31,6 +35,9 @@ public class DriveSubsystem extends Subsystem {
   private CANSparkMax[] motorsLeft, motorsRight;
   private CANEncoder[] encodersLeft, encodersRight;
 
+  private AHRS navX;
+  private Ultrasonic driveUltrasonic;
+
   public DriveSubsystem(){
     motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
     encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
@@ -45,6 +52,8 @@ public class DriveSubsystem extends Subsystem {
       motorsRight[i] = new CANSparkMax(MOTOR_PORTS_RIGHT[i],  MOTOR_TYPE);
       encodersRight[i] = motorsRight[i].getEncoder();
     }
+
+    navX = new AHRS(SerialPort.Port.kMXP);
   }
 
   @Override
@@ -102,9 +111,34 @@ public class DriveSubsystem extends Subsystem {
   public double getEncoderPosRight(){
     return getEncoderPos(encodersRight);
   }
-
   public double getEncoderPosLeft(){
     return getEncoderPos(encodersLeft);
+  }
+
+  public void resetGyro(){
+    navX.reset();
+  }
+  public double getGyroDegrees(){
+    return navX.getAngle();
+  }
+  public double getGyroRadians(){
+    return getGyroDegrees()*Math.PI/180;
+  }
+
+  // TODO: private DigitalInput IR_frontUpper; etc.
+  public boolean getIR_frontUpper(){
+    return false;
+  }
+  public boolean getIR_frontLower(){
+    return false;
+  }
+  public boolean getIR_center(){
+    return false;
+  }
+
+  /** @return the range of the drive ultrasonic in inches */
+  public double getUltrasonic(){
+    return driveUltrasonic.getRangeInches();
   }
 
   
