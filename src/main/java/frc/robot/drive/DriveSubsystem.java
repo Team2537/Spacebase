@@ -9,49 +9,49 @@ package frc.robot.drive;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Ports;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-/*
+//import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-*/
+
 
 
 public class DriveSubsystem extends Subsystem {
-     private static WPI_TalonSRX RightFront;
-     private static WPI_TalonSRX LeftFront;
-//   private static final MotorType MOTOR_TYPE = MotorType.kBrushless;
-//   private static final int[] MOTOR_PORTS_LEFT = {
-//     Ports.DRIVE_MOTOR_LEFT_FRONT,
-//     Ports.DRIVE_MOTOR_LEFT_TOP,
-//     Ports.DRIVE_MOTOR_LEFT_BACK
-//   };
-//   private static final int[] MOTOR_PORTS_RIGHT = {
-//     Ports.DRIVE_MOTOR_RIGHT_FRONT,
-//     Ports.DRIVE_MOTOR_RIGHT_TOP,
-//     Ports.DRIVE_MOTOR_RIGHT_BACK
-//   };
+//     private static WPI_TalonSRX RightFront;
+//     private static WPI_TalonSRX LeftFront;
+   private static final MotorType MOTOR_TYPE = MotorType.kBrushless;
+   private static final int[] MOTOR_PORTS_LEFT = {
+     Ports.DRIVE_MOTOR_LEFT_FRONT,
+     Ports.DRIVE_MOTOR_LEFT_TOP,
+     Ports.DRIVE_MOTOR_LEFT_BACK
+   };
+   private static final int[] MOTOR_PORTS_RIGHT = {
+     Ports.DRIVE_MOTOR_RIGHT_FRONT,
+     Ports.DRIVE_MOTOR_RIGHT_TOP,
+     Ports.DRIVE_MOTOR_RIGHT_BACK
+   };
 
-//   private CANSparkMax[] motorsLeft, motorsRight;
-//   private CANEncoder[] encodersLeft, encodersRight;
+   private CANSparkMax[] motorsLeft, motorsRight;
+   private CANEncoder[] encodersLeft, encodersRight;
 
   public DriveSubsystem(){
-    RightFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_RIGHT_FRONT);
-    LeftFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_LEFT_FRONT);
+    //RightFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_RIGHT_FRONT);
+    //LeftFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_LEFT_FRONT);
 
-    //     motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
-//     encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
-//     for(int i = 0; i < MOTOR_PORTS_LEFT.length; i++){
-//       motorsLeft[i] = new CANSparkMax(MOTOR_PORTS_LEFT[i],  MOTOR_TYPE);
-//       encodersLeft[i] = motorsLeft[i].getEncoder();
-//     }
+         motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
+     encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
+     for(int i = 0; i < MOTOR_PORTS_LEFT.length; i++){
+       motorsLeft[i] = new CANSparkMax(MOTOR_PORTS_LEFT[i],  MOTOR_TYPE);
+       encodersLeft[i] = motorsLeft[i].getEncoder();
+     }
 
-//     motorsRight = new CANSparkMax[MOTOR_PORTS_RIGHT.length];
-//     encodersRight = new CANEncoder[MOTOR_PORTS_RIGHT.length];
-//     for(int i = 0; i < MOTOR_PORTS_RIGHT.length; i++){
-//       motorsRight[i] = new CANSparkMax(MOTOR_PORTS_RIGHT[i],  MOTOR_TYPE);
-//       encodersRight[i] = motorsRight[i].getEncoder();
-//     }
+     motorsRight = new CANSparkMax[MOTOR_PORTS_RIGHT.length];
+     encodersRight = new CANEncoder[MOTOR_PORTS_RIGHT.length];
+     for(int i = 0; i < MOTOR_PORTS_RIGHT.length; i++){
+       motorsRight[i] = new CANSparkMax(MOTOR_PORTS_RIGHT[i],  MOTOR_TYPE);
+       encodersRight[i] = motorsRight[i].getEncoder();
+     }
     
   }
 
@@ -61,36 +61,33 @@ public class DriveSubsystem extends Subsystem {
     
   }
 
-  /*private void setMotorsSide(double percentOutput, CANSparkMax[] motors){
+  private void setMotorsSide(double percentOutput, CANSparkMax[] motors){
     for(CANSparkMax motor : motors){
       motor.set(percentOutput);
     }
   }
-  */
+  
   
   public void setMotorsLeft(double percentOutput){
-    LeftFront.set(percentOutput);
-    System.out.println("LEFT: " + percentOutput);
-    //setMotorsSide(-percentOutput, motorsLeft);
+    //LeftFront.set(percentOutput);
+    System.out.println("LEFT SPEED: " + percentOutput);
+    setMotorsSide(-percentOutput, motorsLeft);
   }
   
 
   public void setMotorsRight(double percentOutput){
-    RightFront.set(percentOutput);
-    System.out.println("RIGHT: " + percentOutput);
-    //setMotorsSide(percentOutput, motorsRight);
+    //RightFront.set(percentOutput);
+    System.out.println("RIGHT SPEED: " + percentOutput);
+    setMotorsSide(percentOutput, motorsRight);
   }
 
   public void setMotors(double percentOutputLeft, double percentOutputRight){
     setMotorsLeft(percentOutputLeft);
-    System.out.println("LEFT: " + percentOutputLeft);
+    System.out.println("LEFT SPEED: " + percentOutputLeft);
     setMotorsRight(percentOutputRight);
-    System.out.println("RIGHT: " + percentOutputRight);
+    System.out.println("RIGHT SPEED: " + percentOutputRight);
   }
 
-  public void print() {
-    System.out.println("TEST");
-  }
   /*
 
   public String encoderStatus(){

@@ -7,14 +7,15 @@ import frc.robot.Robot;
 
 public class DriveTurnCommand extends Command{
 
-//MAJOR ISSUES:
-    //CHECK MIDPOINT
-    //WEIRD DRIVETRAIN
-    //x coord
-    //WRITE RANGE- 2560 x 1920 4:3; 17 feet plus; 204 inches+ 
-//thresohld on screen --> line
-//lower or higher than certain pt can adjust wheels
-//640 width, 480 height---300 lower, 340 higher threshold
+// pi CAM should be at least 8 inches above ground! hatch is 31.5 inches off ground
+//WRITE RANGE- 2560 x 1920 4:3; 17 feet plus; 204 inches+ 
+
+//THRESHOLD:
+    //lower or higher than certain pt can adjust wheels
+    //300 lower threshold, 340 higher threshold
+
+//CAM dimensions: 640 width, 480 height
+
     public static final int LOWERTHRESHOLD = 300;
     public static final int HIGHERTHRESHOLD = 340;
     public static final double TURNSPEED = 0.4;
@@ -22,19 +23,15 @@ public class DriveTurnCommand extends Command{
     private Target[] targets;
     private double half = 320; // midpoint of screen
 
-
-
+    //grabs targets found in target class
     private static double[] getAreas(Target[] targets){
         double[] boundingBoxAreas = new double[targets.length];
-       for(int i = 0; i < boundingBoxAreas.length; i++){
 
-        System.out.println(boundingBoxAreas[i]);
-        boundingBoxAreas[i] = targets[i].getBoundingBoxArea();
-           
+       for(int i = 0; i < boundingBoxAreas.length; i++){
+           System.out.println(boundingBoxAreas[i]);
+           boundingBoxAreas[i] = targets[i].getBoundingBoxArea();   
        }
        return boundingBoxAreas;
-    
-
     }
 
     private static int findLargestAreas(double[] boundingBoxAreas){
@@ -109,14 +106,16 @@ public class DriveTurnCommand extends Command{
 
            // if(MidPoint.x > 200 && MidPoint.x < 440) { //when within range of 220 pixels, robot slows down for accuracy
                 
+            //slows down proportionally to distance from midpoint
                 if(MidPoint.x < half) { // if midpoint is too far left
-                    Robot.driveSys.setMotorsLeft(TURNSPEED*((half-MidPoint.x)/half)); //320 - midpoint = distance from middle of screen; 120 is half of full range [200-440)]
-                    Robot.driveSys.setMotorsRight(TURNSPEED*((half-MidPoint.x)/half)); //technically this should be in the negative direction, but the peanut's wired backwards
+                    Robot.driveSys.setMotorsLeft(TURNSPEED*((half-MidPoint.x)/half)); //320 - midpoint = distance from middle of screen; 320 is half of full range [0-640)]
+                    Robot.driveSys.setMotorsRight(-TURNSPEED*((half-MidPoint.x)/half)); 
                 }
-
+            
+                //slows down proportionally to distance from midpoint
                 if(MidPoint.x > half) { // if midpoint is too far right
                     Robot.driveSys.setMotorsLeft(-TURNSPEED*((MidPoint.x-half)/half));
-                    Robot.driveSys.setMotorsRight(-TURNSPEED*((MidPoint.x-half)/half)); //technically this should be in the positive direction, but the peanut's wired backwards
+                    Robot.driveSys.setMotorsRight(TURNSPEED*((MidPoint.x-half)/half)); 
                 }
             //}
            // else{

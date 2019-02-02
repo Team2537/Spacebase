@@ -1,12 +1,13 @@
 package frc.robot;
 
 public class Ports {
-    public static final int
+    /*public static final int
         DRIVE_MOTOR_RIGHT_FRONT = 1,
         DRIVE_MOTOR_LEFT_FRONT  = 0
     ;
+    */
+
     // CAN Bus ports
-    /*
     public static final int
         DRIVE_MOTOR_RIGHT_BACK  = 0,
         DRIVE_MOTOR_RIGHT_TOP   = 1,
@@ -15,7 +16,6 @@ public class Ports {
         DRIVE_MOTOR_LEFT_TOP    = 4,
         DRIVE_MOTOR_LEFT_BACK   = 5
     ;
-    */
 
     // Drive station USB ports
     public static final int
