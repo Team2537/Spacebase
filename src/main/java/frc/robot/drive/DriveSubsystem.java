@@ -7,8 +7,13 @@
 
 package frc.robot.drive;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.lib.units.Distances;
+import frc.lib.units.Times;
+import frc.lib.units.Units;
 import frc.robot.Ports;
+import frc.robot.Specs;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -30,6 +35,12 @@ public class DriveSubsystem extends Subsystem {
 
   private CANSparkMax[] motorsLeft, motorsRight;
   private CANEncoder[] encodersLeft, encodersRight;
+  private double[] encoderVelWindowLeft, encoderVelWindowRight;
+  private double accelLeft, accelRight;
+  
+  @SuppressWarnings("unused") private Subsystem accelUpdater;
+
+  private static final int NUM_VELS_TO_SAMPLE = 4;
 
   public DriveSubsystem(){
     motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
@@ -45,6 +56,17 @@ public class DriveSubsystem extends Subsystem {
       motorsRight[i] = new CANSparkMax(MOTOR_PORTS_RIGHT[i],  MOTOR_TYPE);
       encodersRight[i] = motorsRight[i].getEncoder();
     }
+
+    encoderVelWindowLeft = new double[NUM_VELS_TO_SAMPLE];
+    encoderVelWindowRight = new double[NUM_VELS_TO_SAMPLE];
+
+    accelUpdater = new Subsystem(){
+      protected void initDefaultCommand() {setDefaultCommand(new Command(){
+          protected void execute() { updateAccels(); }
+          protected boolean isFinished() { return false; }
+        });
+      }
+    };
   }
 
   @Override
@@ -102,7 +124,8 @@ public class DriveSubsystem extends Subsystem {
     for(int i = 0; i < encoders.length; i++){
       positions[i] = encoders[i].getPosition();
     }
-    return averageWithoutZeroes(positions);
+    double avg = averageWithoutZeroes(positions);
+    return Units.convertDistance(avg, Distances.REVOLUTIONS, Distances.INCHES);
   }
 
   public double getEncoderPosRight(){
@@ -114,11 +137,12 @@ public class DriveSubsystem extends Subsystem {
   }
 
   private double getEncoderVel(CANEncoder[] encoders){
-    double[] positions = new double[encoders.length];
+    double[] vels = new double[encoders.length];
     for(int i = 0; i < encoders.length; i++){
-      positions[i] = encoders[i].getVelocity();
+      vels[i] = encoders[i].getVelocity();
     }
-    return averageWithoutZeroes(positions);
+    double avg = averageWithoutZeroes(vels);
+    return Units.convertSpeed(avg, Distances.REVOLUTIONS, Times.MINUTES, Distances.INCHES, Times.SECONDS);
   }
 
   public double getEncoderVelRight(){
@@ -129,6 +153,27 @@ public class DriveSubsystem extends Subsystem {
     return getEncoderVel(encodersLeft);
   }
 
-  
+  protected void updateAccels(){
+    final double velLeft = getEncoderVelLeft(), velRight = getEncoderVelRight();
+    for(int i = 0; i < NUM_VELS_TO_SAMPLE - 1; i++){
+      encoderVelWindowLeft[i+1] = encoderVelWindowLeft[i];
+      encoderVelWindowRight[i+1] = encoderVelWindowRight[i];
+    }
+    encoderVelWindowLeft[0] = velLeft;
+    encoderVelWindowRight[0] = velRight;
+    
+    final double dt = 4*Units.convertTime(Specs.WPILIB_CYCLE_TIME_MS, Times.MILLISECONDS, Times.SECONDS);
+    accelLeft = (velLeft- encoderVelWindowLeft[NUM_VELS_TO_SAMPLE-1])/dt;
+    accelRight = (velRight - encoderVelWindowRight[NUM_VELS_TO_SAMPLE-1])/dt;
+  }
+
+  public double getEncoderAccRight(){
+    return accelRight;
+  }
+
+  public double getEncoderAccLeft(){
+    return accelLeft;
+  }
+
 }
 
