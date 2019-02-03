@@ -19,6 +19,7 @@ public class Test {
             new Vec2(-0.5,0.5),
             new Vec2(2.5,0.5)
         };
+        /*
         PathWaypoint[] waypoints = PathWaypoint.convert(points);
         PathProfile profile = PathProfileGenerator.generateProfile(constraints, waypoints); 
         System.out.println("error: "+points[points.length-1].diff(profile.endState().pos).mag());
@@ -35,6 +36,6 @@ public class Test {
         Turtle t = new Turtle(800,800,240,new Vec2(1,1.5));
         t.addPoints(points, Color.red);
         t.addPoints(newPoints, Color.blue);
-        
+        */
     }
 }

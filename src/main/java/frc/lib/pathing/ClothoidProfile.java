@@ -31,6 +31,7 @@ public class ClothoidProfile {
             throw new IllegalArgumentException("velF should be greater than vel0");
         }
 
+        
         // generate clothoid
         // based on https://arxiv.org/pdf/1209.0910.pdf
         nodeAngle /= 2;
@@ -39,7 +40,6 @@ public class ClothoidProfile {
             new Vec2(startAngle),
             ClothoidMath.integrate(2*dTheta, 0, 0, 0,1)
         );
-        
         final double r = nodeDistance*Math.sin(nodeAngle)/Math.sin(nodeAngle + dPhi);
         final double pathLength = r/ClothoidMath.integrateC(-2*dTheta, 0, dPhi, 0,1);
 
