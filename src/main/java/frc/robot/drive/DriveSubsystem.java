@@ -81,22 +81,28 @@ public class DriveSubsystem extends Subsystem {
     }
     return out;
   }
-  
-  private double getEncoderPos(CANEncoder[] encoders){
+
+  private static double averageWithoutZeroes(double[] samples){
     double total = 0;
-    double position;
-    for(CANEncoder encoder : encoders){
-      position = encoder.getPosition();
-      if(position != 0) {
-        total += position;
+    for(double val : samples){
+      if(val != 0) {
+        total += val;
       }
     }
 
     if(total == 0) {
       return 0;
     } else {
-      return total / encoders.length;
+      return total / samples.length;
     }
+  }
+  
+  private double getEncoderPos(CANEncoder[] encoders){
+    double[] positions = new double[encoders.length];
+    for(int i = 0; i < encoders.length; i++){
+      positions[i] = encoders[i].getPosition();
+    }
+    return averageWithoutZeroes(positions);
   }
 
   public double getEncoderPosRight(){
@@ -105,6 +111,22 @@ public class DriveSubsystem extends Subsystem {
 
   public double getEncoderPosLeft(){
     return getEncoderPos(encodersLeft);
+  }
+
+  private double getEncoderVel(CANEncoder[] encoders){
+    double[] positions = new double[encoders.length];
+    for(int i = 0; i < encoders.length; i++){
+      positions[i] = encoders[i].getVelocity();
+    }
+    return averageWithoutZeroes(positions);
+  }
+
+  public double getEncoderVelRight(){
+    return getEncoderVel(encodersRight);
+  }
+
+  public double getEncoderVelLeft(){
+    return getEncoderVel(encodersLeft);
   }
 
   

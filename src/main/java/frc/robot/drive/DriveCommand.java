@@ -12,6 +12,8 @@ import frc.robot.HumanInput;
 import frc.robot.Robot;
 
 public class DriveCommand extends Command {
+  public static final double PERCENT_OUTPUT_MAX = 1.0;
+
   public DriveCommand() {
     requires(Robot.driveSys);
   }
@@ -26,10 +28,10 @@ public class DriveCommand extends Command {
   @Override
   protected void execute() {
     Robot.driveSys.setMotors(
-      HumanInput.getJoystickAxisLeft(HumanInput.AXIS_Y),
-      HumanInput.getJoystickAxisRight(HumanInput.AXIS_Y)
+      HumanInput.getJoystickAxisLeft(HumanInput.AXIS_Y)*PERCENT_OUTPUT_MAX,
+      HumanInput.getJoystickAxisRight(HumanInput.AXIS_Y)*PERCENT_OUTPUT_MAX
     );
-    System.out.println(Robot.driveSys.encoderStatus());
+  
   }
 
   // Make this return true when this Command no longer needs to run execute()
