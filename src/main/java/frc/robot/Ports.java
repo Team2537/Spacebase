@@ -30,8 +30,8 @@ public class Ports {
 
     // solenoid ports
     public static final int
-        INTAKE_PNEUMATIC_ONE = 0 //,
-     //   INTAKE_PNEUMATIC_TWO = 1
+        INTAKE_PNEUMATIC_ONE = 0 ,
+        INTAKE_PNEUMATIC_TWO = 1
     ;
 
     //buttons for intake

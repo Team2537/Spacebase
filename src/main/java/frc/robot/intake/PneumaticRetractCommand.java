@@ -10,17 +10,18 @@ package frc.robot.intake;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class IntakeCommand extends Command {
-  public IntakeCommand() {
-    // Use requires() here to declare subsystem dependencies
-    // eg. requires(chassis);
-    requires(Robot.intakeSys);
+public class PneumaticRetractCommand extends Command {
+  public PneumaticRetractCommand() {
     
+    requires(Robot.intakeSys);
+
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.intakeSys.pneumaticRetract();
+
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -31,7 +32,7 @@ public class IntakeCommand extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true
