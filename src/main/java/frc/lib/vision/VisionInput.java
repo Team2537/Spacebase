@@ -44,7 +44,7 @@ public class VisionInput extends Subsystem {
 		lastCompletedString="";
 	}
 
-	public static Target[] decodeVisionPacket(String packetToDecode) {
+	private static Target[] decodeVisionPacket(String packetToDecode) {
 		try {
 			if (packetToDecode.equals("") || packetToDecode == null) {
 				return new Target[0];
@@ -79,7 +79,7 @@ public class VisionInput extends Subsystem {
 		}
 	}
 
-	public void addToBuffer() { // should run periodically
+	protected void updateBuffer() { // should run periodically
 		try { // wrapped in a try/catch because if the pi inits before the rio it'll crash otherwise
 			if (serial.getBytesReceived() > 0) {
 				String stringToAppend = serial.readString();
@@ -121,7 +121,7 @@ class VisionCommand extends Command {
 	
 	@Override
 	protected void execute() {
-		VisionInput.getInstance().addToBuffer();
+		VisionInput.getInstance().updateBuffer();
 	}
 	
 	@Override

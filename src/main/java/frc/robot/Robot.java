@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
 
   // Called periodically during the Sandstorm
   @Override
-  public void autonomousPeriodic() {
+  public void autonomousPeriodic(){
     Scheduler.getInstance().run();
      
   }
