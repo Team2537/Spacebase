@@ -68,7 +68,9 @@ public class DriveTurnCommand extends Command{
     }
 
 
-    private static Point getMidpoint(int largeIndex, int LargishIndex, Target[] targets){
+    private static Point getMidpoint(Target[] targets){
+        int largeIndex = findLargestAreas(getAreas(targets));
+        int LargishIndex = findSecondLargestAreas(getAreas(targets));
         Point box1 = new Point(0, 0);
         box1 = targets[largeIndex].getBoundingBoxCenter();
         System.out.println("MDPOINT1 from getMidpoint: " + box1);
@@ -91,10 +93,7 @@ public class DriveTurnCommand extends Command{
     protected void execute(){
         targets = VisionInput.getInstance().getVisionPacket();
         if(targets.length > 1){
-            MidPoint = getMidpoint(
-                findLargestAreas(getAreas(targets)),
-                findSecondLargestAreas(getAreas(targets)),
-                targets);
+            MidPoint = getMidpoint(targets);
         } else {
             MidPoint = new Point(0, 0);
         }

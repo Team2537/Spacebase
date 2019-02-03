@@ -11,8 +11,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class RotateToCenterCommand extends Command {
-  public RotateToCenterCommand(boolean direction) {
+  private final double rotateSpeed;
+  private final boolean direction;
+  public RotateToCenterCommand(boolean direction, double rotateSpeed) {
     requires(Robot.driveSys);
+    this.rotateSpeed = rotateSpeed;
+    this.direction = direction;
   }
 
   // Called just before this Command runs the first time
@@ -23,17 +27,24 @@ public class RotateToCenterCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    if(direction) {
+      Robot.driveSys.setMotors(-rotateSpeed, rotateSpeed);
+    }
+    else if(!direction) {
+      Robot.driveSys.setMotors(rotateSpeed, -rotateSpeed);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return Robot.driveSys.getIR_frontUpper();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.driveSys.setMotors(0,0);
   }
 
   // Called when another command which requires one or more of the same

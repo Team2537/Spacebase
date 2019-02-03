@@ -9,6 +9,9 @@ package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import frc.lib.vision.Point;
+import frc.lib.vision.Target;
+import frc.robot.Robot;
 import frc.robot.drive.DriveStraightCommand;
 
 public class AlignToHatchCommand extends CommandGroup {
@@ -19,7 +22,9 @@ public class AlignToHatchCommand extends CommandGroup {
 
     addSequential(new Command(){  // get rotation direction prediction
       protected void initialize(){
-        predictionDir = true; // TODO: implement
+        Target[] targets = Robot.visionInput.getVisionPacket();
+        Point midpoint = Target.getMidpoint(targets);
+        predictionDir = midpoint.x < Point.CAMERA_WIDTH/2;
       }
       protected boolean isFinished() {
         return true;
@@ -27,8 +32,7 @@ public class AlignToHatchCommand extends CommandGroup {
     });
 
     addSequential(new PerpendicularOnLineCommand(0.3, 0.15, predictionDir));
-    addSequential(new RotateToCenterCommand(!predictionDir));
-    /* addSequential(new VisionRotateCommand()); */
+    addSequential(new RotateToCenterCommand(!predictionDir, 0.15));
     addSequential(new UltrasonicFrontDriveCommand(6, 0.3));
   }
 }
