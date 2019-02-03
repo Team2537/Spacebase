@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.lib.units.Units;
 import frc.robot.drive.DriveSubsystem;
 
 public class Robot extends TimedRobot {
@@ -18,6 +19,8 @@ public class Robot extends TimedRobot {
   // Use this function for all initialization code
   @Override
   public void robotInit() {
+    Units.setWheelDiameter(Specs.DRIVE_WHEEL_DIAMETER);
+
     driveSys = new DriveSubsystem();
   }
 
