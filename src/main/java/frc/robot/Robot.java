@@ -45,22 +45,22 @@ public class Robot extends TimedRobot {
   // Called periodically during the Sandstorm
   @Override
   public void autonomousPeriodic() {
-    double leftSpeed, rightSpeed;
-    if((Robot.drivesys.getEncoderPosLeft() - leftEncoderStartValue) <= 50){
-      leftSpeed = 0.5;
-    } else {
-      leftSpeed = 0;
-    }
+    // double leftSpeed, rightSpeed;
+    // if((Robot.drivesys.getEncoderPosLeft() - leftEncoderStartValue) <= 50){
+    //   leftSpeed = 0.5;
+    // } else {
+    //   leftSpeed = 0;
+    // }
 
-    if((Robot.drivesys.getEncoderPosRight() - rightEncoderStartValue) <= 50){
-      rightSpeed = 0.5;
-    } else {
-      rightSpeed = 0;
-    }
+    // if((Robot.drivesys.getEncoderPosRight() - rightEncoderStartValue) <= 50){
+    //   rightSpeed = 0.5;
+    // } else {
+    //   rightSpeed = 0;
+    // }
 
-    Robot.drivesys.setMotors(leftSpeed,rightSpeed);
+    // Robot.drivesys.setMotors(leftSpeed,rightSpeed);
 
-    System.out.println(Robot.drivesys.encoderStatus());
+    // System.out.println(Robot.drivesys.encoderStatus());
   }
 
 
