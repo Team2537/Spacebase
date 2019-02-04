@@ -1,8 +1,10 @@
 package frc.lib.units;
 
+import frc.robot.Specs;
+
 public enum Distances {
 	INCHES			(1),
-	REVOLUTIONS		(Math.PI*Units.wheelDiameter),
+	REVOLUTIONS		(Math.PI*Specs.DRIVE_WHEEL_DIAMETER),
 	FEET			(12),
 	CENTIMETERS		(1/2.54),
 	METERS			(100/2.54);

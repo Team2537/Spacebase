@@ -37,7 +37,7 @@ public class DriveSubsystem extends Subsystem {
   private CANEncoder[] encodersLeft, encodersRight;
   private double[] encoderVelWindowLeft, encoderVelWindowRight;
   private double accelLeft, accelRight;
-  
+
   @SuppressWarnings("unused") private Subsystem accelUpdater;
 
   private static final int NUM_VELS_TO_SAMPLE = 4;
@@ -47,6 +47,8 @@ public class DriveSubsystem extends Subsystem {
     encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
     for(int i = 0; i < MOTOR_PORTS_LEFT.length; i++){
       motorsLeft[i] = new CANSparkMax(MOTOR_PORTS_LEFT[i],  MOTOR_TYPE);
+      motorsLeft[i].setIdleMode(CANSparkMax.IdleMode.kBrake);
+      if(i > 0) motorsLeft[i].follow(motorsLeft[0]);
       encodersLeft[i] = motorsLeft[i].getEncoder();
     }
 
@@ -54,6 +56,8 @@ public class DriveSubsystem extends Subsystem {
     encodersRight = new CANEncoder[MOTOR_PORTS_RIGHT.length];
     for(int i = 0; i < MOTOR_PORTS_RIGHT.length; i++){
       motorsRight[i] = new CANSparkMax(MOTOR_PORTS_RIGHT[i],  MOTOR_TYPE);
+      motorsRight[i].setIdleMode(CANSparkMax.IdleMode.kBrake);
+      if(i > 0) motorsRight[i].follow(motorsRight[0]);
       encodersRight[i] = motorsRight[i].getEncoder();
     }
 
@@ -73,19 +77,13 @@ public class DriveSubsystem extends Subsystem {
   public void initDefaultCommand() {
     setDefaultCommand(new DriveCommand());
   }
-
-  private void setMotorsSide(double percentOutput, CANSparkMax[] motors){
-    for(CANSparkMax motor : motors){
-      motor.set(percentOutput);
-    }
-  }
   
   public void setMotorsLeft(double percentOutput){
-    setMotorsSide(-percentOutput, motorsLeft);
+    motorsLeft[0].set(-percentOutput);
   }
 
   public void setMotorsRight(double percentOutput){
-    setMotorsSide(percentOutput, motorsRight);
+    motorsRight[0].set(percentOutput);
   }
 
   public void setMotors(double percentOutputLeft, double percentOutputRight){
@@ -163,7 +161,7 @@ public class DriveSubsystem extends Subsystem {
     encoderVelWindowRight[0] = velRight;
     
     final double dt = 4*Units.convertTime(Specs.WPILIB_CYCLE_TIME_MS, Times.MILLISECONDS, Times.SECONDS);
-    accelLeft = (velLeft- encoderVelWindowLeft[NUM_VELS_TO_SAMPLE-1])/dt;
+    accelLeft = (velLeft - encoderVelWindowLeft[NUM_VELS_TO_SAMPLE-1])/dt;
     accelRight = (velRight - encoderVelWindowRight[NUM_VELS_TO_SAMPLE-1])/dt;
   }
 
@@ -173,6 +171,14 @@ public class DriveSubsystem extends Subsystem {
 
   public double getEncoderAccLeft(){
     return accelLeft;
+  }
+
+  public double getAppliedVoltageLeft(){
+    return motorsLeft[0].getAppliedOutput();
+  }
+
+  public double getAppliedVoltageRight(){
+    return motorsRight[0].getAppliedOutput();
   }
 
 }

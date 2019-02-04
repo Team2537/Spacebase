@@ -1,8 +1,6 @@
 package frc.lib.units;
 
-public class Units {
-    protected static double wheelDiameter = 0;
-	
+public class Units {	
 	public static double convertDistance(double value, Distances currentType, Distances desiredType){
 		return value * currentType.getInches() / desiredType.getInches();
 	}
@@ -25,9 +23,5 @@ public class Units {
 	
 	public static double roundDigits(double value, int digits){
 		return (int)(value * Math.pow(10, digits))/Math.pow(10, digits);
-    }
-    
-    public static void setWheelDiameter(double wheelDiameter_){
-        wheelDiameter = wheelDiameter_;
     }
 }
