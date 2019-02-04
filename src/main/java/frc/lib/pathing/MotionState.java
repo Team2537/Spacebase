@@ -157,9 +157,9 @@ public class MotionState {
                 // Integrating: (a*t + v_0)*cos(0.5*angAcc*t^2 + angVel_0*t + angle_0)
                 final double scalar = start.vel - start.angVel*start.acc/start.angAcc;
                 dx = (Math.sin(angle) - Math.sin(start.angle))*start.acc/start.angAcc
-                    + scalar*ClothoidMath.integrateC(start.angAcc, start.angVel, start.angle, 0, dt);
+                    + scalar*FresnelMath.integrateC(start.angAcc, start.angVel, start.angle, 0, dt);
                 dy = -(Math.cos(angle) - Math.cos(start.angle))*start.acc/start.angAcc
-                    + scalar*ClothoidMath.integrateS(start.angAcc, start.angVel, start.angle, 0, dt);
+                    + scalar*FresnelMath.integrateS(start.angAcc, start.angVel, start.angle, 0, dt);
             }
         }
 

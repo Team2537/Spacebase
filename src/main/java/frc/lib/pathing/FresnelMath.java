@@ -4,7 +4,7 @@ import frc.lib.util.LookupTable;
 import frc.lib.util.Util;
 import frc.lib.util.Vec2;
 
-public class ClothoidMath {
+public class FresnelMath {
     private static final double SQRT_PI = Math.sqrt(Math.PI);
     /** calculate: integral of sin(0.5*Kp*t^2 + K0*t + h0)dt from lower to upper */
     public static double integrateS(double Kp, double K0, double h0, double lower, double upper){
