@@ -1,12 +1,8 @@
 package frc.lib.pathing;
 
-import java.awt.Color;
-
-import frc.lib.util.Turtle;
-import frc.lib.util.Vec2;
-
 public class Test {
     public static void main(String[] args){
+        /*
         RobotConstraints constraints = new RobotConstraints(2, 1, 0.8, 0.005);
         Vec2[] points = new Vec2[]{
             new Vec2(0,0),
@@ -18,7 +14,7 @@ public class Test {
             new Vec2(-0.5, 1),
             new Vec2(-0.5,0.5),
             new Vec2(2.5,0.5)
-        };
+        };*/
         /*
         PathWaypoint[] waypoints = PathWaypoint.convert(points);
         PathProfile profile = PathProfileGenerator.generateProfile(constraints, waypoints); 
