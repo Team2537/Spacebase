@@ -17,6 +17,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
@@ -42,6 +43,7 @@ public class DriveSubsystem extends Subsystem {
 
   private AHRS navX;
   private Ultrasonic driveUltrasonic;
+  private DigitalInput IR_frontUpper, IR_frontLower, IR_center;
 
   public DriveSubsystem(){
 
@@ -49,6 +51,11 @@ public class DriveSubsystem extends Subsystem {
     //LeftFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_LEFT_FRONT);
     motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
     encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
+
+    IR_frontUpper = new DigitalInput(0);
+    IR_frontLower = new DigitalInput(1);
+    IR_center = new DigitalInput(2);
+
     for(int i = 0; i < MOTOR_PORTS_LEFT.length; i++){
       motorsLeft[i] = new CANSparkMax(MOTOR_PORTS_LEFT[i],  MOTOR_TYPE);
       encodersLeft[i] = motorsLeft[i].getEncoder();
@@ -143,15 +150,14 @@ public class DriveSubsystem extends Subsystem {
     return getGyroDegrees()*Math.PI/180;
   }
 
-  // TODO: private DigitalInput IR_frontUpper; etc.
   public boolean getIR_frontUpper(){
-    return false;
+    return IR_frontUpper.get();
   }
   public boolean getIR_frontLower(){
-    return false;
+    return IR_frontLower.get();
   }
   public boolean getIR_center(){
-    return false;
+    return IR_center.get();
   }
 
   /** @return the range of the drive ultrasonic in inches */
