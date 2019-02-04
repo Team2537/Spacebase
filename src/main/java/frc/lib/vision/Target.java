@@ -81,62 +81,36 @@ public class Target {
 		return boundingBoxCenter;
 	}
 
+	/** @return The midpoint between the two targets in the array with the largest bounding boxes.
+	 * If less than 2 targets are passed in, a new Point(0,0) is returned.
+	 */
+	public static Point getMidpoint(Target[] targets){
+		if(targets.length < 2) return new Point(0,0);
 
-	//grabs targets found in target class
-	private static double[] getAreas(Target[] targets){
 		double[] boundingBoxAreas = new double[targets.length];
 
 		for(int i = 0; i < boundingBoxAreas.length; i++){
 			System.out.println(boundingBoxAreas[i]);
 			boundingBoxAreas[i] = targets[i].getBoundingBoxArea();   
 		}
-		return boundingBoxAreas;
-	}
 
-	private static int findLargestAreas(double[] boundingBoxAreas){
-		double maxValue = boundingBoxAreas[0]; 
-		int maxValueIndex = 0;
-	
-		for(int i = 0; i < boundingBoxAreas.length; i++){ 
-			if(boundingBoxAreas[i] > maxValue){ 
-				maxValue = boundingBoxAreas[i]; 
-				maxValueIndex = i;
-			}
-		}
-		System.out.println("MIDPOINT1 from Area: " + maxValue);
-		return maxValueIndex;
-	}
-
-	private static int findSecondLargestAreas(double[] boundingBoxAreas){
-		double first, second;
-		int smallerValueIndex = 0;
-		first = second = Double.MIN_VALUE;
-		for ( int i = 0; i < boundingBoxAreas.length; i++) {
+		double first = -Double.MAX_VALUE, second = -Double.MAX_VALUE;
+		int firstIndex = 0, secondIndex = 0;
+		for (int i = 0; i < boundingBoxAreas.length; i++) {
 			if (boundingBoxAreas[i] > first) {
 				second = first;
 				first = boundingBoxAreas[i];
+				firstIndex = i;
 			}
 			// if current element is between first and second, update second to store value of current variable
 			else if (boundingBoxAreas[i] > second && boundingBoxAreas[i] != first){
 				second = boundingBoxAreas[i];
-				smallerValueIndex = i;
+				secondIndex = i;
 			}
 		}
-		System.out.println("MIDPOINT2 from Area2: " + second);
-		return smallerValueIndex;
-	}
 
-
-	public static Point getMidpoint(Target[] targets){
-		int largeIndex = findLargestAreas(getAreas(targets));
-		int LargishIndex = findSecondLargestAreas(getAreas(targets));
-		Point box1 = new Point(0, 0);
-		box1 = targets[largeIndex].getBoundingBoxCenter();
-		System.out.println("MDPOINT1 from getMidpoint: " + box1);
-		Point box2 = new Point(0, 0);
-		box2 = targets[LargishIndex].getBoundingBoxCenter();
-		System.out.println("MDPOINT2 from getMidpoint: " + box2);
-		Point MidPoint = new Point((box1.x + box2.x)/2, (box1.y + box2.y)/2);
-		return MidPoint;
+		Point box1 = targets[firstIndex].getBoundingBoxCenter();
+		Point box2 = targets[secondIndex].getBoundingBoxCenter();
+		return new Point((box1.x + box2.x)/2, (box1.y + box2.y)/2);
 	}
 }
