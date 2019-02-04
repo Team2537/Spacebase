@@ -7,10 +7,10 @@ public class Clothoid {
 
     /**
     * @param startAngle Initial angle of the robot
-    * @param nodeDistance Distance away from the path node for this turn
+    * @param turningRadius Distance away from the path node for this turn (essentially turning radius)
     * @param nodeAngle Angle between the current path segment and the next path segment
     */
-    public Clothoid(double startAngle, double nodeDistance, double nodeAngle){
+    public Clothoid(double startAngle, double turningRadius, double nodeAngle){
         // generate clothoid
         // based on https://arxiv.org/pdf/1209.0910.pdf
         nodeAngle /= 2;
@@ -19,7 +19,7 @@ public class Clothoid {
             new Vec2(startAngle),
             FresnelMath.integrate(2*dTheta, 0, 0, 0,1)
         );
-        final double r = nodeDistance*Math.sin(nodeAngle)/Math.sin(nodeAngle + dPhi);
+        final double r = turningRadius*Math.sin(nodeAngle)/Math.sin(nodeAngle + dPhi);
         length = r/FresnelMath.integrateC(-2*dTheta, 0, dPhi, 0,1);
 
         // calculate change in curvature with respect to distance traveled along the path

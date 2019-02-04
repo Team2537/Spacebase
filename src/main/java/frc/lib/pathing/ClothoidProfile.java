@@ -1,7 +1,5 @@
 package frc.lib.pathing;
 
-import frc.lib.util.Vec2;
-
 public class ClothoidProfile {
 
     public final double vel0,velF,acc,rampUpTime,cruiseTime;
@@ -65,11 +63,6 @@ public class ClothoidProfile {
         this.velF = velF;
         this.rampUpTime = rampUpTime;
         this.cruiseTime = cruiseTime;
-    }
-
-    
-    private static double getNodeRadius(double distanceToNode, double nodeAngle, double dPhi){
-        return distanceToNode*Math.sin(dPhi)/Math.sin(dPhi+nodeAngle);
     }
 
     private static double profileDist(double Kp, double K, double l, double acc, double vel0, double t){

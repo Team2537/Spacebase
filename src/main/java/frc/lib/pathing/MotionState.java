@@ -36,7 +36,7 @@ public class MotionState {
                         && (accL <= constraints.maxWheelAcc) && (accR <= constraints.maxWheelAcc);
     }
 
-    /** Returns a new MotionState, inferring wheel states and curvature
+    /** @return a new MotionState, inferring wheel states and curvature
      * from known angular motion.
      */
     public static MotionState fromAngular(RobotConstraints constraints,
@@ -56,7 +56,7 @@ public class MotionState {
         );
     }
 
-    /** Returns a new MotionState, replacing the old one's accelerations by using
+    /** @return a new MotionState, replacing the old one's accelerations by using
      * the linear and angular acceleration parameters.
      */
     public static MotionState controlAngular(MotionState old, double acc, double angAcc){
@@ -68,14 +68,14 @@ public class MotionState {
         );
     }
 
-    /** Returns a new MotionState, replacing the old one's accelerations by using
+    /** @return a new MotionState, replacing the old one's accelerations by using
      * the linear and angular acceleration parameters.
      */
     public MotionState controlAngular(double acc, double angAcc){
         return controlAngular(this, acc, angAcc);
     }
 
-    /** Returns a new MotionState, inferring angular motion and curvature
+    /** @return a new MotionState, inferring angular motion and curvature
      * from known wheel states.
      */
     public static MotionState fromWheels(RobotConstraints constraints,
@@ -95,7 +95,7 @@ public class MotionState {
         );
     }
 
-    /** Returns a new MotionState, replacing the old one's accelerations by using
+    /** @return a new MotionState, replacing the old one's accelerations by using
      * the wheel accelerations parameters.
      */
     public static MotionState controlWheels(MotionState old, double accL, double accR){
@@ -108,7 +108,7 @@ public class MotionState {
         );
     }
 
-    /** Returns a new MotionState, replacing the old one's accelerations by using
+    /** @return a new MotionState, replacing the old one's accelerations by using
      * the wheel accelerations parameters.
      */
     public MotionState controlWheels(double accL, double accR){
