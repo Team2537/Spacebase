@@ -6,6 +6,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 
 public class HumanInput {
+    /** Prevent this class from being instantiated. */
+    private HumanInput() { }
+
     public static Joystick joystickLeft  = new Joystick(Ports.LEFT_JOYSTICK);
     public static Joystick joystickRight = new Joystick(Ports.RIGHT_JOYSTICK);
 
