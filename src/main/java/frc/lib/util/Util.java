@@ -27,5 +27,14 @@ public class Util {
     public static Vec2 linearInterp(Vec2 a, Vec2 b, double t){
         return new Vec2(linearInterp(a.x,b.x,t), linearInterp(a.y,b.y,t));
     }
-
+    public static double normalizeHeadingRadians(double heading){
+        while(heading < 0) heading += 2*Math.PI;
+        while(heading >= 2*Math.PI) heading -= 2*Math.PI;
+        return heading - Math.PI;
+    }
+    public static double normalizeHeadingDegrees(double heading){
+        while(heading < 0) heading += 360;
+        while(heading >= 360) heading -= 360;
+        return heading - 180;
+    }
 }

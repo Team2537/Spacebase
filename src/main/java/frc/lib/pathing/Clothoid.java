@@ -1,9 +1,11 @@
 package frc.lib.pathing;
 
+import frc.lib.util.Util;
 import frc.lib.util.Vec2;
 
 public class Clothoid {
-    public final double length, Kp;
+    public final double length, Kp, dTheta;
+    public final boolean flipped;
 
     /**
     * @param startAngle Initial angle of the robot
@@ -13,20 +15,47 @@ public class Clothoid {
     public Clothoid(double startAngle, double turningRadius, double nodeAngle){
         // generate clothoid
         // based on https://arxiv.org/pdf/1209.0910.pdf
-        nodeAngle /= 2;
-        final double dTheta = (Math.PI/2 - Math.abs(nodeAngle))*Math.signum(nodeAngle);
+        final double dir = Math.signum(nodeAngle);
+        nodeAngle = Math.abs(nodeAngle)/2;
+        final double dTheta_abs = Math.PI/2 - nodeAngle;
         final double dPhi = Vec2.angleBetween(
             new Vec2(startAngle),
-            FresnelMath.integrate(2*dTheta, 0, 0, 0,1)
+            FresnelMath.integrate(2*dTheta_abs, 0, 0, 0,1)
         );
         final double r = turningRadius*Math.sin(nodeAngle)/Math.sin(nodeAngle + dPhi);
-        length = r/FresnelMath.integrateC(-2*dTheta, 0, dPhi, 0,1);
+        length = r/FresnelMath.integrateC(-2*dTheta_abs, 0, dPhi, 0,1);
 
         // calculate change in curvature with respect to distance traveled along the path
-        Kp = Math.signum(nodeAngle)*(2*dTheta)/(length*length); 
+        dTheta = dir*dTheta_abs;
+        Kp = (2*dTheta)/(length*length);
+        flipped = false;
+    }
+
+    private Clothoid(double length, double Kp, double dTheta, boolean flipped){
+        this.length = length;
+        this.Kp = Kp;
+        this.dTheta = dTheta;
+        this.flipped = flipped;
+    }  
+
+    public Clothoid flip(){
+        return new Clothoid(length, Kp, dTheta, true);
+    }
+
+    public static Clothoid fromAngle(double dTheta){
+        return new Clothoid(0, Double.POSITIVE_INFINITY, Util.normalizeHeadingRadians(dTheta), false);
+    }
+
+    public static Clothoid fromLength(double length){
+        return new Clothoid(length, 0, 0, false);
     }
 
     public double getMaxStartVelocity(double accMax, double robotLength){
         return Math.sqrt((2*accMax)/(Kp*robotLength));
+    }
+
+    public String toString(){
+        return String.format("Length: %f\nKp: %f\ndTheta: %f\nFlipped: %s\n",
+            length, Kp, dTheta, flipped ? "yes" : "no");
     }
 }
