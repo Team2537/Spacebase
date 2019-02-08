@@ -61,13 +61,17 @@ public class DriveSubsystem extends Subsystem {
     encoderVelWindowRight = new double[NUM_VELS_TO_SAMPLE];
 
     accelUpdater = new Subsystem(){
-      protected void initDefaultCommand() {setDefaultCommand(new Command(){
-          protected void execute() { updateAccels(); }
-          protected boolean isFinished() { return false; }
-        });
+      protected void initDefaultCommand() {
+        setDefaultCommand(new UpdateCommand());
       }
     };
   }
+
+  class UpdateCommand extends Command {
+    private UpdateCommand(){requires(accelUpdater);};
+    protected void execute() { updateAccels(); }
+    protected boolean isFinished() { return false; }
+  };
 
   @Override
   public void initDefaultCommand() {
