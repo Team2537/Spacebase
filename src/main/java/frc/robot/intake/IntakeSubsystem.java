@@ -43,7 +43,6 @@ pot = new AnalogPotentiometer(0, 3600, POT_OFFSET);
 
 public void turnOnFlywheels(){
   flywheel1.set(FLYWHEEL_SPEED);
-  flywheel2.set(FLYWHEEL_SPEED);
 
 }
 
@@ -60,7 +59,6 @@ public void pneumaticRetract(){
 
 public void turnOffFlywheels(){
   flywheel1.set(0);
-  flywheel2.set(0);
 }
 
 public double getPotentiometer(){
