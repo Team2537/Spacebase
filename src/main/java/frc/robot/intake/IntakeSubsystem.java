@@ -64,6 +64,10 @@ public void turnOffFlywheels(){
 public double getPotentiometer(){
   return pot.get();
 }
+
+public boolean getInfrared(){
+  return infrared.get();
+}
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
