@@ -7,10 +7,12 @@
 
 package frc.robot.intake;
 
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import frc.robot.Ports;
  
 
@@ -19,12 +21,13 @@ public class IntakeSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-Talon flywheel1;
-Talon flywheel2;
-DigitalInput infrared;
-Solenoid pneumatic1;
-Solenoid pneumatic2;
-Double speed;
+private Talon flywheel1, flywheel2;
+private DigitalInput infrared;
+private Solenoid pneumatic1;
+private Solenoid pneumatic2;
+private Potentiometer pot;
+private static final double FLYWHEEL_SPEED = 0.8; 
+private static final int POT_OFFSET = 0; //TODO find the real value of this
 
 
 public IntakeSubsystem(){
@@ -34,12 +37,13 @@ flywheel2 = new Talon(Ports.INTAKE_MOTOR_TWO);
 infrared = new DigitalInput(Ports.INTAKE_INFRARED);
 pneumatic1 = new Solenoid(Ports.INTAKE_PNEUMATIC_ONE);
 pneumatic2 = new Solenoid(Ports.INTAKE_PNEUMATIC_TWO);
+pot = new AnalogPotentiometer(0, 3600, POT_OFFSET);
 
 }
 
 public void turnOnFlywheels(){
-  flywheel1.set(speed);
-  flywheel2.set(speed);
+  flywheel1.set(FLYWHEEL_SPEED);
+  flywheel2.set(FLYWHEEL_SPEED);
 
 }
 
@@ -57,8 +61,10 @@ public void pneumaticRetract(){
 public void turnOffFlywheels(){
   flywheel1.set(0);
   flywheel2.set(0);
+}
 
-
+public double getPotentiometer(){
+  return pot.get();
 }
   @Override
   public void initDefaultCommand() {
