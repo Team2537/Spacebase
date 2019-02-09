@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import frc.lib.motion.MotionProfile;
+import frc.lib.motion.RobotConstraints;
 import frc.lib.util.Turtle;
 import frc.lib.util.Vec2;
 
@@ -193,7 +195,7 @@ public class Path {
         };
         
         Waypoint[] waypoints = new Waypoint[points.length];
-        for(int i = 0; i < points.length; i++) waypoints[i] = new Waypoint(points[i], 0);//Double.MAX_VALUE);
+        for(int i = 0; i < points.length; i++) waypoints[i] = new Waypoint(points[i], 4);
 
         Path path = new Path(waypoints);
 

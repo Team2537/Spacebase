@@ -1,4 +1,4 @@
-package frc.lib.pathing;
+package frc.lib.motion;
 
 import java.util.ArrayList;
 import java.util.List;

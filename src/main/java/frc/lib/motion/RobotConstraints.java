@@ -1,4 +1,4 @@
-package frc.lib.pathing;
+package frc.lib.motion;
 
 public class RobotConstraints {
     public final double maxWheelVel, maxWheelAcc, length;

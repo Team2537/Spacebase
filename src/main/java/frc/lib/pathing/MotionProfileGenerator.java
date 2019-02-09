@@ -1,5 +1,8 @@
 package frc.lib.pathing;
 
+import frc.lib.motion.MotionProfile;
+import frc.lib.motion.MotionState;
+import frc.lib.motion.RobotConstraints;
 import frc.lib.pathing.profileGenerators.AngularProfile;
 import frc.lib.pathing.profileGenerators.ClothoidProfile;
 import frc.lib.pathing.profileGenerators.LinearProfile;

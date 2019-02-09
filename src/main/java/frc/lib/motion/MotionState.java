@@ -1,7 +1,8 @@
-package frc.lib.pathing;
+package frc.lib.motion;
 
 import frc.lib.util.Util;
 import frc.lib.util.Vec2;
+import frc.lib.util.FresnelMath;
 
 /** A MotionState represents the linear motion, angular motion, wheel states,
  * and curvature of the robot's drive train at a specific point in time.

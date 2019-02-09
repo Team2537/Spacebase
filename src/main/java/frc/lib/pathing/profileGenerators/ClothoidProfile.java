@@ -1,6 +1,7 @@
 package frc.lib.pathing.profileGenerators;
 
-import frc.lib.pathing.*;
+import frc.lib.motion.MotionProfile;
+import frc.lib.pathing.Clothoid;
 
 public class ClothoidProfile {
     
