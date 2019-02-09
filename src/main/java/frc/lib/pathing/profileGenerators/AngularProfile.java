@@ -4,9 +4,12 @@ import frc.lib.pathing.*;
 
 public class AngularProfile {
 
-    public static void generate(MotionProfile profile, Clothoid segment, double accMax, double velMax){
+    public static void generate(MotionProfile profile, Clothoid segment, double robotLength, double accMax, double velMax){
         final double o = Math.signum(segment.dTheta);
         final double dist = Math.abs(segment.dTheta);
+        final double accMaxLinear = accMax;
+        accMax /= robotLength;
+        velMax /= robotLength;
 
         // What is the maximum velocity we can reach (Vmax)? This is the intersection of two curves: one accelerating
         // towards the goal from profile.finalState(), the other coming from the goal at max vel (in reverse). If Vmax
@@ -20,7 +23,7 @@ public class AngularProfile {
 
         // Accelerate to v_max
         final double accel_time = (v_max - v_now)/accMax;
-        profile.appendControlWheels(accel_time, -o*accMax, o*accMax);
+        profile.appendControlWheels(accel_time, -o*accMaxLinear, o*accMaxLinear);
         pos_now += 0.5*accMax*accel_time*accel_time + v_now*accel_time;
         v_now += accMax*accel_time;
 
@@ -35,7 +38,7 @@ public class AngularProfile {
         // Decelerate to goal velocity.
         if (distance_decel > 0) {
             final double decel_time = v_now / accMax;
-            profile.appendControlWheels(decel_time, o*accMax, -o*accMax);
+            profile.appendControlWheels(decel_time, o*accMaxLinear, -o*accMaxLinear);
         }
     }
 

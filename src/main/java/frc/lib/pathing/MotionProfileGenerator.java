@@ -47,7 +47,7 @@ public class MotionProfileGenerator {
             if(i < turnSegs.length){
                 Clothoid c = turnSegs[i];
                 if(Double.isInfinite(c.Kp)){
-                    AngularProfile.generate(profile, c, accMax, velMax);
+                    AngularProfile.generate(profile, c, l, accMax, velMax);
                 } else {
                     ClothoidProfile.generate(profile, dt, c, l, accMax, velF, turnVels[i]);
                 }

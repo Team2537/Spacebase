@@ -193,7 +193,7 @@ public class Path {
         };
         
         Waypoint[] waypoints = new Waypoint[points.length];
-        for(int i = 0; i < points.length; i++) waypoints[i] = new Waypoint(points[i], 0.2);
+        for(int i = 0; i < points.length; i++) waypoints[i] = new Waypoint(points[i], 0);
 
         Path path = new Path(waypoints);
 
