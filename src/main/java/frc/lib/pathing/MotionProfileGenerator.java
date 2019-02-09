@@ -6,9 +6,7 @@ import frc.lib.pathing.profileGenerators.LinearProfile;
 
 public class MotionProfileGenerator {
     public static final double dt = 0.0001;
-    public static MotionProfile generate(RobotConstraints constraints, Path path){
-        MotionState startState = MotionState.fromWheels(constraints, 0, path.start(), path.startAngle(), 0, 0, 0, 0);
-        MotionProfile profile = new MotionProfile(startState);
+    public static void generate(MotionProfile profile, RobotConstraints constraints, Path path){
         Clothoid[] clothoids = path.getClothoids();
 
         final double accMax = constraints.maxWheelAcc, velMax = constraints.maxWheelVel, l = constraints.length;
@@ -55,7 +53,12 @@ public class MotionProfileGenerator {
                 }
             }
         }
+    }
 
+    public static MotionProfile generate(RobotConstraints constraints, Path path){
+        MotionState startState = MotionState.fromWheels(constraints, 0, path.start(), path.startAngle(), 0, 0, 0, 0);
+        MotionProfile profile = new MotionProfile(startState);
+        generate(profile, constraints, path);
         return profile;
     }
 

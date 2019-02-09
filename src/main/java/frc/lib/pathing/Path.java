@@ -187,16 +187,17 @@ public class Path {
             new Vec2(0.5, 2.5),
             new Vec2(1.5, 3.0),
             new Vec2(2.0, 2.75),
-            new Vec2(5.0, 2.75)
+            new Vec2(2.0, 1.75),
+            new Vec2(3.0, 1.75),
         };
         Waypoint[] waypoints = new Waypoint[points.length];
-        for(int i = 0; i < points.length; i++) waypoints[i] = new Waypoint(points[i], 100);
+        for(int i = 0; i < points.length; i++) waypoints[i] = new Waypoint(points[i], 0.3);
 
         Path path = new Path(waypoints);
 
         final double dt = 0.001;
 
-        RobotConstraints constraints = new RobotConstraints(10, 5, 1);
+        RobotConstraints constraints = new RobotConstraints(10, 5, 12);
         MotionProfile profile = MotionProfileGenerator.generate(constraints, path);
 
         Vec2[] newPoints = new Vec2[(int)(profile.dt()/dt)];
