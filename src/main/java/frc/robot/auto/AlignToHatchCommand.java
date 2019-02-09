@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.lib.vision.Point;
 import frc.lib.vision.Target;
 import frc.robot.Robot;
-import frc.robot.drive.DriveStraightCommand;
 
 /* CommandGroup to ensure that robot follows line
 
