@@ -38,7 +38,6 @@ public class AlignToHatchCommand extends CommandGroup {
 
     addSequential(new Command(){  // get rotation direction prediction
       protected void initialize(){
-        System.out.println("the first part started !!!!!!!!!!!!!");
         Target[] targets = Robot.visionInput.getVisionPacket();
         Point midpoint = Target.getMidpoint(targets);
         predictionDir = midpoint.x < Point.CAMERA_WIDTH/2; //true is when target is to the right
@@ -48,7 +47,6 @@ public class AlignToHatchCommand extends CommandGroup {
         return true;
       }
       protected void end(){
-        System.out.println("the first part finished");
       }
     });
 
