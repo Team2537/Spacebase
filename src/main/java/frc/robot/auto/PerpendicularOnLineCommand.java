@@ -25,7 +25,10 @@ public class PerpendicularOnLineCommand extends Command {
     this.prediction = prediction;
   }
 
+
   private void initMotors(){
+
+    //drives robot in direction of target
     if(prediction){
       Robot.driveSys.setMotors(rotateSpeed, -rotateSpeed);
     } 
@@ -47,6 +50,7 @@ public class PerpendicularOnLineCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    System.out.println("GYRO DEGREES: " + Robot.driveSys.getGyroDegrees());
     switch(stage) {
       case 0:
         // Rotate until the upper sensor hits the line
@@ -56,6 +60,7 @@ public class PerpendicularOnLineCommand extends Command {
             hasFlippedPrediction = true;
             prediction = !prediction;
             initMotors();
+            // no line found
           } else if(Math.abs(Robot.driveSys.getGyroDegrees()) >= 180) {
             stage = 4;
           }
@@ -78,7 +83,6 @@ public class PerpendicularOnLineCommand extends Command {
         }
         break;
 
-
       case 2:
         // Rotate until we are perpendicular to the line
         double angle = Robot.driveSys.getGyroDegrees();
@@ -88,7 +92,6 @@ public class PerpendicularOnLineCommand extends Command {
         }
         break;
 
-
       case 3:
         // Drive straight until we are on the line
         if(Robot.driveSys.getIR_center()){
@@ -97,6 +100,7 @@ public class PerpendicularOnLineCommand extends Command {
         }
         break;
     }
+    System.out.println(stage);
   }
 
   @Override

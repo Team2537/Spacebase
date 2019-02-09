@@ -10,6 +10,12 @@ package frc.robot.auto;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
+/*
+direction is based off of our initial prediction, 
+in short it just tells it which direction the bot needs 
+to turn to realign facing forward
+*/
+
 public class RotateToCenterCommand extends Command {
   private final double rotateSpeed;
   private final boolean direction;

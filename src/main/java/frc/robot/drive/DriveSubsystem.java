@@ -18,7 +18,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.SerialPort;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 
@@ -51,10 +51,12 @@ public class DriveSubsystem extends Subsystem {
     //LeftFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_LEFT_FRONT);
     motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
     encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
-
+/*
     IR_frontUpper = new DigitalInput(0);
     IR_frontLower = new DigitalInput(1);
     IR_center = new DigitalInput(2);
+
+*/
 
     for(int i = 0; i < MOTOR_PORTS_LEFT.length; i++){
       motorsLeft[i] = new CANSparkMax(MOTOR_PORTS_LEFT[i],  MOTOR_TYPE);
@@ -68,7 +70,12 @@ public class DriveSubsystem extends Subsystem {
       encodersRight[i] = motorsRight[i].getEncoder();
     }
 
-    navX = new AHRS(SerialPort.Port.kMXP);
+    navX = new AHRS(SPI.Port.kMXP);
+
+    IR_frontUpper = new DigitalInput(Ports.LINE_FOLLOWER_FRONT_UPPER);
+    IR_frontLower = new DigitalInput(Ports.LINE_FOLLOWER_FRONT_LOWER);
+    IR_center = new DigitalInput(Ports.LINE_FOLLOWER_CENTER);
+
 
   }
 
@@ -87,23 +94,20 @@ public class DriveSubsystem extends Subsystem {
   
   public void setMotorsLeft(double percentOutput){
     //LeftFront.set(percentOutput);
-    System.out.println("LEFT SPEED: " + percentOutput);
     setMotorsSide(-percentOutput, motorsLeft);
   }
   
 
   public void setMotorsRight(double percentOutput){
     //RightFront.set(percentOutput);
-    System.out.println("RIGHT SPEED: " + percentOutput);
     setMotorsSide(percentOutput, motorsRight);
   }
 
   public void setMotors(double percentOutputLeft, double percentOutputRight){
     setMotorsLeft(percentOutputLeft);
-    System.out.println("LEFT SPEED: " + percentOutputLeft);
+
     setMotorsRight(percentOutputRight);
-    System.out.println("RIGHT SPEED: " + percentOutputRight);
-  }
+   }
 
   public String encoderStatus(){
     String out = "";
@@ -149,19 +153,23 @@ public class DriveSubsystem extends Subsystem {
   public double getGyroRadians(){
     return getGyroDegrees()*Math.PI/180;
   }
-
+//FALSE MEANS ON THE LINE
   public boolean getIR_frontUpper(){
-    return IR_frontUpper.get();
+    System.out.println("IR Front Upper: "+IR_frontUpper.get());
+    return !IR_frontUpper.get();
   }
   public boolean getIR_frontLower(){
-    return IR_frontLower.get();
+    System.out.println("IR Front Lower: "+ IR_frontLower.get());
+    return !IR_frontLower.get();
   }
   public boolean getIR_center(){
-    return IR_center.get();
+    System.out.println("IR Center: "+IR_center.get());
+    return !IR_center.get();
   }
 
   /** @return the range of the drive ultrasonic in inches */
   public double getUltrasonic(){
+    System.out.println(driveUltrasonic.getRangeInches());
     return driveUltrasonic.getRangeInches();
   }
 

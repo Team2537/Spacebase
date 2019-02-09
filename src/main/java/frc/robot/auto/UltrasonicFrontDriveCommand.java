@@ -10,6 +10,8 @@ package frc.robot.auto;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
+//drives forward until Ultrasonic max distance reached
+
 public class UltrasonicFrontDriveCommand extends Command {
   private double percentOutput, targetDistInches;
   public UltrasonicFrontDriveCommand(double targetDistInches, double percentOutput) {

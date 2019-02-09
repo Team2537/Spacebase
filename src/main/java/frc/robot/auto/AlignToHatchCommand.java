@@ -14,6 +14,22 @@ import frc.lib.vision.Target;
 import frc.robot.Robot;
 import frc.robot.drive.DriveStraightCommand;
 
+/* CommandGroup to ensure that robot follows line
+
+Retrieves vertices from Target Class detected by Raspberry Pi to find midpoint between detected objects
+Uses Target class to find midpoint between two largest targets
+Midpoint then used to determine predictionDir
+
+Calls in PerpendicularOnLineCommand which uses predictionDir to run until IR Sensors find the line 
+or if line cannot be found
+
+RotateToCenterCommand which direction is based off of our initial prediction, 
+in short it just tells it which direction the bot needs to turn to realign facing forward
+
+UltrasonicFrontDriverCommand which drives forward until robot is close enough to object
+
+*/
+
 public class AlignToHatchCommand extends CommandGroup {
   
   private boolean predictionDir;
@@ -22,17 +38,22 @@ public class AlignToHatchCommand extends CommandGroup {
 
     addSequential(new Command(){  // get rotation direction prediction
       protected void initialize(){
+        System.out.println("the first part started !!!!!!!!!!!!!");
         Target[] targets = Robot.visionInput.getVisionPacket();
         Point midpoint = Target.getMidpoint(targets);
-        predictionDir = midpoint.x < Point.CAMERA_WIDTH/2;
+        predictionDir = midpoint.x < Point.CAMERA_WIDTH/2; //true is when target is to the right
+        
       }
       protected boolean isFinished() {
         return true;
       }
+      protected void end(){
+        System.out.println("the first part finished");
+      }
     });
 
-    addSequential(new PerpendicularOnLineCommand(0.3, 0.15, predictionDir));
+    addSequential(new PerpendicularOnLineCommand(0.15, 0.10, predictionDir));
     addSequential(new RotateToCenterCommand(!predictionDir, 0.15));
-    addSequential(new UltrasonicFrontDriveCommand(6, 0.3));
+    //addSequential(new UltrasonicFrontDriveCommand(6, 0.3));
   }
 }

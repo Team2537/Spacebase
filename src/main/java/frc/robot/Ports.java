@@ -17,6 +17,12 @@ public class Ports {
         DRIVE_MOTOR_LEFT_BACK   = 5
     ;
 
+    public static final int
+        LINE_FOLLOWER_FRONT_UPPER = 2,
+        LINE_FOLLOWER_FRONT_LOWER = 0,
+        LINE_FOLLOWER_CENTER = 1
+    ;
+
     // Drive station USB ports
     public static final int
         LEFT_JOYSTICK  = 0,
