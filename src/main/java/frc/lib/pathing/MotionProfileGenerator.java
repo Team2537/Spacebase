@@ -5,7 +5,7 @@ import frc.lib.pathing.profileGenerators.ClothoidProfile;
 import frc.lib.pathing.profileGenerators.LinearProfile;
 
 public class MotionProfileGenerator {
-    public static final double dt = 0.0001;
+    public static final double dt = 0.003;
     public static void generate(MotionProfile profile, RobotConstraints constraints, Path path){
         Clothoid[] clothoids = path.getClothoids();
 

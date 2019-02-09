@@ -5,7 +5,7 @@ import frc.lib.pathing.*;
 public class ClothoidProfile {
     
     private static interface ProfileError { double get(double t); };
-    private static final double dT = 0.0001, TOLERANCE = 0.0001;
+    private static final double dT = 0.001, TOLERANCE = 0.001;
 
     /**
      * @param robotLength Length between the wheels of the robot

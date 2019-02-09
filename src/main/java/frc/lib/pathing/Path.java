@@ -1,6 +1,7 @@
 package frc.lib.pathing;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -179,8 +180,8 @@ public class Path {
         }
     }
     
-    public static void main(String[] args){
-        
+    public static void main(String[] args) throws IOException, ClassNotFoundException{
+        final double dt = 0.001;
         Vec2[] points = new Vec2[]{
             new Vec2(0.0, 0.0),
             new Vec2(1.0, 1.0),
@@ -190,16 +191,15 @@ public class Path {
             new Vec2(2.0, 1.75),
             new Vec2(3.0, 1.75),
         };
+        
         Waypoint[] waypoints = new Waypoint[points.length];
-        for(int i = 0; i < points.length; i++) waypoints[i] = new Waypoint(points[i], 0.3);
+        for(int i = 0; i < points.length; i++) waypoints[i] = new Waypoint(points[i], 0.2);
 
         Path path = new Path(waypoints);
 
-        final double dt = 0.001;
-
         RobotConstraints constraints = new RobotConstraints(10, 5, 12);
         MotionProfile profile = MotionProfileGenerator.generate(constraints, path);
-
+        
         Vec2[] newPoints = new Vec2[(int)(profile.dt()/dt)];
         for(int i = 0; i < newPoints.length; i++){
             newPoints[i] = profile.getState(i*dt).pos;

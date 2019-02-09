@@ -1,7 +1,6 @@
 package frc.lib.pathing;
 
 import frc.lib.util.Util;
-import frc.lib.util.Vec2;
 
 public class Clothoid {
     public final double length, Kp, dTheta;
