@@ -79,7 +79,9 @@ public class Vec2 {
     }
     /** Returns the angle between two vectors. */
     public static double angleBetween(Vec2 a, Vec2 b){
-        return Math.acos(dot(a.normal(),b.normal()));
+        a = a.normal();
+        b = b.normal();
+        return Math.atan2(cross(a,b),dot(a,b));
     }
     /** Returns the angle between this vector and another vector. */
     public double angleBetween(Vec2 other){
