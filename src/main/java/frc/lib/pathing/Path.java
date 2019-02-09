@@ -108,17 +108,15 @@ public class Path {
             Segment seg = segments.get(i);
             // linear segment
             final double dist = seg.dist - seg.start.radius() - seg.end.radius();
-            if(dist > 0){
-                clothoids.add(Clothoid.fromLength(dist));
-            }
+            clothoids.add(Clothoid.fromLength(dist));
 
             // turn segments
             if(i < segments.size() - 1){
                 Segment segNext = segments.get(i+1);
                 final double nodeAngle = segNext.diff.angleBetween(seg.diff.inverse());
-                Clothoid turn = new Clothoid(seg.diff.angle(), seg.end.radius(), nodeAngle);
+                Clothoid turn = new Clothoid(seg.end.radius(), nodeAngle);
                 clothoids.add(turn);
-                clothoids.add(turn.flip());
+                // clothoids.add(turn.flip());
             }
         }
 
@@ -182,25 +180,35 @@ public class Path {
     }
     
     public static void main(String[] args){
-
+        
         Vec2[] points = new Vec2[]{
             new Vec2(0.0, 0.0),
             new Vec2(1.0, 1.0),
             new Vec2(0.5, 2.5),
             new Vec2(1.5, 3.0),
             new Vec2(2.0, 2.75),
-            new Vec2(2,1.5)
+            new Vec2(5.0, 2.75)
         };
         Waypoint[] waypoints = new Waypoint[points.length];
-        for(int i = 0; i < points.length; i++) waypoints[i] = new Waypoint(points[i], 0.5);
+        for(int i = 0; i < points.length; i++) waypoints[i] = new Waypoint(points[i], 100);
 
         Path path = new Path(waypoints);
-        Clothoid[] clothoids = path.getClothoids();
-        for(Clothoid c : clothoids){
-            System.out.println(c);
+
+        final double dt = 0.001;
+
+        RobotConstraints constraints = new RobotConstraints(10, 5, 1);
+        MotionProfile profile = MotionProfileGenerator.generate(constraints, path);
+
+        Vec2[] newPoints = new Vec2[(int)(profile.dt()/dt)];
+        for(int i = 0; i < newPoints.length; i++){
+            newPoints[i] = profile.getState(i*dt).pos;
         }
 
-        Turtle t = new Turtle(800,800,240,new Vec2(1,1.5));
-        t.addPoints(points, Color.red);
+        Turtle turtle = new Turtle(800,800,180,new Vec2(1,1.5));
+        turtle.addPoints(points, Color.red);
+        turtle.addPoints(newPoints, Color.blue);
+
+        System.out.println(profile.endState().pos);
+        System.out.println(profile.endTime());
     }
 }

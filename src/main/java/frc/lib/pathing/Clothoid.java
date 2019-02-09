@@ -12,16 +12,13 @@ public class Clothoid {
     * @param turningRadius Distance away from the path node for this turn (essentially turning radius)
     * @param nodeAngle Angle between the current path segment and the next path segment
     */
-    public Clothoid(double startAngle, double turningRadius, double nodeAngle){
+    public Clothoid(double turningRadius, double nodeAngle){
         // generate clothoid
         // based on https://arxiv.org/pdf/1209.0910.pdf
         final double dir = Math.signum(nodeAngle);
         nodeAngle = Math.abs(nodeAngle)/2;
         final double dTheta_abs = Math.PI/2 - nodeAngle;
-        final double dPhi = Vec2.angleBetween(
-            new Vec2(startAngle),
-            FresnelMath.integrate(2*dTheta_abs, 0, 0, 0,1)
-        );
+        final double dPhi = FresnelMath.integrate(2*dTheta_abs, 0, 0, 0,1).angle();
         final double r = turningRadius*Math.sin(nodeAngle)/Math.sin(nodeAngle + dPhi);
         length = r/FresnelMath.integrateC(-2*dTheta_abs, 0, dPhi, 0,1);
 
@@ -51,7 +48,7 @@ public class Clothoid {
     }
 
     public double getMaxStartVelocity(double accMax, double robotLength){
-        return Math.sqrt((2*accMax)/(Kp*robotLength));
+        return Math.sqrt((2*accMax)/(Math.abs(Kp)*robotLength));
     }
 
     public String toString(){

@@ -1,9 +1,8 @@
-package frc.lib.pathing;
+package frc.lib.pathing.profileGenerators;
+
+import frc.lib.pathing.*;
 
 public class ClothoidProfile {
-
-    public final double vel0,velF,acc,rampUpTime,cruiseTime;
-    public final Clothoid clothoid;
     
     private static interface ProfileError { double get(double t); };
     private static final double dT = 0.0001, TOLERANCE = 0.0001;
@@ -15,7 +14,8 @@ public class ClothoidProfile {
      * @param vel0 Initial linear velocity of the robot (should be less than velF)
      * @param velF Final velocity of the faster side of the robot (right side if turning left, left side if turning right)
     */
-    public ClothoidProfile(Clothoid clothoid, double robotLength, double accMax, double vel0, double velF){            
+    public static void generate(MotionProfile profile, double dt,
+            Clothoid clothoid, double robotLength, double accMax, double vel0, double velF){            
         final double Kp = Math.abs(clothoid.Kp);
 
         if(vel0 < 0){
@@ -23,6 +23,8 @@ public class ClothoidProfile {
         } else if(velF < 0) {
             throw new IllegalArgumentException("velF should be positive");
         } else if(velF < vel0) {
+            //System.out.println(vel0);
+            //System.out.println(velF);
             throw new IllegalArgumentException("velF should be greater than vel0");
         }
         
@@ -31,12 +33,10 @@ public class ClothoidProfile {
         double cruiseTime;
         
         if(profileDist(Kp,0,robotLength,accMax,vel0,rampUpTime) > clothoid.length){
-            System.out.println(profileDist(Kp,0,robotLength,accMax,vel0,rampUpTime));
             // we can't speed up fast enough to get our velocity to velF
             cruiseTime = 0;
             rampUpTime = (Math.sqrt(vel0*vel0 + accMax*clothoid.length*(0.5*robotLength*Kp*clothoid.length + 2)) - vel0)/accMax;
-            System.out.println(profileDist(Kp,0,robotLength,accMax,vel0,rampUpTime));
-            velF = rampUpTime*accMax + vel0;
+            velF = rampUpTime*accMax + vel0; 
 
         } else {
             // use Newton-Raphson method to find correct cruise time
@@ -57,12 +57,47 @@ public class ClothoidProfile {
             }
         }
 
-        this.clothoid = clothoid;
-        this.acc = accMax;
-        this.vel0 = vel0;
-        this.velF = velF;
-        this.rampUpTime = rampUpTime;
-        this.cruiseTime = cruiseTime;
+
+        // step ahead by dt and get accelerations
+        double[] accsLowRampUp = new double[(int)(rampUpTime/dt)];
+        double[] accsLowCruise = new double[(int)(cruiseTime/dt)];
+
+        // ramp up accelerations
+        for(int i = 0; i < accsLowRampUp.length; i++){
+            final double t = i*dt;
+            final double inner = Kp*robotLength*(0.5*accMax*t*t + vel0*t) + 1;
+            accsLowRampUp[i] = accMax*(2/Math.sqrt(inner) - 1) - Kp*robotLength*Math.pow(accMax*t+vel0,2)/Math.pow(inner, 1.5);
+        }
+
+        // cruise accelerations
+        final double K = Kp*profileDist(Kp, 0, robotLength, accMax, vel0, rampUpTime);
+        for(int i = 0; i < accsLowCruise.length; i++){
+            final double t = i*dt;
+            final double inner = Kp*robotLength*velF*t + Math.pow((1+K*robotLength/2), 2);
+            accsLowCruise[i] = -Kp*robotLength*velF*velF/Math.pow(inner, 1.5);
+        }
+
+        // append accelerations
+        for(double accLow : accsLowRampUp){
+            appendAccs(profile, dt, clothoid.Kp, accLow, accMax);
+        }
+        for(double accLow : accsLowCruise) {
+            appendAccs(profile, dt, clothoid.Kp, accLow, 0);
+        }
+        for(int i = accsLowCruise.length - 1; i >= 0; i--) {
+            appendAccs(profile, dt, clothoid.Kp, -accsLowCruise[i], 0);
+        }
+        for(int i = accsLowRampUp.length - 1; i >= 0; i--) {
+            appendAccs(profile, dt, clothoid.Kp, -accsLowRampUp[i], -accMax);
+        }
+    }
+
+    private static void appendAccs(MotionProfile profile, double dt, double Kp, double accLow, double accHigh){
+        if(Kp > 0){
+            profile.appendControlWheels(dt, accLow, accHigh);
+        } else {
+            profile.appendControlWheels(dt, accHigh, accLow);
+        }
     }
 
     private static double profileDist(double Kp, double K, double l, double acc, double vel0, double t){
@@ -88,14 +123,5 @@ public class ClothoidProfile {
         } else {
             return -pathLength;
         }
-    }
-
-    public static void main(String[] args){
-        //System.out.println(getG(-0.5,3,5));
-        //buildClothoid(0, 5, Math.PI/6);
-        ClothoidProfile profile = new ClothoidProfile(new Clothoid(0, 10, 2*Math.PI/3), 1, 0.5,1,4);
-        System.out.println(profile.rampUpTime);
-        System.out.println(profile.cruiseTime);
-        System.out.println(profile.velF);
     }
 }
