@@ -45,7 +45,6 @@ public class MotionProfile {
     }
 
     public void appendControlWheels(double dt, double accL, double accR){
-        //System.out.println(dt + ", "+accL+", "+accR);
         if(dt > 0){
             segments.add(new MotionSegment(endState().controlWheels(accL, accR), dt));
         }

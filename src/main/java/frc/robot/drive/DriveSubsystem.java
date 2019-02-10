@@ -138,6 +138,10 @@ public class DriveSubsystem extends Subsystem {
         return getEncoderPos(encodersLeft);
     }
 
+    public void resetEncoders(){
+        
+    }
+
     public void resetGyro() {
         navX.reset();
     }

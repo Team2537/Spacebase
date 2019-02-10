@@ -8,8 +8,11 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.lib.motion.RobotStateEstimator;
+import frc.lib.util.Vec2;
 import frc.lib.vision.VisionInput;
 import frc.robot.drive.DriveSubsystem;
+import frc.robot.drive.RobotStateUpdater;
 
 public class Robot extends TimedRobot {
     public Robot(){
@@ -18,12 +21,14 @@ public class Robot extends TimedRobot {
 
     public static DriveSubsystem driveSys;
     public static VisionInput visionInput;
+    public static RobotStateEstimator robotState;
 
     // Use this function for all initialization code
     @Override
     public void robotInit() {
         driveSys = new DriveSubsystem();
         visionInput = new VisionInput();
+        robotState = new RobotStateEstimator(Specs.CONSTRAINTS, new Vec2(0,0), 0);
     }
 
     // Called periodically regardless of the game period
@@ -37,6 +42,8 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         Robot.driveSys.resetGyro();
+        
+        Scheduler.getInstance().add(new RobotStateUpdater());
     }
 
     // Called periodically during the Sandstorm
@@ -50,7 +57,7 @@ public class Robot extends TimedRobot {
     // Called at the beginning of the Teleop period
     @Override
     public void teleopInit() {
-        Robot.driveSys.resetGyro();
+        
     }
 
     // Called periodically during the Teleop period
