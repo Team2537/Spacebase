@@ -42,7 +42,6 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         Robot.driveSys.resetGyro();
-        
         Scheduler.getInstance().add(new RobotStateUpdater());
     }
 
@@ -50,7 +49,6 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-
     }
 
     /* Teleop Period */
