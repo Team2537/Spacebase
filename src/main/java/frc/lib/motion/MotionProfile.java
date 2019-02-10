@@ -1,4 +1,4 @@
-package frc.lib.pathing;
+package frc.lib.motion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,15 +6,15 @@ import java.util.List;
 import frc.lib.util.Util;
 import frc.lib.util.Vec2;
 
-public class PathProfile {
+public class MotionProfile {
     private List<MotionSegment> segments;
     private MotionState startState;
 
-    public PathProfile(MotionState startState){
+    public MotionProfile(MotionState startState){
         reset(startState);
     }
 
-    public PathProfile(RobotConstraints constraints){
+    public MotionProfile(RobotConstraints constraints){
         this(MotionState.fromWheels(constraints,0,new Vec2(0,0),0,0,0,0,0));
     }
 
@@ -79,6 +79,20 @@ public class PathProfile {
             if(!s.fitsConstraints()) return false;
         }
         return true;
+    }
+
+    public double arclength(double t0, double tF){
+        double length = 0;
+        for(MotionSegment s : segments){
+            if(s.startTime >= t0 && s.endTime <= tF){
+                length += s.endPos.diff(s.startPos).mag();
+            }
+        }
+        return length;
+    }
+
+    public double arclength(double tF){
+        return arclength(0,tF);
     }
 
 }

@@ -3,10 +3,11 @@ package frc.lib.vision;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.command.Scheduler;
 //check: drive, auto and teleop, why no print
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class VisionInput extends Subsystem {
+public class VisionInput {
 	public final boolean DEBUG = true;
 	public final int BAUDRATE = 38400;
 
@@ -14,25 +15,11 @@ public class VisionInput extends Subsystem {
 	private String buffer;
 	private String lastCompletedString;
 
-	private VisionInput() {
+	public VisionInput() {
 		serial = new SerialPort(BAUDRATE, Port.kMXP);
 		buffer = "";
 		lastCompletedString = "";
-	}
-
-	/* singleton pattern */
-	private static VisionInput instance;
-	public static void initialize() {
-		if(instance == null) instance = new VisionInput();
-	}
-	public static VisionInput getInstance(){
-		if(instance == null) throw new NullPointerException("Subsystem has not been initialized yet!");
-		return instance;
-	}
-	
-	@Override
-	public void initDefaultCommand() {
-		this.setDefaultCommand(new VisionCommand());
+		Scheduler.getInstance().add(new VisionUpdateCommand());
 	}
 
 	public Target[] getVisionPacket() {
@@ -111,22 +98,36 @@ public class VisionInput extends Subsystem {
 	 * public void sendVisionPacket(Point[] packetsToSend) {
 	 * serial.writeString(encodeVisionPacket(packetsToSend)); }
 	 */
-}
 
-class VisionCommand extends Command {
 
-	public VisionCommand() {
-		requires(VisionInput.getInstance());
+	private class VisionUpdateCommand extends Command {
+		@Override
+		protected void execute() { 
+			addToBuffer(); 
+		}
+		
+		@Override 
+		protected boolean isFinished() { 
+			return false; 
+		}	
 	}
-	
-	@Override
-	protected void execute() {
-		VisionInput.getInstance().addToBuffer();
+
+	public class VisionTestCommand extends Command {
+		@Override
+		protected void execute(){
+			Target[] targets = getVisionPacket();
+			
+			String targetsString = "";
+			for(Target target : targets){
+				Point[] bb = target.getBoundingBox();
+				targetsString += bb[0].x+","+bb[0].y+"|"+bb[1].x+","+bb[1].y+" ";
+			}
+			SmartDashboard.putString("targets", targetsString);
+		}
+		
+		@Override
+		protected boolean isFinished() {
+			return false;
+		}
 	}
-	
-	@Override
-	protected boolean isFinished() {
-		return false;
-	}
-	
 }

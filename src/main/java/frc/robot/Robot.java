@@ -10,74 +10,69 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.lib.vision.VisionInput;
 import frc.robot.auto.AlignToHatchCommand;
-import frc.robot.auto.DriveTurnCommand;
+import frc.robot.auto.VisionTurnCommand;
 import frc.robot.drive.DriveSubsystem;
 
-
 public class Robot extends TimedRobot {
-  public static DriveSubsystem driveSys;
-  public static VisionInput visionInput;
+    public Robot(){
+        super(Specs.ROBOT_PERIOD_SECONDS);
+    }
 
-  // Use this function for all initialization code
-  @Override
-  public void robotInit() {
-    driveSys = new DriveSubsystem();
-    
-    VisionInput.initialize();
-    visionInput = VisionInput.getInstance();
-  }
+    public static DriveSubsystem driveSys;
+    public static VisionInput visionInput;
 
-  // Called periodically regardless of the game period
-  @Override
-  public void robotPeriodic() {
-    Scheduler.getInstance().run();
-  }
+    // Use this function for all initialization code
+    @Override
+    public void robotInit() {
+        driveSys = new DriveSubsystem();
+        visionInput = new VisionInput();
+    }
 
+    // Called periodically regardless of the game period
+    @Override
+    public void robotPeriodic() {
+        Scheduler.getInstance().run();
+    }
 
-  /* Sandstorm Period */
-  // Called at the beginning of the Sandstorm
-  @Override
-  public void autonomousInit() {
-    Scheduler.getInstance().add(new DriveTurnCommand());
-    
-  }
+    /* Sandstorm Period */
+    // Called at the beginning of the Sandstorm
+    @Override
+    public void autonomousInit() {
+        Robot.driveSys.resetGyro();
+        Scheduler.getInstance().add(new VisionTurnCommand());
 
-  // Called periodically during the Sandstorm
-  @Override
-  public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
-     
-  }
+    }
 
+    // Called periodically during the Sandstorm
+    @Override
+    public void autonomousPeriodic() {
+        Scheduler.getInstance().run();
+    }
 
-  /* Teleop Period */
-  // Called at the beginning of the Teleop period
-  @Override
-  public void teleopInit() {
-    Robot.driveSys.resetGyro();
-  }
-  
-  // Called periodically during the Teleop period
-  @Override
-  public void teleopPeriodic() {
-    Scheduler.getInstance().run();
-    System.out.println(Robot.driveSys.getGyroDegrees());
-  }
+    /* Teleop Period */
+    // Called at the beginning of the Teleop period
+    @Override
+    public void teleopInit() {
+        Robot.driveSys.resetGyro();
+    }
 
+    // Called periodically during the Teleop period
+    @Override
+    public void teleopPeriodic() {
+        Scheduler.getInstance().run();
+    }
 
+    @Override
+    public void testInit() {
 
-  @Override
-  public void testInit() {
-    
-   
+    }
 
-  }
-  @Override
-  public void testPeriodic() {
-    
-    // driveSys.getIR_frontUpper();
-    // driveSys.getIR_frontLower();
-    // driveSys.getIR_center();
-    
-  }
+    @Override
+    public void testPeriodic() {
+
+        // driveSys.getIR_frontUpper();
+        // driveSys.getIR_frontLower();
+        // driveSys.getIR_center();
+
+    }
 }
