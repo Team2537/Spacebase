@@ -1,27 +1,40 @@
 package frc.robot.arm;
 
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.HumanInput;
+import edu.wpi.first.wpilibj.AnalogPotentiometer;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
+
 
 public class ArmSubsystem extends Subsystem {
 
     private int armLevel;
     private static final int ARM_LEVEL_MIN = 0, ARM_LEVEL_MAX = 6;
     private static final double[] armLevelSetpoints = 
-        {0,33,50,82,97,145,164};
+        {0,.09,.14,.23,.26,.4,.46};
     private static final double[] wristLevelSetpoints =
         {0,-8,-35,-67,-82,-130,-35};
 
-    private Talon armMotor, wristMotor;
-    private Encoder armEncoder, wristEncoder;
+    private CANSparkMax armMotor;
+    private CANEncoder armEncoder;
+    private TalonSRX wristMotor;
+    private AnalogPotentiometer wristEncoder;
 
     public ArmSubsystem() {
-        armMotor = new Talon(2);
-        wristMotor = new Talon(1);
-        armEncoder = new Encoder(3,2);
-        wristEncoder = new Encoder(1,0);
+        //TODO proper CAN port also potentiometer port
+        armMotor = new CANSparkMax(6, MotorType.kBrushless);
+        wristMotor = new TalonSRX(0);
+        armEncoder = new CANEncoder(armMotor);
+        wristEncoder = new AnalogPotentiometer(0,3600);
         armLevel = 0;
     }
 
@@ -50,11 +63,11 @@ public class ArmSubsystem extends Subsystem {
     }
 
     public void setWristMotor(double percentOutput){
-        wristMotor.set(percentOutput);
+        wristMotor.set(ControlMode.Current, percentOutput);
     }
 
     public double getArmEncoder(){
-        return armEncoder.get();
+        return armEncoder.getPosition();
     }
 
     public double getWristEncoder() {

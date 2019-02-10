@@ -63,7 +63,7 @@ public class ArmCommand extends Command {
     double actualChange_wrist = actual_wrist - actualPrev_wrist;
     actualPrev_wrist = actual_wrist;
     if(Math.abs(error_wrist) > TOLERANCE_wrist) {
-      Robot.armSys.setWristMotor(-(kP_wrist*error_wrist + kI_wrist*errorSum_wrist - kD_wrist*actualChange_wrist));
+      Robot.armSys.setWristMotor(kP_wrist*error_wrist + kI_wrist*errorSum_wrist - kD_wrist*actualChange_wrist);
       //temporarily negative for testing
     }
 
