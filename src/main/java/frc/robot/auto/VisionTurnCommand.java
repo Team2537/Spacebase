@@ -2,7 +2,6 @@ package frc.robot.auto;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.lib.vision.Point;
 import frc.lib.vision.Target;
-import frc.lib.vision.VisionInput;
 import frc.robot.Robot;
 
 /* Uses input recieved by Target Class from Raspberry Pi to turn wheels towards midpoint of targets
@@ -18,7 +17,7 @@ import frc.robot.Robot;
 
 */
 
-public class DriveTurnCommand extends Command{
+public class VisionTurnCommand extends Command{
 
 // pi CAM should be at least 8 inches above ground! hatch is 31.5 inches off ground
 //WRITE RANGE - 2560 x 1920 4:3; 17 feet plus; 204 inches+ 
@@ -38,13 +37,12 @@ public class DriveTurnCommand extends Command{
 
     @Override
     protected void initialize(){
-        requires(VisionInput.getInstance());
         requires(Robot.driveSys);        
     }
 
     @Override
     protected void execute(){
-        targets = VisionInput.getInstance().getVisionPacket();
+        targets = Robot.visionInput.getVisionPacket();
         MidPoint = Target.getMidpoint(targets);
         
         System.out.println("MIDPOINT: "+ MidPoint);
