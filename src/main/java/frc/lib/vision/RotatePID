@@ -1,0 +1,22 @@
+package frc.lib.vision;
+import edu.wpi.first.wpilibj.command.PIDSubsystem;
+
+
+public class RotatePID extends PIDSubsystem {
+
+    public RotatePID() {
+
+    }
+
+    public void initDefaultCommand() {
+
+    }
+
+    protected double returnPIDInput() {
+
+    }
+
+    protected void usePIDOutput (double output) {
+        motor.pidWrite(output);
+    }
+}
