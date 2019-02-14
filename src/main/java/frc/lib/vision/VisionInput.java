@@ -1,11 +1,13 @@
 package frc.lib.vision;
 
+import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 //check: drive, auto and teleop, why no print
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Specs;
 
 public class VisionInput {
 	public final boolean DEBUG = true;
@@ -14,12 +16,17 @@ public class VisionInput {
 	private SerialPort serial;
 	private String buffer;
 	private String lastCompletedString;
+	private Notifier notifier;
 
 	public VisionInput() {
 		serial = new SerialPort(BAUDRATE, Port.kMXP);
 		buffer = "";
 		lastCompletedString = "";
-		Scheduler.getInstance().add(new VisionUpdateCommand());
+		
+		notifier = new Notifier(new Runnable(){
+			public void run() { addToBuffer(); }
+		});
+		notifier.startPeriodic(Specs.ROBOT_PERIOD_SECONDS);
 	}
 
 	public Target[] getVisionPacket() {
@@ -98,19 +105,6 @@ public class VisionInput {
 	 * public void sendVisionPacket(Point[] packetsToSend) {
 	 * serial.writeString(encodeVisionPacket(packetsToSend)); }
 	 */
-
-
-	private class VisionUpdateCommand extends Command {
-		@Override
-		protected void execute() { 
-			addToBuffer(); 
-		}
-		
-		@Override 
-		protected boolean isFinished() { 
-			return false; 
-		}	
-	}
 
 	public class VisionTestCommand extends Command {
 		@Override

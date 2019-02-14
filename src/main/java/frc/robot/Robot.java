@@ -9,7 +9,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.lib.vision.VisionInput;
-import frc.robot.auto.AlignToHatchCommand;
 import frc.robot.auto.VisionTurnCommand;
 import frc.robot.drive.DriveSubsystem;
 
@@ -38,7 +37,6 @@ public class Robot extends TimedRobot {
     // Called at the beginning of the Sandstorm
     @Override
     public void autonomousInit() {
-        Robot.driveSys.resetGyro();
         Scheduler.getInstance().add(new VisionTurnCommand());
 
     }
@@ -53,7 +51,6 @@ public class Robot extends TimedRobot {
     // Called at the beginning of the Teleop period
     @Override
     public void teleopInit() {
-        Robot.driveSys.resetGyro();
     }
 
     // Called periodically during the Teleop period
