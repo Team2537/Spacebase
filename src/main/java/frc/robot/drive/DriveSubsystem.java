@@ -12,11 +12,9 @@ import frc.robot.Ports;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import com.kauailabs.navx.frc.AHRS;
-/*
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-*/
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.SPI;
@@ -25,7 +23,7 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 public class DriveSubsystem extends Subsystem {
      private static WPI_TalonSRX RightFront;
      private static WPI_TalonSRX LeftFront;
-    /*
+    
     private static final MotorType MOTOR_TYPE = MotorType.kBrushless;
     private static final int[] MOTOR_PORTS_LEFT = { 
         Ports.DRIVE_MOTOR_LEFT_FRONT, 
@@ -43,7 +41,7 @@ public class DriveSubsystem extends Subsystem {
 
     private CANSparkMax[] motorsLeft, motorsRight;
     private CANEncoder[] encodersLeft, encodersRight;
-    */
+    
     private AHRS navX;
     private Ultrasonic driveUltrasonic;
     private DigitalInput IR_frontUpper, IR_frontLower, IR_center;
@@ -52,31 +50,26 @@ public class DriveSubsystem extends Subsystem {
 
         RightFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_RIGHT_FRONT);
         LeftFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_LEFT_FRONT);
-        /*
+        
         motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
         encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
-        */
-        /*
-         * IR_frontUpper = new DigitalInput(0); IR_frontLower = new DigitalInput(1);
-         * IR_center = new DigitalInput(2);
-         * 
-         */
-        /*
+        
+        IR_frontUpper = new DigitalInput(0); IR_frontLower = new DigitalInput(1);
+        IR_center = new DigitalInput(2);
+
         for (int i = 0; i < MOTOR_PORTS_LEFT.length; i++) {
             motorsLeft[i] = new CANSparkMax(MOTOR_PORTS_LEFT[i], MOTOR_TYPE);
             encodersLeft[i] = motorsLeft[i].getEncoder();
         }
-        */
-        /*
+
         motorsRight = new CANSparkMax[MOTOR_PORTS_RIGHT.length];
         encodersRight = new CANEncoder[MOTOR_PORTS_RIGHT.length];
         for (int i = 0; i < MOTOR_PORTS_RIGHT.length; i++) {
             motorsRight[i] = new CANSparkMax(MOTOR_PORTS_RIGHT[i], MOTOR_TYPE);
             encodersRight[i] = motorsRight[i].getEncoder();
         }
-        */
 
-        //navX = new AHRS(SPI.Port.kMXP);
+        navX = new AHRS(SPI.Port.kMXP);
 
         IR_frontUpper = new DigitalInput(Ports.LINE_FOLLOWER_FRONT_UPPER);
         IR_frontLower = new DigitalInput(Ports.LINE_FOLLOWER_FRONT_LOWER);
@@ -89,13 +82,13 @@ public class DriveSubsystem extends Subsystem {
         //setDefaultCommand(new DriveCommand());
 
     }
-    /*
+    
     private void setMotorsSide(double percentOutput, CANSparkMax[] motors) {
         for (CANSparkMax motor : motors) {
             motor.set(percentOutput);
         }
     }
-    */
+    
 
     public void setMotorsLeft(double percentOutput) {
         LeftFront.set(percentOutput);
@@ -117,7 +110,6 @@ public class DriveSubsystem extends Subsystem {
         //System.out.println(percentOutputRight);
     }
 
-    /*
     public String encoderStatus() {
         String out = "";
         for (int i = 0; i < encodersLeft.length; i++) {
@@ -128,9 +120,7 @@ public class DriveSubsystem extends Subsystem {
         }
         return out;
     }
-    */
-    
-    /*
+
     private double getEncoderPos(CANEncoder[] encoders) {
         double total = 0;
         double position;
@@ -147,8 +137,7 @@ public class DriveSubsystem extends Subsystem {
             return total / encoders.length;
         }
     }
-    */
-    /*
+
     public double getEncoderPosRight() {
         return getEncoderPos(encodersRight);
     }
@@ -156,7 +145,10 @@ public class DriveSubsystem extends Subsystem {
     public double getEncoderPosLeft() {
         return getEncoderPos(encodersLeft);
     }
-    */
+
+    public void resetEncoders(){
+        
+    }
 
     public void resetGyro() {
         navX.reset();
@@ -166,9 +158,9 @@ public class DriveSubsystem extends Subsystem {
         return navX.getAngle();
     }
 
-    //public double getGyroRadians() {
-     //   return getGyroDegrees() * Math.PI / 180;
-    //}
+    public double getGyroRadians() {
+        return getGyroDegrees() * Math.PI / 180;
+    }
 
     // FALSE MEANS ON THE LINE
     public boolean getIR_frontUpper() {

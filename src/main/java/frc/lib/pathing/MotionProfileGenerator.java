@@ -8,8 +8,7 @@ import frc.lib.pathing.profileGenerators.ClothoidProfile;
 import frc.lib.pathing.profileGenerators.LinearProfile;
 
 public class MotionProfileGenerator {
-    public static final double dt = 0.003;
-    public static void generate(MotionProfile profile, RobotConstraints constraints, Path path){
+    public static void generate(MotionProfile profile, RobotConstraints constraints, double timestep, Path path){
         Clothoid[] clothoids = path.getClothoids();
 
         final double accMax = constraints.maxWheelAcc, velMax = constraints.maxWheelVel, l = constraints.length;
@@ -52,16 +51,16 @@ public class MotionProfileGenerator {
                 if(Double.isInfinite(c.Kp)){
                     AngularProfile.generate(profile, c, l, accMax, velMax);
                 } else {
-                    ClothoidProfile.generate(profile, dt, c, l, accMax, velF, turnVels[i]);
+                    ClothoidProfile.generate(profile, timestep, c, l, accMax, velF, turnVels[i]);
                 }
             }
         }
     }
 
-    public static MotionProfile generate(RobotConstraints constraints, Path path){
+    public static MotionProfile generate(RobotConstraints constraints, double timestep, Path path){
         MotionState startState = MotionState.fromWheels(constraints, 0, path.start(), path.startAngle(), 0, 0, 0, 0);
         MotionProfile profile = new MotionProfile(startState);
-        generate(profile, constraints, path);
+        generate(profile, constraints, timestep, path);
         return profile;
     }
 
