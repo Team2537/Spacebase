@@ -110,7 +110,7 @@ public class DriveSubsystem extends Subsystem {
       }
     }
 
-    if(total == 0) {
+    if(samples.length == 0) {
       return 0;
     } else {
       return total / samples.length;

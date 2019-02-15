@@ -7,27 +7,56 @@
 
 package frc.robot.drive;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.HumanInput;
 import frc.robot.Robot;
 
 public class DriveCommand extends Command {
-  public static final double PERCENT_OUTPUT_MAX = 1.0;
+  private double PERCENT_OUTPUT_MAX = 1.0;
+  private String filename;
+  private Path dataPath;
+  private PrintWriter writer;
+  private long startTime;
+
 
   public DriveCommand() {
-    requires(Robot.driveSys);
+    requires(Robot.drivesys);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     System.out.println("we rollin");
+
+    filename = "/home/lvuser/driverstats"
+        + new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()) + ".csv";
+    dataPath = Paths.get(filename);
+    if (Files.exists(dataPath)) {
+          System.out.println("File " + dataPath + " already exists. It shouldn't.");
+        }
+    try {
+          Files.createFile(dataPath);
+          writer = new PrintWriter(filename);
+     } catch (IOException e) {
+          e.printStackTrace();
+        }
+        writer.println("Time (ms),Current One(amps),Current Two(amps),Current Three(amps),Current Four(amps),Current Five(amps),Current Six(amps)");
+        startTime = System.currentTimeMillis();
+        writer.println(System.currentTimeMillis() - startTime + "," + Robot.pdp.getCurrent(0) + "," + Robot.pdp.getCurrent(1) + "," + Robot.pdp.getCurrent(2) + "," + Robot.pdp.getCurrent(3) + "," + Robot.pdp.getCurrent(12) + "," + Robot.pdp.getCurrent(13));
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveSys.setMotors(
+    Robot.drivesys.setMotors(
       HumanInput.getJoystickAxisLeft(HumanInput.AXIS_Y)*PERCENT_OUTPUT_MAX,
       HumanInput.getJoystickAxisRight(HumanInput.AXIS_Y)*PERCENT_OUTPUT_MAX
     );
@@ -43,11 +72,13 @@ public class DriveCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    writer.close();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    writer.close();
   }
 }
