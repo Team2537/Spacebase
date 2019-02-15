@@ -14,10 +14,13 @@ import frc.lib.units.Units;
 import frc.robot.climb.ClimbSubsystem;
 import frc.robot.drive.DriveSubsystem;
 import frc.robot.intake.IntakeSubsystem;
+import frc.robot.arm.ArmSubsystem;
 
+  
 public class Robot extends TimedRobot {
   public static DriveSubsystem drivesys;
   public static IntakeSubsystem intakeSys;
+  public static ArmSubsystem armsys;
   double leftEncoderStartValue, rightEncoderStartValue;
   public static ClimbSubsystem climbsys;
   public static PowerDistributionPanel pdp;
@@ -33,6 +36,9 @@ public class Robot extends TimedRobot {
     drivesys.initDefaultCommand();
 
     pdp = new PowerDistributionPanel();
+    armsys = new ArmSubsystem();
+    /*armSys.initDefaultCommand();
+    armSys.registerButtons();*/
   }
 
   // Called periodically regardless of the game period

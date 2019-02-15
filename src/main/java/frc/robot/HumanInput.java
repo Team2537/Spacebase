@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.*;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.XboxController;
+
 public class HumanInput {
 
     /**
@@ -34,11 +35,13 @@ public class HumanInput {
 
    
     public static void registerCommands(){
-        whileHeld(flywheelsOn, new FlywheelCommand());
-        whenPressed(solExtend, new PneumaticExtendCommand());
-        whenPressed(solRetract, new PneumaticRetractCommand());
+        whileHeldCommand(flywheelsOn, new FlywheelCommand());
+        whenPressedCommand(solExtend, new PneumaticExtendCommand());
+        whenPressedCommand(solRetract, new PneumaticRetractCommand());
     }
     
+    public static Button increasearmbutton = new JoystickButton(joystickRight, 1);
+    public static Button decreasearmbutton = new JoystickButton(joystickLeft, 1);
     public static final int AXIS_X = 0, AXIS_Y = 1;
     private static double getJoystickAxis(int axis, Joystick joystick){
         double val = joystick.getRawAxis(axis);
@@ -52,13 +55,13 @@ public class HumanInput {
         return getJoystickAxis(axis, joystickRight);
     }
 
-    private static void whenPressed(Button button, Command command){
+    private static void whenPressedCommand(Button button, Command command){
         button.whenPressed(command);
     }
-    private static void whileHeld(Button button, Command command){
+    private static void whileHeldCommand(Button button, Command command){
         button.whileHeld(command);
     }
-    private static void whenReleased(Button button, Command command){
+    private static void whenReleasedCommand(Button button, Command command){
         button.whenReleased(command);
     }
 }
