@@ -63,6 +63,16 @@ public class MotionProfile {
         appendControlWheels(dt, accL, accR);
     }
 
+    public void appendDeltas(double dt, double deltaPos, double deltaAng){
+        if(dt > 0){
+            MotionState es = endState();
+            segments.add(new MotionSegment(MotionState.fromWheels(
+                es.constraints, es.t, es.pos, es.angle+deltaAng, 
+                deltaPos/dt, deltaPos/dt, 0, 0
+            ), dt));
+        }
+    }
+
     public MotionState getState(double t){
         t = Util.clamp(t, startTime(), endTime());
         MotionState start = startState;

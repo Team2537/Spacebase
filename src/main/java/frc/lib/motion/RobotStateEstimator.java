@@ -7,7 +7,7 @@ import frc.lib.util.Vec2;
 public class RobotStateEstimator {
     private final MotionProfile state;
     private final NetworkTable table;
-    public static final String TABLE_NAME = "RobotStateEstimator", ENTRY_POS = "pos";
+    public static final String TABLE_NAME = "RobotStateEstimator", ENTRY_STATE = "state";
 
     public RobotStateEstimator(RobotConstraints constraints, Vec2 start, double startAngle){
         state = new MotionProfile(MotionState.fromWheels(constraints,0, start,startAngle, 0,0,0,0));
@@ -16,10 +16,9 @@ public class RobotStateEstimator {
 
     public void update(double dt, double wheelDeltaLeft, double wheelDeltaRight, double angleDelta){
         if(dt > 0){
-            final double vel = (wheelDeltaLeft + wheelDeltaRight)/(2*dt);
-            final double angVel = angleDelta/dt;
-            state.appendControlAngular(dt, (vel - getLatestState().vel)/dt, (angVel - getLatestState().angVel)/dt);
-            table.getEntry(ENTRY_POS).setValue(getLatestState().pos);
+            final double wheelDelta = (wheelDeltaLeft + wheelDeltaRight)/2;
+            state.appendDeltas(dt, wheelDelta, angleDelta);
+            table.getEntry(ENTRY_STATE).setDoubleArray(getLatestState().encode());
         }
     }
 

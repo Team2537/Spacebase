@@ -10,44 +10,47 @@ package frc.robot.drive;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.HumanInput;
 import frc.robot.Robot;
+import frc.robot.Specs;
 
 public class DriveCommand extends Command {
-  public DriveCommand() {
-    requires(Robot.driveSys);
-  }
+    public DriveCommand() {
+        requires(Robot.driveSys);
+    }
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-    System.out.println("we rollin");
-  }
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+        System.out.println("we rollin");
+    }
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    
-    Robot.driveSys.setMotors(
-      HumanInput.getJoystickAxisLeft(HumanInput.AXIS_Y),
-      HumanInput.getJoystickAxisRight(HumanInput.AXIS_Y)
-    );
-    
-    //System.out.println(Robot.driveSys.encoderStatus());
-  }
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
+        double axisLeft = HumanInput.getJoystickAxisLeft(HumanInput.AXIS_Y);
+        double axisRight = HumanInput.getJoystickAxisRight(HumanInput.AXIS_Y);
+        if (Math.abs(axisLeft) < Specs.JOYSTICK_DEADZONE)
+            axisLeft = 0;
+        if (Math.abs(axisRight) < Specs.JOYSTICK_DEADZONE)
+            axisRight = 0;
+        Robot.driveSys.setMotors(0.5*axisLeft, 0.5*axisRight);
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
+        // System.out.println(Robot.driveSys.encoderStatus());
+    }
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+        return false;
+    }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+    }
+
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+    }
 }

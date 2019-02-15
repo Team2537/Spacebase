@@ -9,7 +9,7 @@ package frc.robot.drive;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Ports;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import com.kauailabs.navx.frc.AHRS;
 //import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
@@ -17,12 +17,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class DriveSubsystem extends Subsystem {
-     private static WPI_TalonSRX RightFront;
-     private static WPI_TalonSRX LeftFront;
+    private Talon RightFront, LeftFront;
+    private Encoder RightEnc, LeftEnc;
     
     private static final MotorType MOTOR_TYPE = MotorType.kBrushless;
     /*
@@ -51,14 +53,16 @@ public class DriveSubsystem extends Subsystem {
 
     public DriveSubsystem() {
 
-        RightFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_RIGHT_FRONT);
-        LeftFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_LEFT_FRONT);
+        RightFront = new Talon(Ports.DRIVE_MOTOR_RIGHT_FRONT);
+        LeftFront = new Talon(Ports.DRIVE_MOTOR_LEFT_FRONT);
+        RightEnc = new Encoder(0, 1);
+        LeftEnc = new Encoder(2, 3);
         
         //motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
         //encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
         
-        IR_frontUpper = new DigitalInput(0); IR_frontLower = new DigitalInput(1);
-        IR_center = new DigitalInput(2);
+        //IR_frontUpper = new DigitalInput(0); IR_frontLower = new DigitalInput(1);
+        //IR_center = new DigitalInput(2);
 
         /*
         for (int i = 0; i < MOTOR_PORTS_LEFT.length; i++) {
@@ -85,8 +89,7 @@ public class DriveSubsystem extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        //setDefaultCommand(new DriveCommand());
-
+        setDefaultCommand(new DriveCommand());
     }
     
     private void setMotorsSide(double percentOutput, CANSparkMax[] motors) {
@@ -97,14 +100,12 @@ public class DriveSubsystem extends Subsystem {
     
 
     public void setMotorsLeft(double percentOutput) {
-        LeftFront.set(percentOutput);
-        System.out.println("LEFT " + percentOutput);
+        LeftFront.set(-percentOutput);
         //setMotorsSide(-percentOutput, motorsLeft);
     }
 
     public void setMotorsRight(double percentOutput) {
         RightFront.set(percentOutput);
-        System.out.println("RIGHT " + percentOutput);
         //setMotorsSide(percentOutput, motorsRight);
     }
 
@@ -145,15 +146,18 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public double getEncoderPosRight() {
-        return getEncoderPos(encodersRight);
+        return RightEnc.getDistance()*8*Math.PI/360.0;
+        //return getEncoderPos(encodersRight);
     }
 
     public double getEncoderPosLeft() {
-        return getEncoderPos(encodersLeft);
+        return -LeftEnc.getDistance()*8*Math.PI/360.0;
+        //return getEncoderPos(encodersLeft);
     }
 
     public void resetEncoders(){
-        
+        RightEnc.reset();
+        LeftEnc.reset();
     }
 
     public void resetGyro() {
@@ -162,10 +166,9 @@ public class DriveSubsystem extends Subsystem {
     
 
     public double getGyroDegrees() {
-        return navX.getAngle();
+        //return navX.getAngle();
+        return -navX.getAngle(); //TODO: set back to positive values for comp bot
     }
-    
-
     
     public double getGyroRadians() {
         return getGyroDegrees() * Math.PI / 180;

@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         driveSys = new DriveSubsystem();
         visionInput = new VisionInput();
+        
         robotState = new RobotStateEstimator(Specs.CONSTRAINTS, new Vec2(0,0), 0);
     }
 
@@ -43,9 +44,10 @@ public class Robot extends TimedRobot {
     // Called at the beginning of the Sandstorm
     @Override
     public void autonomousInit() {
-        //Robot.driveSys.resetGyro();
-        //Scheduler.getInstance().add(new RobotStateUpdater());
-        Scheduler.getInstance().add(new VisionAlignmentCommand());
+        Robot.driveSys.resetGyro();
+        Scheduler.getInstance().add(new RobotStateUpdater());
+
+        //Scheduler.getInstance().add(new VisionAlignmentCommand());
     }
     
 

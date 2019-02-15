@@ -39,8 +39,12 @@ public class Turtle {
         panel.clearPoints();
     }
 
-    public void animateProfile(MotionProfile profile, boolean cycle){
-        panel.animateProfile(profile, cycle);
+    public void animateProfile(MotionProfile profile){
+        panel.animateProfile(profile);
+    }
+
+    public void drawState(MotionState state){
+        panel.drawState(state);
     }
 
     private static class DrawPanel extends JPanel {
@@ -49,7 +53,7 @@ public class Turtle {
         private List<Color> colors;
 
         private MotionProfile profile;
-        private boolean cycleProfile;
+        private MotionState state;
 
         public final int width, height;
         public final double scale;
@@ -70,7 +74,7 @@ public class Turtle {
         }
 
         public void addPoints(Vec2[] points, Color color){
-            pointsList.add(Arrays.asList(points));
+            pointsList.add(new ArrayList<>(Arrays.asList(points)));;
             colors.add(color);
         }
 
@@ -87,9 +91,12 @@ public class Turtle {
             colors.clear();
         }
 
-        public void animateProfile(MotionProfile profile, boolean cycle){
+        public void animateProfile(MotionProfile profile){
             this.profile = profile;
-            this.cycleProfile = cycle;
+        }
+
+        public void drawState(MotionState state){
+            this.state = state;
         }
 
         public Vec2 toPanelSpace(Vec2 v){
@@ -128,14 +135,13 @@ public class Turtle {
             }
 
             if(profile != null){
-                if(cycleProfile){
-                    final double tTotal = System.currentTimeMillis()/1000.0;
-                    final double t = tTotal - (int)(tTotal/profile.dt())*profile.dt() + profile.startTime();
-                    final MotionState state = profile.getState(t);
-                    paintMotionState(g, g2, state);
-                } else {
-                    paintMotionState(g, g2, profile.endState());
-                }
+                final double tTotal = System.currentTimeMillis()/1000.0;
+                final double t = tTotal - (int)(tTotal/profile.dt())*profile.dt() + profile.startTime();
+                final MotionState curState = profile.getState(t);
+                paintMotionState(g, g2, curState);
+            }
+            if(state != null){
+                paintMotionState(g, g2, state);
             }
         }
 
@@ -146,6 +152,7 @@ public class Turtle {
             Vec2 left = new Vec2(0, state.length/2), right = new Vec2(0, -state.length/2);
             Vec2 leftVel = new Vec2(state.velL/4, left.y), rightVel = new Vec2(state.velR/4, right.y);
 
+            Vec2 arrow = toPanelSpace(new Vec2(4,0), state);
             left = toPanelSpace(left, state);
             right = toPanelSpace(right, state);
             leftVel = toPanelSpace(leftVel, state);
@@ -161,6 +168,8 @@ public class Turtle {
             g.drawLine((int)left.x, (int)left.y, (int)leftVel.x, (int)leftVel.y);
             g2.setColor(state.velR > 0 ? Color.green : Color.red);
             g.drawLine((int)right.x, (int)right.y, (int)rightVel.x, (int)rightVel.y);
+            g2.setColor(Color.blue);
+            g.drawLine((int)center.x, (int)center.y, (int)arrow.x, (int)arrow.y);
         }
     }
 

@@ -40,7 +40,7 @@ public class Test {
         }
 
         Turtle turtle = new Turtle(800,800,9,new Vec2(40,30));
-        turtle.animateProfile(profile, true);
+        turtle.animateProfile(profile);
         turtle.addPoints(points, new Color(255, 140, 0));
         turtle.addPoints(newPoints, Color.blue);
 
