@@ -32,8 +32,7 @@ public class Ports {
     public static final int
         INTAKE_PNEUMATIC_ONE = 0 ,
         INTAKE_PNEUMATIC_TWO = 1 ,
-
-        CLIMB_PNEUMATIC_ONE = 2 
+        CLIMB_SOLENOID_ONE = 2 
     ;
 
     //buttons for intake

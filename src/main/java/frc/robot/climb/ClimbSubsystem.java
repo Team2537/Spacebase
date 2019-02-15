@@ -15,18 +15,19 @@ import frc.robot.Ports;
  * Add your docs here.
  */
 public class ClimbSubsystem extends Subsystem {
-  private Solenoid climbSolOne;
+  private Solenoid climbSol;
 
-  public ClimbSubsystem(){
-    climbSolOne = new Solenoid(Ports.CLIMB_PNEUMATIC_ONE);
-  }
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-
-  public void engageGear(boolean state){
-    climbSolOne.set(state);
+  public void ClimbSubsystem(){
+    climbSol = new Solenoid(Ports.CLIMB_SOLENOID_ONE);
   }
 
+  public void setClimbSolenoid(boolean state){
+    climbSol.set(state);
+  }
+
+  public boolean getSolenoid(){
+    return climbSol.get();
+  }
 
   @Override
   public void initDefaultCommand() {
