@@ -59,7 +59,7 @@ public class ArmCommand extends Command {
     }
 
     double setpoint_wrist = Robot.armsys.getWristSetpoint();
-    double actual_wrist = Robot.armsys.getWristEncoder();
+    double actual_wrist = Robot.armsys.getPotentiometer();
     error_wrist = setpoint_wrist - actual_wrist;
     errorSum_wrist += error_wrist;
     double actualChange_wrist = actual_wrist - actualPrev_wrist;

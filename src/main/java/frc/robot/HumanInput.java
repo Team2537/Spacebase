@@ -1,6 +1,5 @@
 package frc.robot;
 
-import static org.junit.Assert.assertEquals;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;

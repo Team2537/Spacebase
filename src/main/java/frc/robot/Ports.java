@@ -8,7 +8,17 @@ public class Ports {
         DRIVE_MOTOR_RIGHT_FRONT = 2,
         DRIVE_MOTOR_LEFT_FRONT  = 3,
         DRIVE_MOTOR_LEFT_TOP    = 4,
-        DRIVE_MOTOR_LEFT_BACK   = 5
+        DRIVE_MOTOR_LEFT_BACK   = 5, 
+        ARM_MOTOR = 6,
+        WRIST_MOTOR = 7,
+        INTAKE_ARM_FLYWHEEL = 8,
+        INTAKE_FLYWHEEL_ONE = 9,
+        INTAKE_FLYWHEEL_TWO = 10
+    ;
+
+    //Analog Ports
+    public static final int 
+        WRIST_POTENTIOMETER = 0
     ;
 
     // Drive station USB ports
@@ -17,12 +27,6 @@ public class Ports {
         RIGHT_JOYSTICK = 1
     ;
 
-    // flywheel ports for intake
-    public static final int
-        INTAKE_ARM_FLYWHEEL = 0,
-        INTAKE_FLYWHEEL_ONE = 1,
-        INTAKE_FLYWHEEL_TWO = 2
-    ;
         
     // infrared sensor ports for intake
     public static final int

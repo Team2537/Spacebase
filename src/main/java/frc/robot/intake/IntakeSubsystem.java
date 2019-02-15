@@ -7,6 +7,9 @@
 
 package frc.robot.intake;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -21,7 +24,7 @@ public class IntakeSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-private Talon armFlywheel, intakeFlywheelOne, intakeFlywheelTwo;
+private TalonSRX armFlywheel, intakeFlywheelOne, intakeFlywheelTwo;
 private DigitalInput infrared;
 private Solenoid pneumatic1;
 private Solenoid pneumatic2;
@@ -32,9 +35,9 @@ private static final int POT_OFFSET = 0; //TODO find the real value of this
 
 public IntakeSubsystem(){
   
-armFlywheel= new Talon(Ports.INTAKE_ARM_FLYWHEEL);
-intakeFlywheelOne = new Talon(Ports.INTAKE_FLYWHEEL_ONE);
-intakeFlywheelTwo = new Talon(Ports.INTAKE_FLYWHEEL_TWO);
+armFlywheel= new TalonSRX(Ports.INTAKE_ARM_FLYWHEEL);
+intakeFlywheelOne = new TalonSRX(Ports.INTAKE_FLYWHEEL_ONE);
+intakeFlywheelTwo = new TalonSRX(Ports.INTAKE_FLYWHEEL_TWO);
 infrared = new DigitalInput(Ports.INTAKE_INFRARED);
 pneumatic1 = new Solenoid(Ports.INTAKE_PNEUMATIC_ONE);
 pneumatic2 = new Solenoid(Ports.INTAKE_PNEUMATIC_TWO);
@@ -43,13 +46,13 @@ pot = new AnalogPotentiometer(0, 3600, POT_OFFSET);
 }
 
 public void setIntakeFlywheels(double speed){
-  intakeFlywheelOne.set(speed);
-  intakeFlywheelTwo.set(speed);
+  intakeFlywheelOne.set(ControlMode.PercentOutput, speed);
+  intakeFlywheelTwo.set(ControlMode.PercentOutput, speed);
 
 }
 
 public void setArmFlywheel(double speed){
-  armFlywheel.set(speed);
+  armFlywheel.set(ControlMode.PercentOutput, speed);
 }
 
 public void pneumaticExtend(){
