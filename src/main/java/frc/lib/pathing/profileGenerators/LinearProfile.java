@@ -5,8 +5,7 @@ import frc.lib.pathing.Clothoid;
 
 public class LinearProfile {
 
-    public static void generate(MotionProfile profile, Clothoid segment, double accMax, double velMax, double vel0, double velF){
-        final double dist = segment.length;
+    public static void generate(MotionProfile profile, double dist, double accMax, double velMax, double vel0, double velF){
 
         // What is the maximum velocity we can reach (Vmax)? This is the intersection of two curves: one accelerating
         // towards the goal from profile.finalState(), the other coming from the goal at max vel (in reverse). If Vmax
