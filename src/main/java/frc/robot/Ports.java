@@ -19,8 +19,9 @@ public class Ports {
 
     // flywheel ports for intake
     public static final int
-        INTAKE_MOTOR_ONE = 0,
-        INTAKE_MOTOR_TWO = 1
+        INTAKE_ARM_FLYWHEEL = 0,
+        INTAKE_FLYWHEEL_ONE = 1,
+        INTAKE_FLYWHEEL_TWO = 2
     ;
         
     // infrared sensor ports for intake
@@ -35,11 +36,21 @@ public class Ports {
         CLIMB_SOLENOID_ONE = 2 
     ;
 
-    //buttons for intake
+    //buttons left joystick
     public static final int
-        INTAKE_ON = 0,
-        PNEUMATIC_EXTEND = 1,
-        PNEUMATIC_RETRACT = 2
+        INTAKE_FLYWHEEL_IN = 0,
+        INTAKE_FLWYEEL_OUT = 3,
+        CLIMB_ENGAGE_CLUTCH = 2
+    ;
+
+    //buttons right joystick
+    public static final int
+        ARM_UP_BUTTON = 1,
+        ARM_DOWN_BUTTON = 2,
+        ARM_INTAKE_FLYWHEEL_IN = 3,
+        ARM_INTAKE_FLYWHEEL_OUT = 4,
+        INTAKE_PNEUMATIC_EXTEND = 5
+
     ;
 
 

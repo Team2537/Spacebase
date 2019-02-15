@@ -11,15 +11,23 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class FlywheelCommand extends Command {
-  public FlywheelCommand() {
+  private boolean commandState;
+  private static final double FLYWHEEL_SPEED = 0.8;
+
+  public FlywheelCommand(boolean state) {
     requires(Robot.intakesys);
+    commandState = state;
+
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.intakesys.turnOnFlywheels();
-  
+    if(commandState){
+      Robot.intakesys.setIntakeFlywheels(FLYWHEEL_SPEED);
+    } else {
+      Robot.intakesys.setIntakeFlywheels(-FLYWHEEL_SPEED);
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -30,23 +38,19 @@ public class FlywheelCommand extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(Robot.intakesys.getInfrared()){
-      return true;
-    }else{
-      return false;
-    }
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.intakesys.turnOffFlywheels();
+    Robot.intakesys.setIntakeFlywheels(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.intakesys.turnOffFlywheels();
+    Robot.intakesys.setIntakeFlywheels(0);
   }
 }

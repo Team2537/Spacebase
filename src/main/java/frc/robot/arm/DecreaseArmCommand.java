@@ -12,7 +12,6 @@ import frc.robot.Robot;
 
 public class DecreaseArmCommand extends Command {
   public DecreaseArmCommand() {
-    requires(Robot.armsys);
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }

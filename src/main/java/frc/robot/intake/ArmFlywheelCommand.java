@@ -5,22 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.drive;
+package frc.robot.intake;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class DriveStraightCommand extends Command {
-  double leftEncoderStartValue;
-  double rightEncoderStartValue;
-  
-  public DriveStraightCommand() {
-    requires(Robot.drivesys);
+public class ArmFlywheelCommand extends Command {
+  private boolean commandState;
+  private static final double FLYWHEEL_SPEED = 0.8;
+
+  public ArmFlywheelCommand(boolean state) {
+    requires(Robot.climbsys);
+    commandState = state;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    if(commandState){
+      Robot.intakesys.setArmFlywheel(FLYWHEEL_SPEED);
+    } else {
+      Robot.intakesys.setArmFlywheel(-FLYWHEEL_SPEED);
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -37,11 +43,13 @@ public class DriveStraightCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.intakesys.setArmFlywheel(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.intakesys.setArmFlywheel(0);
   }
 }

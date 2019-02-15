@@ -21,7 +21,7 @@ public class IntakeSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-private Talon flywheel1, flywheel2;
+private Talon armFlywheel, intakeFlywheelOne, intakeFlywheelTwo;
 private DigitalInput infrared;
 private Solenoid pneumatic1;
 private Solenoid pneumatic2;
@@ -32,8 +32,9 @@ private static final int POT_OFFSET = 0; //TODO find the real value of this
 
 public IntakeSubsystem(){
   
-flywheel1 = new Talon(Ports.INTAKE_MOTOR_ONE);
-flywheel2 = new Talon(Ports.INTAKE_MOTOR_TWO);
+armFlywheel= new Talon(Ports.INTAKE_ARM_FLYWHEEL);
+intakeFlywheelOne = new Talon(Ports.INTAKE_FLYWHEEL_ONE);
+intakeFlywheelTwo = new Talon(Ports.INTAKE_FLYWHEEL_TWO);
 infrared = new DigitalInput(Ports.INTAKE_INFRARED);
 pneumatic1 = new Solenoid(Ports.INTAKE_PNEUMATIC_ONE);
 pneumatic2 = new Solenoid(Ports.INTAKE_PNEUMATIC_TWO);
@@ -41,9 +42,14 @@ pot = new AnalogPotentiometer(0, 3600, POT_OFFSET);
 
 }
 
-public void turnOnFlywheels(){
-  flywheel1.set(FLYWHEEL_SPEED);
+public void setIntakeFlywheels(double speed){
+  intakeFlywheelOne.set(speed);
+  intakeFlywheelTwo.set(speed);
 
+}
+
+public void setArmFlywheel(double speed){
+  armFlywheel.set(speed);
 }
 
 public void pneumaticExtend(){
@@ -57,9 +63,10 @@ public void pneumaticRetract(){
 
 }
 
-public void turnOffFlywheels(){
-  flywheel1.set(0);
+public boolean getIntakePneumatic(){
+  return pneumatic1.get();
 }
+
 
 public double getPotentiometer(){
   return pot.get();

@@ -15,9 +15,11 @@ import frc.robot.Robot;
 public class ArmCommand extends Command {
   private double errorSum_arm, actualPrev_arm;
   private double errorSum_wrist, actualPrev_wrist;
+  private double error_arm, error_wrist;
   private static final double kP_arm = 0.004, kI_arm = 0.0002, kD_arm = 0.003;
   private static final double kP_wrist = 0.004, kI_wrist = 0.0002, kD_wrist = 0.003;
   private static final double TOLERANCE_arm = 2, TOLERANCE_wrist = 2;
+
 
   public ArmCommand() {
     requires(Robot.armsys);
@@ -48,7 +50,7 @@ public class ArmCommand extends Command {
 
     double setpoint_arm = Robot.armsys.getArmSetpoint();
     double actual_arm = Robot.armsys.getArmEncoder();
-    double error_arm = setpoint_arm - actual_arm;
+    error_arm = setpoint_arm - actual_arm;
     errorSum_arm += error_arm;
     double actualChange_arm = actual_arm - actualPrev_arm;
     actualPrev_arm = actual_arm;
@@ -58,7 +60,7 @@ public class ArmCommand extends Command {
 
     double setpoint_wrist = Robot.armsys.getWristSetpoint();
     double actual_wrist = Robot.armsys.getWristEncoder();
-    double error_wrist = setpoint_wrist - actual_wrist;
+    error_wrist = setpoint_wrist - actual_wrist;
     errorSum_wrist += error_wrist;
     double actualChange_wrist = actual_wrist - actualPrev_wrist;
     actualPrev_wrist = actual_wrist;

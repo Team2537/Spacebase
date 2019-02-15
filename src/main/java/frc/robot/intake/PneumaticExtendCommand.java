@@ -20,8 +20,11 @@ public class PneumaticExtendCommand extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.intakesys.pneumaticExtend();
-
+    if(Robot.intakesys.getIntakePneumatic()){
+      Robot.intakesys.pneumaticRetract();
+    } else{
+      Robot.intakesys.pneumaticExtend();
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
