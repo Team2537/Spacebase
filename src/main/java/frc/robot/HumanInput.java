@@ -1,7 +1,13 @@
 package frc.robot;
 
 import static org.junit.Assert.assertEquals;
-
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.intake.FlywheelCommand;
+import frc.robot.intake.PneumaticExtendCommand;
+import frc.robot.intake.PneumaticRetractCommand;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.*;
@@ -21,6 +27,18 @@ public class HumanInput {
 
     //Xbox Button Control
 
+
+    public static Button flywheelsOn = new JoystickButton(HumanInput.joystickLeft, Ports.INTAKE_ON);
+    public static Button solExtend = new JoystickButton(HumanInput.joystickLeft, Ports.PNEUMATIC_EXTEND);
+    public static Button solRetract = new JoystickButton(HumanInput.joystickLeft, Ports.PNEUMATIC_RETRACT);
+
+   
+    public static void registerCommands(){
+        whileHeld(flywheelsOn, new FlywheelCommand());
+        whenPressed(solExtend, new PneumaticExtendCommand());
+        whenPressed(solRetract, new PneumaticRetractCommand());
+    }
+    
     public static final int AXIS_X = 0, AXIS_Y = 1;
     private static double getJoystickAxis(int axis, Joystick joystick){
         double val = joystick.getRawAxis(axis);
@@ -34,16 +52,13 @@ public class HumanInput {
         return getJoystickAxis(axis, joystickRight);
     }
 
-    public static void registerCommandWhenPressed(Button button, Command command){
+    private static void whenPressed(Button button, Command command){
         button.whenPressed(command);
     }
-    public static void registerCommandWhileHeld(Button button, Command command){
+    private static void whileHeld(Button button, Command command){
         button.whileHeld(command);
     }
-    public static void registerCommandWhenReleased(Button button, Command command){
+    private static void whenReleased(Button button, Command command){
         button.whenReleased(command);
     }
-    
-
-
 }

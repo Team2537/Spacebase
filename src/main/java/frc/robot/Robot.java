@@ -12,9 +12,11 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.lib.units.Units;
 import frc.robot.climb.ClimbSubsystem;
 import frc.robot.drive.DriveSubsystem;
+import frc.robot.intake.IntakeSubsystem;
 
 public class Robot extends TimedRobot {
   public static DriveSubsystem driveSys;
+  public static IntakeSubsystem intakeSys;
   double leftEncoderStartValue, rightEncoderStartValue;
   public static ClimbSubsystem climbsys;
 
@@ -24,6 +26,7 @@ public class Robot extends TimedRobot {
     driveSys = new DriveSubsystem();
 
     climbsys = new ClimbSubsystem();
+    intakeSys = new IntakeSubsystem();
   }
 
   // Called periodically regardless of the game period
