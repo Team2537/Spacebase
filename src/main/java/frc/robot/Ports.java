@@ -16,4 +16,8 @@ public class Ports {
         LEFT_JOYSTICK  = 0,
         RIGHT_JOYSTICK = 1
     ;
+
+    //Solenoid Port
+    public static final int
+        CLIMB_SOLENOID_ONE = 0;
 }
