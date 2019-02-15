@@ -15,7 +15,7 @@ public class DriveStraightCommand extends Command {
   double rightEncoderStartValue;
   
   public DriveStraightCommand() {
-    requires(Robot.driveSys);
+    requires(Robot.drivesys);
   }
 
   // Called just before this Command runs the first time
