@@ -35,8 +35,7 @@ public class Robot extends TimedRobot {
     drivesys = new DriveSubsystem();
     pdp = new PowerDistributionPanel();
     armsys = new ArmSubsystem();
-    /*armSys.initDefaultCommand();
-    armSys.registerButtons();*/
+
     drivesys.initDefaultCommand();
   }
 

@@ -16,18 +16,12 @@ import edu.wpi.first.wpilibj.XboxController;
 
 public class HumanInput {
 
-    /**
-     *
-     */
 
     private static final int _1 = 1;
     public static Joystick joystickLeft = new Joystick(Ports.LEFT_JOYSTICK);
     public static Joystick joystickRight = new Joystick(Ports.RIGHT_JOYSTICK);
     // Button aliases
     // public static Button 
-
-    //Xbox Button Control
-
 
     public static Button flywheelsOn = new JoystickButton(HumanInput.joystickLeft, Ports.INTAKE_ON);
     public static Button solExtend = new JoystickButton(HumanInput.joystickLeft, Ports.PNEUMATIC_EXTEND);
