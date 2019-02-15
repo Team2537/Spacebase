@@ -42,9 +42,11 @@ public class Robot extends TimedRobot {
     // Called at the beginning of the Sandstorm
     @Override
     public void autonomousInit() {
-        Robot.driveSys.resetGyro();
-        Scheduler.getInstance().add(new RobotStateUpdater());
+        //Robot.driveSys.resetGyro();
+        //Scheduler.getInstance().add(new RobotStateUpdater());
+        Scheduler.getInstance().add(new VisionTurnCommand());
     }
+    
 
     // Called periodically during the Sandstorm
     @Override
