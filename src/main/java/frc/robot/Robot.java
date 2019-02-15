@@ -19,7 +19,6 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     driveSys = new DriveSubsystem();
 
-    HumanInput.registerCommands();
   }
 
   // Called periodically regardless of the game period

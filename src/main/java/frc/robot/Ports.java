@@ -16,4 +16,33 @@ public class Ports {
         LEFT_JOYSTICK  = 0,
         RIGHT_JOYSTICK = 1
     ;
+
+    // flywheel ports for intake
+    public static final int
+        INTAKE_MOTOR_ONE = 0,
+        INTAKE_MOTOR_TWO = 1
+    ;
+        
+    // infrared sensor ports for intake
+    public static final int
+        INTAKE_INFRARED = 0
+    ;
+
+    // solenoid ports
+    public static final int
+        INTAKE_PNEUMATIC_ONE = 0 ,
+        INTAKE_PNEUMATIC_TWO = 1 ,
+
+        CLIMB_PNEUMATIC_ONE = 2 
+    ;
+
+    //buttons for intake
+    public static final int
+        INTAKE_ON = 0,
+        PNEUMATIC_EXTEND = 1,
+        PNEUMATIC_RETRACT = 2
+    ;
+
+
+
 }
