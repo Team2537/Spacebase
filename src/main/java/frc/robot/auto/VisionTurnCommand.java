@@ -35,9 +35,13 @@ public class VisionTurnCommand extends Command{
     private Target[] targets;
     private double half = 320; //midpoint of screen
 
+    public VisionTurnCommand(){
+        requires(Robot.driveSys);  
+    }
+
     @Override
     protected void initialize(){
-        requires(Robot.driveSys);        
+              
     }
 
     @Override
@@ -79,12 +83,13 @@ public class VisionTurnCommand extends Command{
     
 
     public boolean isFinished(){
-        //return (MidPoint.x < HIGHERTHRESHOLD & MidPoint.x > LOWERTHRESHOLD);
+
+        
         return false;
     }
 
     public void end(){
-
+        Robot.driveSys.setMotors(0, 0);
     }
 
 

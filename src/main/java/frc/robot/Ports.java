@@ -18,6 +18,10 @@ public class Ports {
     ;
     */
     
+    public static final int
+        FRONT_ULTRASONIC_INPUT = 0,
+        FRONT_ULTRASONIC_OUTPUT = 1
+    ;
 
     public static final int
         LINE_FOLLOWER_FRONT_UPPER = 2,
