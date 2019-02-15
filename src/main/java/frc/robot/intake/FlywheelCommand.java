@@ -12,13 +12,13 @@ import frc.robot.Robot;
 
 public class FlywheelCommand extends Command {
   public FlywheelCommand() {
-    requires(Robot.intakeSys);
+    requires(Robot.intakesys);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.intakeSys.turnOnFlywheels();
+    Robot.intakesys.turnOnFlywheels();
   
   }
 
@@ -30,7 +30,7 @@ public class FlywheelCommand extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(Robot.intakeSys.getInfrared()){
+    if(Robot.intakesys.getInfrared()){
       return true;
     }else{
       return false;
@@ -40,13 +40,13 @@ public class FlywheelCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.intakeSys.turnOffFlywheels();
+    Robot.intakesys.turnOffFlywheels();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.intakeSys.turnOffFlywheels();
+    Robot.intakesys.turnOffFlywheels();
   }
 }

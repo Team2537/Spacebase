@@ -13,14 +13,14 @@ import frc.robot.Robot;
 public class PneumaticRetractCommand extends Command {
   public PneumaticRetractCommand() {
     
-    requires(Robot.intakeSys);
+    requires(Robot.intakesys);
 
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.intakeSys.pneumaticRetract();
+    Robot.intakesys.pneumaticRetract();
 
   }
 
