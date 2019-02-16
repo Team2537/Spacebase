@@ -43,17 +43,18 @@ public class Ports {
 
     //buttons left joystick
     public static final int
-        INTAKE_FLYWHEEL_IN = 0,
-        INTAKE_FLWYEEL_OUT = 3,
-        CLIMB_ENGAGE_CLUTCH = 2
+        INTAKE_FLYWHEEL_IN = 4,
+        INTAKE_FLYWHEEL_OUT = 5,
+        CLIMB_ENGAGE_CLUTCH = 2,
+        CAMERA_BUTTON = 3,
+        ARM_INTAKE_FLYWHEEL_IN = 1
     ;
 
     //buttons right joystick
     public static final int
-        ARM_UP_BUTTON = 1,
+        ARM_UP_BUTTON = 3,
         ARM_DOWN_BUTTON = 2,
-        ARM_INTAKE_FLYWHEEL_IN = 3,
-        ARM_INTAKE_FLYWHEEL_OUT = 4,
+        ARM_INTAKE_FLYWHEEL_OUT = 1,
         INTAKE_PNEUMATIC_EXTEND = 5
 
     ;

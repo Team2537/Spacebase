@@ -15,6 +15,7 @@ import frc.robot.climb.ClimbSubsystem;
 import frc.robot.drive.DriveSubsystem;
 import frc.robot.intake.IntakeSubsystem;
 import frc.robot.arm.ArmSubsystem;
+import frc.robot.cameras.Cameras;
 
   
 public class Robot extends TimedRobot {
@@ -22,6 +23,7 @@ public class Robot extends TimedRobot {
   public static IntakeSubsystem intakesys;
   public static ArmSubsystem armsys;
   double leftEncoderStartValue, rightEncoderStartValue;
+  public static Cameras cameras;
   public static ClimbSubsystem climbsys;
   public static PowerDistributionPanel pdp;
 
@@ -35,6 +37,8 @@ public class Robot extends TimedRobot {
     drivesys = new DriveSubsystem();
     pdp = new PowerDistributionPanel();
     armsys = new ArmSubsystem();
+    cameras = new Cameras();
+    cameras.start();
 
     drivesys.initDefaultCommand();
     HumanInput.registerButtons();
@@ -43,7 +47,7 @@ public class Robot extends TimedRobot {
   // Called periodically regardless of the game period
   @Override
   public void robotPeriodic() {
-    Scheduler.getInstance().run();
+    
   }
 
 
@@ -57,6 +61,7 @@ public class Robot extends TimedRobot {
   // Called periodically during the Sandstorm
   @Override
   public void autonomousPeriodic() {
+    Scheduler.getInstance().run();
   }
 
 
@@ -69,6 +74,7 @@ public class Robot extends TimedRobot {
   // Called periodically during the Teleop period
   @Override
   public void teleopPeriodic() {
+    Scheduler.getInstance().run();
   }
 
 
@@ -79,6 +85,6 @@ public class Robot extends TimedRobot {
   }
   @Override
   public void testPeriodic() {
-
+    Scheduler.getInstance().run();
   }
 }
