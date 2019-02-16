@@ -7,10 +7,11 @@
 
 package frc.robot.arm;
 
-import edu.wpi.first.wpilibj.XboxController;
+//import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import edu.wpi.first.wpilibj.Joystick;
 
 public class ArmCommand extends Command {
   private double errorSum_arm, actualPrev_arm;
@@ -23,7 +24,8 @@ public class ArmCommand extends Command {
     requires(Robot.armSys);
   }
 
-  private XboxController xbox; //temp
+  private Joystick leftStick;
+  private Joystick rightStick;
 
   // Called just before this Command runs the first time
   @Override
@@ -33,16 +35,17 @@ public class ArmCommand extends Command {
     errorSum_wrist = 0;
     actualPrev_wrist = 0;
 
-    xbox = new XboxController(2); //temp
+    leftStick = new Joystick(0);
+    rightStick = new Joystick(1); //temp
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(xbox.getBumperPressed(Hand.kRight)){
+    if(rightStick.getTriggerPressed()){
       Robot.armSys.increaseArmLevel();
     }
-    if(xbox.getBumperPressed(Hand.kLeft)){
+    if(leftStick.getTriggerPressed()){
       Robot.armSys.decreaseArmLevel();
     }
 
