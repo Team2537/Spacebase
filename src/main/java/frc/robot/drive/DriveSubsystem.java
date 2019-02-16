@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-//TALON SRX
 package frc.robot.drive;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -42,7 +35,7 @@ public class DriveSubsystem extends Subsystem {
 
     
 
-    private CANSparkMax[] motorsLeft, motorsRight;
+    //private CANSparkMax[] motorsLeft, motorsRight;
     private CANEncoder[] encodersLeft, encodersRight;
     
     //private AHRS navX;
@@ -50,7 +43,8 @@ public class DriveSubsystem extends Subsystem {
     private DigitalInput IR_frontUpper, IR_frontLower, IR_center;
 
     public DriveSubsystem() {
-
+        //MAKE SURE ULTRASONIC IS CORRECT FOR PEANUT!!
+        driveUltrasonic = new Ultrasonic(Ports.FRONT_ULTRASONIC_INPUT, Ports.FRONT_ULTRASONIC_OUTPUT);
         RightFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_RIGHT_FRONT);
         LeftFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_LEFT_FRONT);
         

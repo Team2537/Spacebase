@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
         //Robot.driveSys.resetGyro();
         //Scheduler.getInstance().add(new RobotStateUpdater());
         Scheduler.getInstance().add(new VisionAlignmentCommand());
+        
     }
     
 
