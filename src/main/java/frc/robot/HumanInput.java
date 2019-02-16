@@ -21,7 +21,6 @@ public class HumanInput {
     // Button aliases
     // public static Button
 
-<<<<<<< HEAD
     public static JoystickButton intakeFlywheelsForward = new JoystickButton(joystickLeft, Ports.INTAKE_FLYWHEEL_OUT);
     public static JoystickButton intakeFlywheelsBackward = new JoystickButton(joystickLeft, Ports.INTAKE_FLYWHEEL_IN);
     public static JoystickButton armFlywheelIn = new JoystickButton(joystickLeft, Ports.ARM_INTAKE_FLYWHEEL_IN);
@@ -32,17 +31,6 @@ public class HumanInput {
     public static JoystickButton decreasearmbutton = new JoystickButton(joystickRight, Ports.ARM_DOWN_BUTTON);
     public static JoystickButton cameraButton = new JoystickButton(joystickLeft, Ports.CAMERA_BUTTON);
     
-=======
-    public static Button 
-        intakeFlywheelsForward = new JoystickButton(joystickLeft, Ports.INTAKE_FLWYEEL_OUT),
-        intakeFlywheelsBackward = new JoystickButton(joystickLeft, Ports.INTAKE_FLWYEEL_OUT),
-        armFlywheelIn = new JoystickButton(joystickRight, Ports.ARM_INTAKE_FLYWHEEL_IN),
-        armFlywheelOut = new JoystickButton(joystickRight, Ports.ARM_INTAKE_FLYWHEEL_OUT),
-        intakeSolExtend = new JoystickButton(joystickLeft, Ports.INTAKE_PNEUMATIC_EXTEND),
-        climbEngageClutch = new JoystickButton(joystickLeft, Ports.CLIMB_ENGAGE_CLUTCH),
-        increasearmbutton = new JoystickButton(joystickRight, Ports.ARM_UP_BUTTON),
-        decreasearmbutton = new JoystickButton(joystickRight, Ports.ARM_DOWN_BUTTON);
->>>>>>> 2113606d9adc68a6d1b8246db2d79a94351dd3ad
 
     // public static Button solRetract = new JoystickButton(HumanInput.joystickLeft,
     // Ports.PNEUMATIC_RETRACT);
