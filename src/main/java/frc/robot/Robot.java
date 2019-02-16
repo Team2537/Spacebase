@@ -17,6 +17,7 @@ import frc.lib.motion.RobotStateEstimator;
 import frc.lib.util.Vec2;
 import frc.lib.vision.VisionInput;
 import frc.robot.arm.ArmSubsystem;
+import frc.robot.cameras.Cameras;
 
 public class Robot extends TimedRobot {
     public static DriveSubsystem driveSys;
@@ -26,6 +27,7 @@ public class Robot extends TimedRobot {
     public static PowerDistributionPanel pdp;
     public static VisionInput visionInput;
     public static RobotStateEstimator robotState;
+    private static Cameras cameras;
 
     // Use this function for all initialization code
     @Override
@@ -36,10 +38,11 @@ public class Robot extends TimedRobot {
         pdp = new PowerDistributionPanel();
         armSys = new ArmSubsystem();
         visionInput = new VisionInput();
-        
-        robotState = new RobotStateEstimator(Specs.CONSTRAINTS, new Vec2(0,0), 0);
+        cameras = new Cameras();
+        robotState = new RobotStateEstimator(Specs.CONSTRAINTS, new Vec2(0, 0), 0);
 
         HumanInput.registerButtons();
+        cameras.start();
     }
 
     // Called periodically regardless of the game period
@@ -55,9 +58,8 @@ public class Robot extends TimedRobot {
         Robot.driveSys.resetGyro();
         Scheduler.getInstance().add(new RobotStateUpdater());
 
-        //Scheduler.getInstance().add(new VisionAlignmentCommand());
+        // Scheduler.getInstance().add(new VisionAlignmentCommand());
     }
-    
 
     // Called periodically during the Sandstorm
     @Override
