@@ -18,7 +18,7 @@ public class VelocityTestCommand extends Command {
   private double voltageDesired;
 
   public VelocityTestCommand() {
-    requires(Robot.driveSys);
+    requires(Robot.drivesys);
   }
 
   @Override
@@ -36,12 +36,12 @@ public class VelocityTestCommand extends Command {
     while(time - accumTime > 1000){
       accumTime -= 1000;
       voltageDesired += 0.25;
-      Robot.driveSys.setMotors(voltageDesired/12.0, voltageDesired/12.0);
+      Robot.drivesys.setMotors(voltageDesired/12.0, voltageDesired/12.0);
     }
 
-    final double velLeft = Robot.driveSys.getEncoderVelLeft(), velRight = Robot.driveSys.getEncoderVelRight();
-    final double accLeft = Robot.driveSys.getEncoderAccLeft(), accRight = Robot.driveSys.getEncoderAccRight();
-    final double appLeft = Robot.driveSys.getAppliedVoltageLeft(), appRight = Robot.driveSys.getAppliedVoltageRight();
+    final double velLeft = Robot.drivesys.getEncoderVelLeft(), velRight = Robot.drivesys.getEncoderVelRight();
+    final double accLeft = Robot.drivesys.getEncoderAccLeft(), accRight = Robot.drivesys.getEncoderAccRight();
+    final double appLeft = Robot.drivesys.getAppliedVoltageLeft(), appRight = Robot.drivesys.getAppliedVoltageRight();
     loggerLeft.appendRow(timeElapsed,voltageDesired,appLeft,velLeft,accLeft);
     loggerRight.appendRow(timeElapsed,voltageDesired,appRight,velRight,accRight);
   }
@@ -53,7 +53,7 @@ public class VelocityTestCommand extends Command {
 
   @Override
   protected void end() {
-    Robot.driveSys.setMotors(0, 0);
+    Robot.drivesys.setMotors(0, 0);
     System.out.println("*------- Left Logger -------*");
     System.out.println(loggerLeft);
     System.out.println("*------- Right Logger -------*");

@@ -6,6 +6,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "CodeLens (Launch) - Path",
+      "request": "launch",
+      "mainClass": "frc.lib.pathing.Path",
+      "projectName": "Spacebase"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - ClothoidProfile",
+      "request": "launch",
+      "mainClass": "frc.lib.pathing.ClothoidProfile",
+      "projectName": "Spacebase"
+    },
+    {
+      "type": "java",
       "name": "CodeLens (Launch) - ClothoidGenerator3",
       "request": "launch",
       "mainClass": "frc.lib.pathing.ClothoidGenerator3",
