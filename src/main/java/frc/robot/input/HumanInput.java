@@ -26,18 +26,20 @@ public class HumanInput {
         joystickLeft = new Joystick(Ports.LEFT_JOYSTICK);
         joystickRight = new Joystick(Ports.RIGHT_JOYSTICK);
 
-        // Button aliases
-        intakeFlywheelsForward = new JoystickButton(joystickLeft, Ports.INTAKE_FLYWHEEL_OUT);
-        intakeFlywheelsBackward = new JoystickButton(joystickLeft, Ports.INTAKE_FLYWHEEL_IN);
-        armFlywheelIn = new JoystickButton(joystickLeft, Ports.ARM_INTAKE_FLYWHEEL_IN);
-        armFlywheelOut = new JoystickButton(joystickRight, Ports.ARM_INTAKE_FLYWHEEL_OUT);
-        intakeSolExtend = new JoystickButton(joystickRight, Ports.INTAKE_PNEUMATIC_EXTEND);
-        climbEngageClutch = new JoystickButton(joystickLeft, Ports.CLIMB_ENGAGE_CLUTCH);
-        increasearmbutton = new JoystickButton(joystickRight, Ports.ARM_UP_BUTTON);
-        decreasearmbutton = new JoystickButton(joystickRight, Ports.ARM_DOWN_BUTTON);
-        cameraButton = new JoystickButton(joystickLeft, Ports.CAMERA_BUTTON);
-        // public static Button solRetract = new JoystickButton(HumanInput.joystickLeft,
-        // Ports.PNEUMATIC_RETRACT);
+        /* --- Button Aliases --- */
+        // Left Joystick
+        armFlywheelIn           = new JoystickButton(joystickLeft, 1);
+        climbEngageClutch       = new JoystickButton(joystickLeft, 2);
+        cameraButton            = new JoystickButton(joystickLeft, 3);
+        intakeFlywheelsBackward = new JoystickButton(joystickLeft, 4);
+        intakeFlywheelsForward  = new JoystickButton(joystickLeft, 5);
+
+        // Right Joystick
+        armFlywheelOut      = new JoystickButton(joystickRight, 1);
+        decreasearmbutton   = new JoystickButton(joystickRight, 2);
+        increasearmbutton   = new JoystickButton(joystickRight, 3);
+        // UNUSED           = new JoystickButton(joystickRight, 4);
+        intakeSolExtend     = new JoystickButton(joystickRight, 5);
     }
 
     public void registerButtons() {
