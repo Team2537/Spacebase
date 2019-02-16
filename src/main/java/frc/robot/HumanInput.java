@@ -30,7 +30,7 @@ public class HumanInput {
     public static Button intakeFlywheelsBackward = new JoystickButton(joystickLeft, Ports.INTAKE_FLWYEEL_OUT);
     public static Button armFlywheelIn = new JoystickButton(joystickRight, Ports.ARM_INTAKE_FLYWHEEL_IN);
     public static Button armFlywheelOut = new JoystickButton(joystickRight, Ports.ARM_INTAKE_FLYWHEEL_OUT);
-    public static Button solExtend = new JoystickButton(joystickLeft, Ports.INTAKE_PNEUMATIC_EXTEND);
+    public static Button intakeSolExtend = new JoystickButton(joystickLeft, Ports.INTAKE_PNEUMATIC_EXTEND);
     public static Button climbEngageClutch = new JoystickButton(joystickLeft, Ports.CLIMB_ENGAGE_CLUTCH);
     public static Button increasearmbutton = new JoystickButton(joystickRight, Ports.ARM_UP_BUTTON);
     public static Button decreasearmbutton = new JoystickButton(joystickRight, Ports.ARM_DOWN_BUTTON);
@@ -39,12 +39,12 @@ public class HumanInput {
     // public static Button solRetract = new JoystickButton(HumanInput.joystickLeft, Ports.PNEUMATIC_RETRACT);
 
    
-    public static void registerCommands(){
+    public static void registerButtons(){
         whileHeldCommand(armFlywheelIn, new ArmFlywheelCommand(true));
         whileHeldCommand(armFlywheelOut, new ArmFlywheelCommand(false));
         whileHeldCommand(intakeFlywheelsForward, new FlywheelCommand(true));
         whileHeldCommand(intakeFlywheelsBackward, new FlywheelCommand(false));
-        whenPressedCommand(solExtend, new PneumaticExtendCommand());
+        whenPressedCommand(intakeSolExtend, new PneumaticExtendCommand());
         whenPressedCommand(increasearmbutton, new IncreaseArmCommand());
         whenPressedCommand(decreasearmbutton, new DecreaseArmCommand());
         whenPressedCommand(climbEngageClutch, new ClimbCommand());

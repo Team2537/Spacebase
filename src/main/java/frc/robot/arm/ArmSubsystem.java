@@ -69,6 +69,7 @@ public class ArmSubsystem extends Subsystem {
 
     public double getArmEncoder(){
         return armEncoder.getPosition();
+
     }
 
     // public double getWristEncoder() {

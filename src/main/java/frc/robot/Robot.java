@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
     armsys = new ArmSubsystem();
 
     drivesys.initDefaultCommand();
+    HumanInput.registerButtons();
   }
 
   // Called periodically regardless of the game period

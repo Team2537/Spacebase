@@ -3,17 +3,17 @@ package frc.robot;
 public class Ports {
     // CAN Bus ports
     public static final int
-        DRIVE_MOTOR_RIGHT_BACK  = 0,
-        DRIVE_MOTOR_RIGHT_TOP   = 1,
-        DRIVE_MOTOR_RIGHT_FRONT = 2,
-        DRIVE_MOTOR_LEFT_FRONT  = 3,
-        DRIVE_MOTOR_LEFT_TOP    = 4,
-        DRIVE_MOTOR_LEFT_BACK   = 5, 
-        ARM_MOTOR = 6,
-        WRIST_MOTOR = 7,
-        INTAKE_ARM_FLYWHEEL = 8,
-        INTAKE_FLYWHEEL_ONE = 9,
-        INTAKE_FLYWHEEL_TWO = 10
+        DRIVE_MOTOR_RIGHT_BACK  = 1,
+        DRIVE_MOTOR_RIGHT_TOP   = 2,
+        DRIVE_MOTOR_RIGHT_FRONT = 3,
+        DRIVE_MOTOR_LEFT_FRONT  = 4,
+        DRIVE_MOTOR_LEFT_TOP    = 5,
+        DRIVE_MOTOR_LEFT_BACK   = 6, 
+        ARM_MOTOR = 7,
+        WRIST_MOTOR = 8,
+        INTAKE_ARM_FLYWHEEL = 9,
+        INTAKE_FLYWHEEL_ONE = 10,
+        INTAKE_FLYWHEEL_TWO = 11
     ;
 
     //Analog Ports
@@ -37,7 +37,8 @@ public class Ports {
     public static final int
         INTAKE_PNEUMATIC_ONE = 0 ,
         INTAKE_PNEUMATIC_TWO = 1 ,
-        CLIMB_SOLENOID_ONE = 2 
+        CLIMB_SOLENOID_ONE = 2, 
+        CLIMB_SOLENOID_TWO = 3
     ;
 
     //buttons left joystick
