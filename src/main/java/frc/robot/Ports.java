@@ -37,7 +37,9 @@ public class Ports {
     // Drive station USB ports
     public static final int
         LEFT_JOYSTICK  = 0,
-        RIGHT_JOYSTICK = 1
+        RIGHT_JOYSTICK = 1,
+        XBOX_CONTROLLER = 2
+
     ;
 
         

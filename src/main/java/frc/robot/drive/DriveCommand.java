@@ -8,7 +8,6 @@
 package frc.robot.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.HumanInput;
 import frc.robot.Robot;
 
 public class DriveCommand extends Command {
@@ -27,8 +26,8 @@ public class DriveCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.driveSys.setMotors(Robot.input.getJoystickAxisLeft(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX,
-                Robot.input.getJoystickAxisRight(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX);
+        Robot.driveSys.setMotors(Robot.input.getJoystickAxisLeft(frc.robot.input.HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX,
+        Robot.input.getJoystickAxisRight(frc.robot.input.HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX);
 
     }
 

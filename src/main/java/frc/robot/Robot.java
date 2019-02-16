@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.climb.ClimbSubsystem;
 import frc.robot.drive.DriveSubsystem;
 import frc.robot.drive.RobotStateUpdater;
+import frc.robot.input.HumanInput;
 import frc.robot.intake.IntakeSubsystem;
 import frc.lib.motion.RobotStateEstimator;
 import frc.lib.util.Vec2;
