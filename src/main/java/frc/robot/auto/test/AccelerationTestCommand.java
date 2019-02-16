@@ -13,52 +13,55 @@ import frc.robot.Robot;
 
 public class AccelerationTestCommand extends Command {
 
-  private CSVLogger loggerLeft, loggerRight;
-  private long startTime, timeElapsed;
-  private final double voltageDesired = 7.2;
-  private final double kV = 2.0, vMin = 1.0;
+    private CSVLogger loggerLeft, loggerRight;
+    private long startTime, timeElapsed;
+    private final double voltageDesired = 7.2;
+    private final double kV = 2.0, vMin = 1.0;
 
-  public AccelerationTestCommand() {
-    requires(Robot.drivesys);
-  }
+    public AccelerationTestCommand() {
+        requires(Robot.driveSys);
+    }
 
-  @Override
-  protected void initialize() {
-    loggerLeft = new CSVLogger("Time","VoltageDesired","VoltageApplied","VoltageAccel","Velocity","Acceleration");
-    loggerRight = new CSVLogger("Time","VoltageDesired","VoltageApplied","VoltageAccel","Velocity","Acceleration");
-    startTime = System.currentTimeMillis();
+    @Override
+    protected void initialize() {
+        loggerLeft = new CSVLogger("Time", "VoltageDesired", "VoltageApplied", "VoltageAccel", "Velocity",
+                "Acceleration");
+        loggerRight = new CSVLogger("Time", "VoltageDesired", "VoltageApplied", "VoltageAccel", "Velocity",
+                "Acceleration");
+        startTime = System.currentTimeMillis();
 
-    Robot.drivesys.setMotors(voltageDesired/12.0, voltageDesired/12.0);
-  }
+        Robot.driveSys.setMotors(voltageDesired / 12.0, voltageDesired / 12.0);
+    }
 
-  @Override
-  protected void execute() {
-    timeElapsed = System.currentTimeMillis() - startTime;
+    @Override
+    protected void execute() {
+        timeElapsed = System.currentTimeMillis() - startTime;
 
-    final double velLeft = Robot.drivesys.getEncoderVelLeft(), velRight = Robot.drivesys.getEncoderVelRight();
-    final double accLeft = Robot.drivesys.getEncoderAccLeft(), accRight = Robot.drivesys.getEncoderAccRight();
-    final double appLeft = Robot.drivesys.getAppliedVoltageLeft(), appRight = Robot.drivesys.getAppliedVoltageRight();
-    final double vlaLeft = appLeft - (kV*velLeft + vMin), vlaRight = appRight - (kV*velRight + vMin);
-    loggerLeft.appendRow(timeElapsed,voltageDesired,appLeft,vlaLeft,velLeft,accLeft);
-    loggerRight.appendRow(timeElapsed,voltageDesired,appRight,vlaRight,velRight,accRight);
-  }
+        final double velLeft = Robot.driveSys.getEncoderVelLeft(), velRight = Robot.driveSys.getEncoderVelRight();
+        final double accLeft = Robot.driveSys.getEncoderAccLeft(), accRight = Robot.driveSys.getEncoderAccRight();
+        final double appLeft = Robot.driveSys.getAppliedVoltageLeft(),
+                appRight = Robot.driveSys.getAppliedVoltageRight();
+        final double vlaLeft = appLeft - (kV * velLeft + vMin), vlaRight = appRight - (kV * velRight + vMin);
+        loggerLeft.appendRow(timeElapsed, voltageDesired, appLeft, vlaLeft, velLeft, accLeft);
+        loggerRight.appendRow(timeElapsed, voltageDesired, appRight, vlaRight, velRight, accRight);
+    }
 
-  @Override
-  protected boolean isFinished() {
-    return timeElapsed >= 3000;
-  }
+    @Override
+    protected boolean isFinished() {
+        return timeElapsed >= 3000;
+    }
 
-  @Override
-  protected void end() {
-    Robot.drivesys.setMotors(0, 0);
-    System.out.println("*------- Left Logger -------*");
-    System.out.println(loggerLeft);
-    System.out.println("*------- Right Logger -------*");
-    System.out.println(loggerRight);
-  }
+    @Override
+    protected void end() {
+        Robot.driveSys.setMotors(0, 0);
+        System.out.println("*------- Left Logger -------*");
+        System.out.println(loggerLeft);
+        System.out.println("*------- Right Logger -------*");
+        System.out.println(loggerRight);
+    }
 
-  @Override
-  protected void interrupted() {
-    end();
-  }
+    @Override
+    protected void interrupted() {
+        end();
+    }
 }

@@ -1,4 +1,4 @@
-package frc.lib.pathing;
+package frc.lib.motion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +45,6 @@ public class MotionProfile {
     }
 
     public void appendControlWheels(double dt, double accL, double accR){
-        //System.out.println(dt + ", "+accL+", "+accR);
         if(dt > 0){
             segments.add(new MotionSegment(endState().controlWheels(accL, accR), dt));
         }
@@ -62,6 +61,16 @@ public class MotionProfile {
         final double accR = (k-0.5)*(endState().velR/dt) + (k+0.5)*(2*acc + endState().velL/dt);
         final double accL = 2*acc - accR;
         appendControlWheels(dt, accL, accR);
+    }
+
+    public void appendDeltas(double dt, double deltaPos, double deltaAng){
+        if(dt > 0){
+            MotionState es = endState();
+            segments.add(new MotionSegment(MotionState.fromWheels(
+                es.constraints, es.t, es.pos, es.angle+deltaAng, 
+                deltaPos/dt, deltaPos/dt, 0, 0
+            ), dt));
+        }
     }
 
     public MotionState getState(double t){

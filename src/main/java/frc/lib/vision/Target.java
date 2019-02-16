@@ -80,4 +80,37 @@ public class Target {
 		}
 		return boundingBoxCenter;
 	}
+
+	/** @return The midpoint between the two targets in the array with the largest bounding boxes.
+	 * If less than 2 targets are passed in, a new Point(0,0) is returned.
+	 */
+	public static Point getMidpoint(Target[] targets){
+		if(targets.length < 2) return new Point(0,0);
+
+		double[] boundingBoxAreas = new double[targets.length];
+
+		for(int i = 0; i < boundingBoxAreas.length; i++){
+			System.out.println(boundingBoxAreas[i]);
+			boundingBoxAreas[i] = targets[i].getBoundingBoxArea();   
+		}
+
+		double first = -Double.MAX_VALUE, second = -Double.MAX_VALUE;
+		int firstIndex = 0, secondIndex = 0;
+		for (int i = 0; i < boundingBoxAreas.length; i++) {
+			if (boundingBoxAreas[i] > first) {
+				second = first;
+				first = boundingBoxAreas[i];
+				firstIndex = i;
+			}
+			// if current element is between first and second, update second to store value of current variable
+			else if (boundingBoxAreas[i] > second && boundingBoxAreas[i] != first){
+				second = boundingBoxAreas[i];
+				secondIndex = i;
+			}
+		}
+
+		Point box1 = targets[firstIndex].getBoundingBoxCenter();
+		Point box2 = targets[secondIndex].getBoundingBoxCenter();
+		return new Point((box1.x + box2.x)/2, (box1.y + box2.y)/2);
+	}
 }

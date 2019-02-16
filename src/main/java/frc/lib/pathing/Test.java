@@ -1,37 +1,51 @@
 package frc.lib.pathing;
 
-public class Test {
-    public static void main(String[] args){
-        /*
-        RobotConstraints constraints = new RobotConstraints(2, 1, 0.8, 0.005);
-        Vec2[] points = new Vec2[]{
-            new Vec2(0,0),
-            new Vec2(1,1),
-            new Vec2(0.5, 2.5),
-            new Vec2(1.5, 3),
-            new Vec2(2, 2.75),
-            new Vec2(2, 1.5),
-            new Vec2(-0.5, 1),
-            new Vec2(-0.5,0.5),
-            new Vec2(2.5,0.5)
-        };*/
-        /*
-        PathWaypoint[] waypoints = PathWaypoint.convert(points);
-        PathProfile profile = PathProfileGenerator.generateProfile(constraints, waypoints); 
-        System.out.println("error: "+points[points.length-1].diff(profile.endState().pos).mag());
-        System.out.println("total time: "+profile.dt());
-        System.out.println("fits constraints: "+profile.fitsConstraints());
-        System.out.println(profile.getState(0.355).pos);
+import java.awt.Color;
 
-        Vec2[] newPoints = new Vec2[(int)(profile.dt()/constraints.dt)];
+import frc.lib.motion.MotionProfile;
+import frc.lib.motion.RobotConstraints;
+import frc.lib.util.Turtle;
+import frc.lib.util.Vec2;
+
+public class Test {
+    public static void main(String[] args) {
+        final double dt = 0.001;
+        Vec2[] points = new Vec2[]{
+            // new Vec2(0.0, 0.0),
+            // new Vec2(20.0, 20.0),
+            // new Vec2(10.0, 50.0),
+            // new Vec2(30.0, 60.0),
+            // new Vec2(40.0, 55.0),
+            // new Vec2(40.0, 35.0),
+            // new Vec2(60.0, 20.0),
+            // new Vec2(80.0, 35.0),
+            // new Vec2(80.0, 55.0)
+            new Vec2(0,0),
+            new Vec2(80,80),
+            new Vec2(80,0),
+            new Vec2(0,80),
+            new Vec2(40,57),
+            new Vec2(40,0)
+        };
+        
+        Waypoint[] waypoints = new Waypoint[points.length];
+        for(int i = 0; i < points.length; i++) waypoints[i] = new Waypoint(points[i], 10);
+        
+        RobotConstraints constraints = new RobotConstraints(500, 50, 12);
+        MotionProfile profile = MotionProfileGenerator.generate(constraints, 0.003, waypoints);
+        
+        Vec2[] newPoints = new Vec2[(int)(profile.dt()/dt)];
         for(int i = 0; i < newPoints.length; i++){
-            newPoints[i] = profile.getState(i*constraints.dt).pos;
+            newPoints[i] = profile.getState(i*dt).pos;
         }
 
-        
-        Turtle t = new Turtle(800,800,240,new Vec2(1,1.5));
-        t.addPoints(points, Color.red);
-        t.addPoints(newPoints, Color.blue);
-        */
+        Turtle turtle = new Turtle(800,800,9,new Vec2(40,30));
+        turtle.animateProfile(profile);
+        turtle.addPoints(points, new Color(255, 140, 0));
+        turtle.addPoints(newPoints, Color.blue);
+
+        System.out.println(profile.endState().pos);
+        System.out.println("Time: "+profile.endTime());
+        System.out.println("Error: "+points[points.length-1].diff(profile.endState().pos).mag());
     }
 }

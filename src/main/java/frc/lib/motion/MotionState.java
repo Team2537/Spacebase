@@ -1,12 +1,14 @@
-package frc.lib.pathing;
+package frc.lib.motion;
 
 import frc.lib.util.Util;
 import frc.lib.util.Vec2;
 
+import frc.lib.util.FresnelMath;
+
 /** A MotionState represents the linear motion, angular motion, wheel states,
  * and curvature of the robot's drive train at a specific point in time.
  */
-public class MotionState {
+public class MotionState {    
     public final RobotConstraints constraints;
     public final Vec2 pos;
     public final double t, angle, angVel, angAcc, vel, acc, velL, velR, accL, accR, curvature, length;
@@ -180,6 +182,18 @@ public class MotionState {
      */
     public MotionState forwardKinematics(double dt){
         return MotionState.forwardKinematics(this, dt);
+    }
+
+    public double[] encode(){
+        return new double[]{
+            constraints.maxWheelVel, constraints.maxWheelAcc, constraints.length, 
+            t, pos.x, pos.y, angle, velL, velR, accL, accR
+        };
+    }
+
+    public static MotionState decode(double[] vals){
+        return MotionState.fromWheels(new RobotConstraints(vals[0], vals[1], vals[2]),
+            vals[3], new Vec2(vals[4], vals[5]), vals[6], vals[7], vals[8], vals[9], vals[10]);
     }
 
 }

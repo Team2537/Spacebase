@@ -4,7 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
+//TALON SRX
 package frc.robot.drive;
 
 import edu.wpi.first.wpilibj.Notifier;
@@ -14,52 +14,88 @@ import frc.lib.units.Times;
 import frc.lib.units.Units;
 import frc.robot.Ports;
 import frc.robot.Specs;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Ultrasonic;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 public class DriveSubsystem extends Subsystem {
-    private static final MotorType MOTOR_TYPE = MotorType.kBrushless;
-    private static final int[] MOTOR_PORTS_LEFT = { 
+    
+	/****************************************************************************/
+	/*                            PUBLIC CONSTANTS                              */
+	/****************************************************************************/
+
+    // convert from revolutions to inches
+    public static final double ENCODER_POSITION_FACTOR = Specs.DRIVE_WHEEL_DIAMETER*Math.PI;
+    
+    // convert from revolutions/minute to inches/second
+    public static final double ENCODER_VELOCITY_FACTOR = ENCODER_POSITION_FACTOR/60;
+    
+    public static final IdleMode DEFAULT_IDLE_MODE = IdleMode.kBrake;
+    public static final MotorType MOTOR_TYPE = MotorType.kBrushless;
+    private static final int NUM_VELS_TO_SAMPLE = 4;
+
+    public static final int[] MOTOR_PORTS_LEFT = { 
         Ports.DRIVE_MOTOR_LEFT_FRONT, 
         Ports.DRIVE_MOTOR_LEFT_TOP,
         Ports.DRIVE_MOTOR_LEFT_BACK 
     };
-    private static final int[] MOTOR_PORTS_RIGHT = { 
+    public static final int[] MOTOR_PORTS_RIGHT = { 
         Ports.DRIVE_MOTOR_RIGHT_FRONT, 
         Ports.DRIVE_MOTOR_RIGHT_TOP,
         Ports.DRIVE_MOTOR_RIGHT_BACK 
     };
 
+
+    /****************************************************************************/
+	/*                           INSTANCE VARIABLES                             */
+	/****************************************************************************/
+
     private CANSparkMax[] motorsLeft, motorsRight;
     private CANEncoder[] encodersLeft, encodersRight;
+
+    private AHRS navX;
+    private Ultrasonic frontUltrasonic;
+
+    private Notifier accelUpdater;
     private double[] encoderVelWindowLeft, encoderVelWindowRight;
     private double accelLeft, accelRight;
-    private Notifier accelUpdater;
-
-    private static final int NUM_VELS_TO_SAMPLE = 4;
 
     public DriveSubsystem() {
+        /*********************************/
+	    /*   INIT LEFT MOTORS/ENCODERS   */
+	    /*********************************/
         motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
         encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
         for (int i = 0; i < MOTOR_PORTS_LEFT.length; i++) {
             motorsLeft[i] = new CANSparkMax(MOTOR_PORTS_LEFT[i], MOTOR_TYPE);
-            motorsLeft[i].setIdleMode(CANSparkMax.IdleMode.kBrake);
-            if (i > 0)
-                motorsLeft[i].follow(motorsLeft[0]);
+            if (i > 0) motorsLeft[i].follow(motorsLeft[0]);
+
             encodersLeft[i] = motorsLeft[i].getEncoder();
+            encodersLeft[i].setPositionConversionFactor(ENCODER_POSITION_FACTOR);
+            encodersLeft[i].setVelocityConversionFactor(ENCODER_VELOCITY_FACTOR);
         }
 
+        /*********************************/
+	    /*  INIT RIGHT MOTORS/ENCODERS   */
+	    /*********************************/
         motorsRight = new CANSparkMax[MOTOR_PORTS_RIGHT.length];
         encodersRight = new CANEncoder[MOTOR_PORTS_RIGHT.length];
         for (int i = 0; i < MOTOR_PORTS_RIGHT.length; i++) {
             motorsRight[i] = new CANSparkMax(MOTOR_PORTS_RIGHT[i], MOTOR_TYPE);
-            motorsRight[i].setIdleMode(CANSparkMax.IdleMode.kBrake);
-            if (i > 0)
-                motorsRight[i].follow(motorsRight[0]);
+            if (i > 0) motorsRight[i].follow(motorsRight[0]);
+
             encodersRight[i] = motorsRight[i].getEncoder();
+            encodersRight[i].setPositionConversionFactor(ENCODER_POSITION_FACTOR);
+            encodersRight[i].setVelocityConversionFactor(ENCODER_VELOCITY_FACTOR);
         }
+
+        setIdleMode(DEFAULT_IDLE_MODE);
+
 
         encoderVelWindowLeft = new double[NUM_VELS_TO_SAMPLE];
         encoderVelWindowRight = new double[NUM_VELS_TO_SAMPLE];
@@ -68,13 +104,26 @@ public class DriveSubsystem extends Subsystem {
             @Override
             public void run(){ updateAccels(); }
         });
-        accelUpdater.startPeriodic(Specs.WPILIB_CYCLE_TIME_MS);
+        accelUpdater.startPeriodic(Specs.ROBOT_PERIOD_SECONDS);
+        
+        navX = new AHRS(SPI.Port.kMXP);
+        frontUltrasonic = new Ultrasonic(Ports.FRONT_ULTRASONIC_INPUT, Ports.FRONT_ULTRASONIC_OUTPUT);
+        /*
+        IR_frontUpper = new DigitalInput(Ports.LINE_FOLLOWER_FRONT_UPPER);
+        IR_frontLower = new DigitalInput(Ports.LINE_FOLLOWER_FRONT_LOWER);
+        IR_center = new DigitalInput(Ports.LINE_FOLLOWER_CENTER);
+        */
     }
 
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new DriveCommand());
     }
+
+
+    /****************************************************************************/
+	/*                              MOTOR METHODS                               */
+	/****************************************************************************/
 
     public void setMotorsLeft(double percentOutput) {
         motorsLeft[0].set(-percentOutput);
@@ -89,31 +138,15 @@ public class DriveSubsystem extends Subsystem {
         setMotorsRight(percentOutputRight);
     }
 
-    public String encoderStatus() {
-        String out = "";
-        for (int i = 0; i < encodersLeft.length; i++) {
-            out += "Left  Encoder " + i + ": " + encodersLeft[i].getPosition() + "\n";
-        }
-        for (int i = 0; i < encodersRight.length; i++) {
-            out += "Right Encoder " + i + ": " + encodersRight[i].getPosition() + "\n";
-        }
-        return out;
+    public void setIdleMode(IdleMode mode){
+        for(CANSparkMax motor : motorsLeft) motor.setIdleMode(mode);
+        for(CANSparkMax motor : motorsRight) motor.setIdleMode(mode);
     }
 
-    private static double averageWithoutZeroes(double[] samples) {
-        double total = 0;
-        for (double val : samples) {
-            if (val != 0) {
-                total += val;
-            }
-        }
 
-        if (samples.length == 0) {
-            return 0;
-        } else {
-            return total / samples.length;
-        }
-    }
+    /****************************************************************************/
+	/*                             ENCODER METHODS                              */
+	/****************************************************************************/
 
     private double getEncoderPos(CANEncoder[] encoders) {
         double[] positions = new double[encoders.length];
@@ -149,7 +182,7 @@ public class DriveSubsystem extends Subsystem {
         return getEncoderVel(encodersLeft);
     }
 
-    protected void updateAccels() {
+    private void updateAccels() {
         final double velLeft = getEncoderVelLeft(), velRight = getEncoderVelRight();
         for (int i = 0; i < NUM_VELS_TO_SAMPLE - 1; i++) {
             encoderVelWindowLeft[i + 1] = encoderVelWindowLeft[i];
@@ -158,7 +191,7 @@ public class DriveSubsystem extends Subsystem {
         encoderVelWindowLeft[0] = velLeft;
         encoderVelWindowRight[0] = velRight;
 
-        final double dt = 4 * Units.convertTime(Specs.WPILIB_CYCLE_TIME_MS, Times.MILLISECONDS, Times.SECONDS);
+        final double dt = 4 * Specs.ROBOT_PERIOD_SECONDS;
         accelLeft = (velLeft - encoderVelWindowLeft[NUM_VELS_TO_SAMPLE - 1]) / dt;
         accelRight = (velRight - encoderVelWindowRight[NUM_VELS_TO_SAMPLE - 1]) / dt;
     }
@@ -179,4 +212,79 @@ public class DriveSubsystem extends Subsystem {
         return motorsRight[0].getAppliedOutput();
     }
 
+    public void resetEncoders(){
+        for(CANEncoder enc : encodersLeft) enc.setPosition(0);
+        for(CANEncoder enc : encodersRight) enc.setPosition(0);
+    }
+
+    public String encoderStatus() {
+        String out = "";
+        for (int i = 0; i < encodersLeft.length; i++) {
+            out += "Left  Encoder " + i + ": " + encodersLeft[i].getPosition() + "\n";
+        }
+        for (int i = 0; i < encodersRight.length; i++) {
+            out += "Right Encoder " + i + ": " + encodersRight[i].getPosition() + "\n";
+        }
+        return out;
+    }
+
+    private static double averageWithoutZeroes(double[] samples) {
+        double total = 0;
+        for (double val : samples) {
+            if (val != 0) {
+                total += val;
+            }
+        }
+
+        if (samples.length == 0) {
+            return 0;
+        } else {
+            return total / samples.length;
+        }
+    }
+
+
+    /****************************************************************************/
+	/*                              GYRO METHODS                                */
+	/****************************************************************************/
+
+    public void resetGyro() {
+        navX.reset();
+    }
+    
+    public double getGyroDegrees() {
+        return navX.getAngle();
+    }
+    
+    public double getGyroRadians() {
+        return getGyroDegrees() * Math.PI / 180;
+    }
+
+
+    /****************************************************************************/
+	/*                          MISC. SENSOR METHODS                            */
+	/****************************************************************************/
+
+    /*
+    // FALSE MEANS ON THE LINE
+    public boolean getIR_frontUpper() {
+        System.out.println("IR Front Upper: " + IR_frontUpper.get());
+        return !IR_frontUpper.get();
+    }
+
+    public boolean getIR_frontLower() {
+        System.out.println("IR Front Lower: " + IR_frontLower.get());
+        return !IR_frontLower.get();
+    }
+
+    public boolean getIR_center() {
+        System.out.println("IR Center: " + IR_center.get());
+        return !IR_center.get();
+    }*/
+
+    /** @return the range of the drive ultrasonic in inches */
+    public double getUltrasonic() {
+        return frontUltrasonic.getRangeInches();
+    }
+    
 }

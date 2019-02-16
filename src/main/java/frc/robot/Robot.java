@@ -4,7 +4,6 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -12,24 +11,33 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.climb.ClimbSubsystem;
 import frc.robot.drive.DriveSubsystem;
+import frc.robot.drive.RobotStateUpdater;
 import frc.robot.intake.IntakeSubsystem;
+import frc.lib.motion.RobotStateEstimator;
+import frc.lib.util.Vec2;
+import frc.lib.vision.VisionInput;
 import frc.robot.arm.ArmSubsystem;
 
 public class Robot extends TimedRobot {
-    public static DriveSubsystem drivesys;
-    public static IntakeSubsystem intakesys;
-    public static ArmSubsystem armsys;
-    public static ClimbSubsystem climbsys;
+    public static DriveSubsystem driveSys;
+    public static IntakeSubsystem intakeSys;
+    public static ArmSubsystem armSys;
+    public static ClimbSubsystem climbSys;
     public static PowerDistributionPanel pdp;
+    public static VisionInput visionInput;
+    public static RobotStateEstimator robotState;
 
     // Use this function for all initialization code
     @Override
     public void robotInit() {
-        climbsys = new ClimbSubsystem();
-        intakesys = new IntakeSubsystem();
-        drivesys = new DriveSubsystem();
+        climbSys = new ClimbSubsystem();
+        intakeSys = new IntakeSubsystem();
+        driveSys = new DriveSubsystem();
         pdp = new PowerDistributionPanel();
-        armsys = new ArmSubsystem();
+        armSys = new ArmSubsystem();
+        visionInput = new VisionInput();
+        
+        robotState = new RobotStateEstimator(Specs.CONSTRAINTS, new Vec2(0,0), 0);
 
         HumanInput.registerButtons();
     }
@@ -44,8 +52,12 @@ public class Robot extends TimedRobot {
     // Called at the beginning of the Sandstorm
     @Override
     public void autonomousInit() {
+        Robot.driveSys.resetGyro();
+        Scheduler.getInstance().add(new RobotStateUpdater());
 
+        //Scheduler.getInstance().add(new VisionAlignmentCommand());
     }
+    
 
     // Called periodically during the Sandstorm
     @Override

@@ -5,42 +5,39 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.arm;
+package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class IncreaseArmCommand extends Command {
-    public IncreaseArmCommand() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+//drives forward until Ultrasonic max distance reached
+
+public class UltrasonicFrontDriveCommand extends Command {
+    private double percentOutput, targetDistInches;
+
+    public UltrasonicFrontDriveCommand(double targetDistInches, double percentOutput) {
+        requires(Robot.driveSys);
+        // this.percentOutput = Math.abs(percentOutput);
+        // this.targetDistInches = targetDistInches;
     }
 
-    // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.armSys.increaseArmLevel();
+        Robot.driveSys.setMotors(percentOutput, percentOutput);
     }
 
-    // Called repeatedly when this Command is scheduled to run
-    @Override
-    protected void execute() {
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return true;
+        return Robot.driveSys.getUltrasonic() <= targetDistInches;
     }
 
-    // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.driveSys.setMotors(0, 0);
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        end();
     }
 }

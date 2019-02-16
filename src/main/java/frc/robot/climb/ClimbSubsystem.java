@@ -15,25 +15,25 @@ import frc.robot.Ports;
  * Add your docs here.
  */
 public class ClimbSubsystem extends Subsystem {
-  private Solenoid climbSolOne, climbSolTwo;
+    private Solenoid climbSolOne, climbSolTwo;
 
-  public ClimbSubsystem(){
-    climbSolOne = new Solenoid(Ports.CLIMB_SOLENOID_ONE);
-    climbSolTwo = new Solenoid(Ports.CLIMB_SOLENOID_TWO);
-  }
+    public ClimbSubsystem() {
+        climbSolOne = new Solenoid(Ports.CLIMB_SOLENOID_ONE);
+        climbSolTwo = new Solenoid(Ports.CLIMB_SOLENOID_TWO);
+    }
 
-  public void setClimbSolenoid(boolean state){
-    climbSolOne.set(state);
-    climbSolTwo.set(!state);
-  }
+    public void setClimbSolenoid(boolean state) {
+        climbSolOne.set(state);
+        climbSolTwo.set(!state);
+    }
 
-  public boolean getSolenoid(){
-    return climbSolOne.get();
-  }
+    public boolean getSolenoid() {
+        return climbSolOne.get();
+    }
 
-  @Override
-  public void initDefaultCommand() {
-    // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
-  }
+    @Override
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        // setDefaultCommand(new MySpecialCommand());
+    }
 }

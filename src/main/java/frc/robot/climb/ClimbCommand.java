@@ -11,39 +11,39 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class ClimbCommand extends Command {
-  public ClimbCommand() {
-    requires(Robot.climbsys);
-  }
-
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-    if(Robot.climbsys.getSolenoid()){
-      Robot.climbsys.setClimbSolenoid(false);
-    } else {
-      Robot.climbsys.setClimbSolenoid(true);
+    public ClimbCommand() {
+        requires(Robot.climbSys);
     }
-  }
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-  }
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+        if (Robot.climbSys.getSolenoid()) {
+            Robot.climbSys.setClimbSolenoid(false);
+        } else {
+            Robot.climbSys.setClimbSolenoid(true);
+        }
+    }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return true;
-  }
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
+    }
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-  }
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+        return true;
+    }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-  }
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+    }
+
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+    }
 }

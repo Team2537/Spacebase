@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "CodeLens (Launch) - RobotStateViewer",
+      "request": "launch",
+      "mainClass": "frc.lib.motion.RobotStateViewer",
+      "projectName": "Spacebase"
+    },
+    {
+      "type": "java",
       "name": "CodeLens (Launch) - Path",
       "request": "launch",
       "mainClass": "frc.lib.pathing.Path",

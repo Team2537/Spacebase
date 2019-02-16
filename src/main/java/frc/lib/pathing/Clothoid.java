@@ -1,5 +1,6 @@
 package frc.lib.pathing;
 
+import frc.lib.util.FresnelMath;
 import frc.lib.util.Util;
 
 public class Clothoid {

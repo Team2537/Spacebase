@@ -1,6 +1,8 @@
 package frc.robot;
 
 public class Ports {
+
+
     // CAN Bus ports
     public static final int
         DRIVE_MOTOR_RIGHT_BACK  = 1,
@@ -19,6 +21,17 @@ public class Ports {
     //Analog Ports
     public static final int 
         WRIST_POTENTIOMETER = 0
+    ;
+    
+    public static final int
+        FRONT_ULTRASONIC_INPUT = 0,
+        FRONT_ULTRASONIC_OUTPUT = 1
+    ;
+
+    public static final int
+        LINE_FOLLOWER_FRONT_UPPER = 2,
+        LINE_FOLLOWER_FRONT_LOWER = 0,
+        LINE_FOLLOWER_CENTER = 1
     ;
 
     // Drive station USB ports

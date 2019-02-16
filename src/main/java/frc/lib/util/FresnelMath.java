@@ -1,4 +1,4 @@
-package frc.lib.pathing;
+package frc.lib.util;
 
 import frc.lib.util.LookupTable;
 import frc.lib.util.Util;
