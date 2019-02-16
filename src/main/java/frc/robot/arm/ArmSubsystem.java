@@ -43,6 +43,14 @@ public class ArmSubsystem extends Subsystem {
         }
     }
 
+    public void setArmLevel(int level){
+        if(armLevel < ARM_LEVEL_MAX && armLevel > ARM_LEVEL_MIN){
+            armLevel = level;
+        } else {
+            System.out.println("error in Arm Subsystem method setArmLevel()");
+        }
+        
+    }
     public void decreaseArmLevel(){
         if(armLevel > ARM_LEVEL_MIN){
             armLevel--;

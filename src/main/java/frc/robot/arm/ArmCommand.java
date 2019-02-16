@@ -24,8 +24,6 @@ public class ArmCommand extends Command {
         requires(Robot.armSys);
     }
 
-    private XboxController xbox; // temp
-
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
@@ -34,18 +32,11 @@ public class ArmCommand extends Command {
         errorSum_wrist = 0;
         actualPrev_wrist = 0;
 
-        xbox = new XboxController(2); // temp
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (xbox.getBumperPressed(Hand.kRight)) {
-            Robot.armSys.increaseArmLevel();
-        }
-        if (xbox.getBumperPressed(Hand.kLeft)) {
-            Robot.armSys.decreaseArmLevel();
-        }
 
         double setpoint_arm = Robot.armSys.getArmSetpoint();
         double actual_arm = Robot.armSys.getArmEncoder();
