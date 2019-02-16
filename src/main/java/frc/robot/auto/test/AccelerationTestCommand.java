@@ -14,7 +14,7 @@ import frc.robot.Robot;
 public class AccelerationTestCommand extends Command {
 
   private CSVLogger loggerLeft, loggerRight;
-  private long startTime;
+  private long startTime, timeElapsed;
   private final double voltageDesired = 7.2;
   private final double kV = 2.0, vMin = 1.0;
 
@@ -33,7 +33,7 @@ public class AccelerationTestCommand extends Command {
 
   @Override
   protected void execute() {
-    long timeElapsed = System.currentTimeMillis() - startTime;
+    timeElapsed = System.currentTimeMillis() - startTime;
 
     final double velLeft = Robot.drivesys.getEncoderVelLeft(), velRight = Robot.drivesys.getEncoderVelRight();
     final double accLeft = Robot.drivesys.getEncoderAccLeft(), accRight = Robot.drivesys.getEncoderAccRight();
@@ -45,7 +45,7 @@ public class AccelerationTestCommand extends Command {
 
   @Override
   protected boolean isFinished() {
-    return voltageDesired >= 12.0;
+    return timeElapsed >= 3000;
   }
 
   @Override

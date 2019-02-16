@@ -17,7 +17,7 @@ import frc.robot.Ports;
 public class ClimbSubsystem extends Subsystem {
   private Solenoid climbSolOne, climbSolTwo;
 
-  public void ClimbSubsystem(){
+  public ClimbSubsystem(){
     climbSolOne = new Solenoid(Ports.CLIMB_SOLENOID_ONE);
     climbSolTwo = new Solenoid(Ports.CLIMB_SOLENOID_TWO);
   }
