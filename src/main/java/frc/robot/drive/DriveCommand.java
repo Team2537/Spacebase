@@ -27,8 +27,8 @@ public class DriveCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.driveSys.setMotors(HumanInput.getJoystickAxisLeft(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX,
-                HumanInput.getJoystickAxisRight(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX);
+        Robot.driveSys.setMotors(Robot.input.getJoystickAxisLeft(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX,
+                Robot.input.getJoystickAxisRight(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX);
 
     }
 

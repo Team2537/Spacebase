@@ -20,6 +20,7 @@ import frc.robot.arm.ArmSubsystem;
 import frc.robot.cameras.Cameras;
 
 public class Robot extends TimedRobot {
+    public static HumanInput input;
     public static DriveSubsystem driveSys;
     public static IntakeSubsystem intakeSys;
     public static ArmSubsystem armSys;
@@ -32,6 +33,8 @@ public class Robot extends TimedRobot {
     // Use this function for all initialization code
     @Override
     public void robotInit() {
+        input = new HumanInput();
+
         climbSys = new ClimbSubsystem();
         intakeSys = new IntakeSubsystem();
         driveSys = new DriveSubsystem();
@@ -41,7 +44,7 @@ public class Robot extends TimedRobot {
         cameras = new Cameras();
         robotState = new RobotStateEstimator(Specs.CONSTRAINTS, new Vec2(0, 0), 0);
 
-        HumanInput.registerButtons();
+        input.registerButtons();
         cameras.start();
     }
 

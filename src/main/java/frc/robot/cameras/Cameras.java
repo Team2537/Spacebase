@@ -12,7 +12,7 @@ package frc.robot.cameras;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
-import frc.robot.HumanInput;
+import frc.robot.Robot;
 
 /**
  * Add your docs here.
@@ -41,7 +41,7 @@ public class Cameras extends Thread{
     @Override
     public void run(){
         while(true){
-            if(HumanInput.cameraButton.get() && System.currentTimeMillis() > lastSwitched + 200){
+            if(Robot.input.cameraButton.get() && System.currentTimeMillis() > lastSwitched + 200){
                 if(camBoolean){
                     server.setSource(cam1);
                     camBoolean = !camBoolean;

@@ -12,30 +12,33 @@ import frc.robot.intake.FlywheelCommand;
 import frc.robot.intake.PneumaticExtendCommand;
 
 public class HumanInput {
-    /** Prevent this class from being instantiated. */
-    private HumanInput() {
+    public Joystick joystickLeft, joystickRight;
+    public JoystickButton 
+        intakeFlywheelsForward, intakeFlywheelsBackward, intakeSolExtend,
+        armFlywheelIn, armFlywheelOut, increasearmbutton, decreasearmbutton, 
+        climbEngageClutch, 
+        cameraButton
+    ;
+
+    public HumanInput() {
+        joystickLeft = new Joystick(Ports.LEFT_JOYSTICK);
+        joystickRight = new Joystick(Ports.RIGHT_JOYSTICK);
+
+        // Button aliases
+        intakeFlywheelsForward = new JoystickButton(joystickLeft, Ports.INTAKE_FLYWHEEL_OUT);
+        intakeFlywheelsBackward = new JoystickButton(joystickLeft, Ports.INTAKE_FLYWHEEL_IN);
+        armFlywheelIn = new JoystickButton(joystickLeft, Ports.ARM_INTAKE_FLYWHEEL_IN);
+        armFlywheelOut = new JoystickButton(joystickRight, Ports.ARM_INTAKE_FLYWHEEL_OUT);
+        intakeSolExtend = new JoystickButton(joystickRight, Ports.INTAKE_PNEUMATIC_EXTEND);
+        climbEngageClutch = new JoystickButton(joystickLeft, Ports.CLIMB_ENGAGE_CLUTCH);
+        increasearmbutton = new JoystickButton(joystickRight, Ports.ARM_UP_BUTTON);
+        decreasearmbutton = new JoystickButton(joystickRight, Ports.ARM_DOWN_BUTTON);
+        cameraButton = new JoystickButton(joystickLeft, Ports.CAMERA_BUTTON);
+        // public static Button solRetract = new JoystickButton(HumanInput.joystickLeft,
+        // Ports.PNEUMATIC_RETRACT);
     }
 
-    public static Joystick joystickLeft = new Joystick(Ports.LEFT_JOYSTICK);
-    public static Joystick joystickRight = new Joystick(Ports.RIGHT_JOYSTICK);
-    // Button aliases
-    // public static Button
-
-    public static JoystickButton intakeFlywheelsForward = new JoystickButton(joystickLeft, Ports.INTAKE_FLYWHEEL_OUT);
-    public static JoystickButton intakeFlywheelsBackward = new JoystickButton(joystickLeft, Ports.INTAKE_FLYWHEEL_IN);
-    public static JoystickButton armFlywheelIn = new JoystickButton(joystickLeft, Ports.ARM_INTAKE_FLYWHEEL_IN);
-    public static JoystickButton armFlywheelOut = new JoystickButton(joystickRight, Ports.ARM_INTAKE_FLYWHEEL_OUT);
-    public static JoystickButton intakeSolExtend = new JoystickButton(joystickRight, Ports.INTAKE_PNEUMATIC_EXTEND);
-    public static JoystickButton climbEngageClutch = new JoystickButton(joystickLeft, Ports.CLIMB_ENGAGE_CLUTCH);
-    public static JoystickButton increasearmbutton = new JoystickButton(joystickRight, Ports.ARM_UP_BUTTON);
-    public static JoystickButton decreasearmbutton = new JoystickButton(joystickRight, Ports.ARM_DOWN_BUTTON);
-    public static JoystickButton cameraButton = new JoystickButton(joystickLeft, Ports.CAMERA_BUTTON);
-    
-
-    // public static Button solRetract = new JoystickButton(HumanInput.joystickLeft,
-    // Ports.PNEUMATIC_RETRACT);
-
-    public static void registerButtons() {
+    public void registerButtons() {
         whileHeldCommand(armFlywheelIn, new ArmFlywheelCommand(true));
         whileHeldCommand(armFlywheelOut, new ArmFlywheelCommand(false));
         whileHeldCommand(intakeFlywheelsForward, new FlywheelCommand(true));
@@ -48,7 +51,7 @@ public class HumanInput {
 
     public static final int AXIS_X = 0, AXIS_Y = 1;
 
-    private static double getJoystickAxis(int axis, Joystick joystick) {
+    private double getJoystickAxis(int axis, Joystick joystick) {
         double val = joystick.getRawAxis(axis);
         if (Math.abs(val) <= Specs.JOYSTICK_DEADZONE)
             return 0;
@@ -56,11 +59,11 @@ public class HumanInput {
             return val;
     }
 
-    public static double getJoystickAxisLeft(int axis) {
+    public double getJoystickAxisLeft(int axis) {
         return getJoystickAxis(axis, joystickLeft);
     }
 
-    public static double getJoystickAxisRight(int axis) {
+    public double getJoystickAxisRight(int axis) {
         return getJoystickAxis(axis, joystickRight);
     }
 
