@@ -5,33 +5,29 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.manipulator;
+package frc.robot.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class XboxIntakeCommand extends Command {
-  public XboxIntakeCommand() {
-    requires(Robot.manipSys);
+public class DriveTestCommand extends Command {
+  private double speed;
+
+  public DriveTestCommand(double speed) {
+    requires(Robot.driveSys);
+    this.speed = speed;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    
+    Robot.driveSys.setMotors(speed, speed);
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(Robot.input.xbox.getRawAxis(2) >= 0.8){
-      Robot.manipSys.setArmFlywheelMotor(1);
-      Robot.intakeSys.setIntakeFlywheels(-0.2);
-    } else if (Robot.input.xbox.getRawAxis(3) >= 0.8){
-      Robot.manipSys.setArmFlywheelMotor(-1);
-    } else {
-      Robot.manipSys.setArmFlywheelMotor(0);
-    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -43,13 +39,13 @@ public class XboxIntakeCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.manipSys.setArmFlywheelMotor(0);
+    Robot.driveSys.setMotors(0, 0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.manipSys.setArmFlywheelMotor(0);
+    end();
   }
 }
