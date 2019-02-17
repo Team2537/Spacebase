@@ -18,8 +18,10 @@ import frc.robot.Specs;
 import frc.robot.arm.ArmManualCommand;
 import frc.robot.arm.DecreaseArmCommand;
 import frc.robot.arm.IncreaseArmCommand;
+import frc.robot.arm.SetArmCommand;
 import frc.robot.climb.ClimbCommand;
-import frc.robot.intake.ArmFlywheelCommand;
+import frc.robot.manipulator.ArmFlywheelCommand;
+import frc.robot.manipulator.ArmPneumaticCommand;
 import frc.robot.intake.FlywheelCommand;
 import frc.robot.intake.PneumaticExtendCommand;
 
@@ -30,7 +32,7 @@ public class HumanInputManipulatorXbox {
     public Joystick joystickLeft, joystickRight, xbox;
     public static final int AXIS_X = 0, AXIS_Y = 1;
     public JoystickButton 
-        intakeFlywheelsForward, intakeFlywheelsBackward, intakeSolExtend,
+        intakeFlywheelsForward, intakeFlywheelsBackward, armSolExtend, intakeSolExtend,
         armFlywheelIn, armFlywheelOut, 
         increasearmbutton, decreasearmbutton, armSetIntakeButton, armSetHighButton, armManualButton,
         climbEngageClutch, 
@@ -53,7 +55,8 @@ public class HumanInputManipulatorXbox {
         intakeFlywheelsForward = new JoystickButton(joystickLeft, 1);
         cameraButton = new JoystickButton(joystickLeft, 2);
         intakeFlywheelsBackward = new JoystickButton(joystickRight, 1);
-        intakeSolExtend = new JoystickButton(xbox, 6);
+        armSolExtend = new JoystickButton(xbox, 6);
+        intakeSolExtend = new JoystickButton(joystickRight, 3);
         increasearmbutton = new JoystickButton(xbox, 4);
         decreasearmbutton = new JoystickButton(xbox, 1);
         armSetIntakeButton = new JoystickButton(xbox, 3);
@@ -63,15 +66,16 @@ public class HumanInputManipulatorXbox {
     }
 
     public void registerButtons() {
-        whileHeldCommand(armFlywheelIn, new ArmFlywheelCommand(true));
-        whileHeldCommand(armFlywheelOut, new ArmFlywheelCommand(false));
         whileHeldCommand(intakeFlywheelsForward, new FlywheelCommand(true));
         whileHeldCommand(intakeFlywheelsBackward, new FlywheelCommand(false));
         whileHeldCommand(armManualButton, new ArmManualCommand());
-        whenPressedCommand(intakeSolExtend, new PneumaticExtendCommand());
+        whenPressedCommand(armSolExtend, new ArmPneumaticCommand());
         whenPressedCommand(increasearmbutton, new IncreaseArmCommand());
         whenPressedCommand(decreasearmbutton, new DecreaseArmCommand());
         whenPressedCommand(climbEngageClutch, new ClimbCommand());
+        whenPressedCommand(intakeSolExtend, new PneumaticExtendCommand());
+        whenPressedCommand(armSetHighButton, new SetArmCommand(0));//TODO FIX THIS
+        whenPressedCommand(armSetIntakeButton, new SetArmCommand(0)); // TODO FIX THIS TOO
     }
 
 

@@ -23,20 +23,16 @@ public class IntakeSubsystem extends Subsystem {
 
     private TalonSRX armFlywheel, intakeFlywheelOne, intakeFlywheelTwo;
     private DigitalInput infrared;
-    private Solenoid pneumatic1;
-    private Solenoid pneumatic2;
-    private Potentiometer pot;
+    private Solenoid intakePneumatic;
     private static final double FLYWHEEL_SPEED = 0.8;
-    private static final int POT_OFFSET = 0; // TODO find the real value of this
 
     public IntakeSubsystem() {
         armFlywheel = new TalonSRX(Ports.INTAKE_ARM_FLYWHEEL);
         intakeFlywheelOne = new TalonSRX(Ports.INTAKE_FLYWHEEL_ONE);
         intakeFlywheelTwo = new TalonSRX(Ports.INTAKE_FLYWHEEL_TWO);
         infrared = new DigitalInput(Ports.INTAKE_INFRARED);
-        pneumatic1 = new Solenoid(Ports.INTAKE_PNEUMATIC_ONE);
-        pneumatic2 = new Solenoid(Ports.INTAKE_PNEUMATIC_TWO);
-        pot = new AnalogPotentiometer(0, 3600, POT_OFFSET);
+        intakePneumatic = new Solenoid(Ports.INTAKE_PNEUMATIC_ONE);
+
     }
 
     public void setIntakeFlywheels(double speed) {
@@ -49,23 +45,11 @@ public class IntakeSubsystem extends Subsystem {
         armFlywheel.set(ControlMode.PercentOutput, speed);
     }
 
-    public void pneumaticExtend() {
-        pneumatic1.set(true);
-        pneumatic2.set(true);
+    public void setPneumatic(boolean state){
+        intakePneumatic.set(state);
     }
-
-    public void pneumaticRetract() {
-        pneumatic1.set(false);
-        pneumatic2.set(false);
-
-    }
-
     public boolean getIntakePneumatic() {
-        return pneumatic1.get();
-    }
-
-    public double getPotentiometer() {
-        return pot.get();
+        return intakePneumatic.get();
     }
 
     public boolean getInfrared() {
@@ -74,7 +58,7 @@ public class IntakeSubsystem extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        // setDefaultCommand(new XboxIntakeCommand());
+        
     }
 
 }

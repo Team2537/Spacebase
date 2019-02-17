@@ -13,7 +13,9 @@ import frc.robot.climb.ClimbSubsystem;
 import frc.robot.drive.DriveSubsystem;
 import frc.robot.drive.RobotStateUpdater;
 import frc.robot.input.HumanInput;
+import frc.robot.input.HumanInputManipulatorXbox;
 import frc.robot.intake.IntakeSubsystem;
+import frc.robot.manipulator.ManipulatorSubsystem;
 import frc.lib.motion.RobotStateEstimator;
 import frc.lib.util.Vec2;
 import frc.lib.vision.VisionInput;
@@ -21,11 +23,12 @@ import frc.robot.arm.ArmSubsystem;
 import frc.robot.cameras.Cameras;
 
 public class Robot extends TimedRobot {
-    public static HumanInput input;
+    public static HumanInputManipulatorXbox input;
     public static DriveSubsystem driveSys;
     public static IntakeSubsystem intakeSys;
     public static ArmSubsystem armSys;
     public static ClimbSubsystem climbSys;
+    public static ManipulatorSubsystem manipSys;
     public static PowerDistributionPanel pdp;
     public static VisionInput visionInput;
     public static RobotStateEstimator robotState;
@@ -34,12 +37,13 @@ public class Robot extends TimedRobot {
     // Use this function for all initialization code
     @Override
     public void robotInit() {
-        input = new HumanInput();
+        input = new HumanInputManipulatorXbox();
 
         climbSys = new ClimbSubsystem();
         intakeSys = new IntakeSubsystem();
         driveSys = new DriveSubsystem();
         armSys = new ArmSubsystem();
+        manipSys = new ManipulatorSubsystem();
 
         visionInput = new VisionInput();
         cameras = new Cameras();
@@ -48,6 +52,7 @@ public class Robot extends TimedRobot {
 
         driveSys.initDefaultCommand();
         armSys.initDefaultCommand();
+        manipSys.initDefaultCommand();
         input.registerButtons();
         cameras.start();
     }

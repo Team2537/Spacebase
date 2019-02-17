@@ -48,6 +48,7 @@ public class ArmSubsystem extends Subsystem {
             armLevel = level;
         } else {
             System.out.println("error in Arm Subsystem method setArmLevel()");
+            armLevel = 0;
         }
         
     }
