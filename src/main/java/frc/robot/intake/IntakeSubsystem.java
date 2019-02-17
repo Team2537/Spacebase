@@ -21,13 +21,12 @@ public class IntakeSubsystem extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    private TalonSRX armFlywheel, intakeFlywheelOne, intakeFlywheelTwo;
+    private TalonSRX intakeFlywheelOne, intakeFlywheelTwo;
     private DigitalInput infrared;
     private Solenoid intakePneumatic;
     private static final double FLYWHEEL_SPEED = 0.8;
 
     public IntakeSubsystem() {
-        armFlywheel = new TalonSRX(Ports.INTAKE_ARM_FLYWHEEL);
         intakeFlywheelOne = new TalonSRX(Ports.INTAKE_FLYWHEEL_ONE);
         intakeFlywheelTwo = new TalonSRX(Ports.INTAKE_FLYWHEEL_TWO);
         infrared = new DigitalInput(Ports.INTAKE_INFRARED);
@@ -41,9 +40,7 @@ public class IntakeSubsystem extends Subsystem {
 
     }
 
-    public void setArmFlywheel(double speed) {
-        armFlywheel.set(ControlMode.PercentOutput, speed);
-    }
+
 
     public void setPneumatic(boolean state){
         intakePneumatic.set(state);
@@ -60,5 +57,8 @@ public class IntakeSubsystem extends Subsystem {
     public void initDefaultCommand() {
         
     }
+
+	public void setArmFlywheelMotor(int i) {
+	}
 
 }
