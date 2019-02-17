@@ -18,11 +18,7 @@ public class ClimbCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        if (Robot.climbSys.getSolenoid()) {
-            Robot.climbSys.setClimbSolenoid(false);
-        } else {
-            Robot.climbSys.setClimbSolenoid(true);
-        }
+        Robot.climbSys.setClimbSolenoid(!Robot.climbSys.getSolenoid());
     }
 
     // Called repeatedly when this Command is scheduled to run

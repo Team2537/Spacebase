@@ -5,50 +5,48 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.intake;
+package frc.robot.manipulator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class XboxIntakeCommand extends Command {
-  public XboxIntakeCommand() {
-    requires(Robot.intakeSys);
+public class ArmPneumaticCommand extends Command {
+  private long startTime;
+
+  public ArmPneumaticCommand() {
+    requires(Robot.manipSys);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    
+    startTime = System.currentTimeMillis();
+    Robot.manipSys.setArmPneumatic(true);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(/*Robot.input.xbox.getRawAxis(2) >= 0.8*/ true){
-      Robot.intakeSys.setArmFlywheel(1);
-    } else if (/*Robot.input.xbox.getRawAxis(3) >= 0.8 */ true){
-      Robot.intakeSys.setArmFlywheel(-1);
-    } else {
-      Robot.intakeSys.setArmFlywheel(0);
-    }
+
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return System.currentTimeMillis() >= startTime + 500;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.intakeSys.setArmFlywheel(0);
+    Robot.manipSys.setArmPneumatic(false);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    Robot.intakeSys.setArmFlywheel(0);
+    end();
   }
 }

@@ -5,26 +5,32 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.arm;
+package frc.robot.manipulator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ArmManualCommand extends Command {
-  public ArmManualCommand() {
-    requires(Robot.armSys);
+public class XboxIntakeCommand extends Command {
+  public XboxIntakeCommand() {
+    requires(Robot.manipSys);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.armSys.setArmMotor(Robot.input.getXboxAxis(1));
-    Robot.armSys.setWristMotor(Robot.input.getXboxAxis(5));
+    if(Robot.input.xbox.getRawAxis(2) >= 0.8){
+      Robot.manipSys.setArmFlywheelMotor(1);
+    } else if (Robot.input.xbox.getRawAxis(3) >= 0.8){
+      Robot.manipSys.setArmFlywheelMotor(-1);
+    } else {
+      Robot.manipSys.setArmFlywheelMotor(0);
+    }
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -36,14 +42,13 @@ public class ArmManualCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.armSys.setArmMotor(0);
-    Robot.armSys.setWristMotor(0);
+    Robot.manipSys.setArmFlywheelMotor(0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
+    Robot.manipSys.setArmFlywheelMotor(0);
   }
 }

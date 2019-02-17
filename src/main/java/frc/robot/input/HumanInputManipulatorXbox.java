@@ -17,17 +17,19 @@ import frc.robot.Specs;
 import frc.robot.arm.ArmManualCommand;
 import frc.robot.arm.DecreaseArmCommand;
 import frc.robot.arm.IncreaseArmCommand;
+import frc.robot.arm.SetArmCommand;
 import frc.robot.climb.ClimbCommand;
+import frc.robot.manipulator.ArmFlywheelCommand;
+import frc.robot.manipulator.ArmPneumaticCommand;
 import frc.robot.intake.FlywheelCommand;
 import frc.robot.intake.PneumaticExtendCommand;
 
 public class HumanInputManipulatorXbox {
     public static final int AXIS_X = 0, AXIS_Y = 1;
-
-    public final Joystick joystickLeft, joystickRight, xbox;
-    public final JoystickButton 
-        intakeFlywheelsForward, intakeFlywheelsBackward, intakeSolExtend,
-        // armFlywheelIn, armFlywheelOut, 
+    public Joystick joystickLeft, joystickRight, xbox;
+    public JoystickButton 
+        intakeFlywheelsForward, intakeFlywheelsBackward, armSolExtend, intakeSolExtend,
+        armFlywheelIn, armFlywheelOut, 
         increasearmbutton, decreasearmbutton, armSetIntakeButton, armSetHighButton, armManualButton,
         climbEngageClutch, 
         cameraButton
@@ -47,27 +49,27 @@ public class HumanInputManipulatorXbox {
 
         // Right Joystick
         intakeFlywheelsBackward = new JoystickButton(joystickRight, 1);
-
-        // Xbox Controller
-        decreasearmbutton   = new JoystickButton(xbox, 1);
-        armSetHighButton    = new JoystickButton(xbox, 2);
-        armSetIntakeButton  = new JoystickButton(xbox, 3);
-        increasearmbutton   = new JoystickButton(xbox, 4);
-        armManualButton     = new JoystickButton(xbox, 5);
-        intakeSolExtend     = new JoystickButton(xbox, 6);
+        armSolExtend = new JoystickButton(xbox, 6);
+        intakeSolExtend = new JoystickButton(joystickRight, 3);
+        increasearmbutton = new JoystickButton(xbox, 4);
+        decreasearmbutton = new JoystickButton(xbox, 1);
+        armSetIntakeButton = new JoystickButton(xbox, 3);
+        armSetHighButton = new JoystickButton(xbox, 2);
+        armManualButton = new JoystickButton(xbox, 5);
+      
     }
 
     public void registerButtons() {
-        //whileHeldCommand(armFlywheelIn, new ArmFlywheelCommand(true));
-        //whileHeldCommand(armFlywheelOut, new ArmFlywheelCommand(false));
-        // TODO: map these ^
         whileHeldCommand(intakeFlywheelsForward, new FlywheelCommand(true));
         whileHeldCommand(intakeFlywheelsBackward, new FlywheelCommand(false));
         whileHeldCommand(armManualButton, new ArmManualCommand());
-        whenPressedCommand(intakeSolExtend, new PneumaticExtendCommand());
+        whenPressedCommand(armSolExtend, new ArmPneumaticCommand());
         whenPressedCommand(increasearmbutton, new IncreaseArmCommand());
         whenPressedCommand(decreasearmbutton, new DecreaseArmCommand());
         whenPressedCommand(climbEngageClutch, new ClimbCommand());
+        whenPressedCommand(intakeSolExtend, new PneumaticExtendCommand());
+        whenPressedCommand(armSetHighButton, new SetArmCommand(0));//TODO FIX THIS
+        whenPressedCommand(armSetIntakeButton, new SetArmCommand(0)); // TODO FIX THIS TOO
     }
 
 
