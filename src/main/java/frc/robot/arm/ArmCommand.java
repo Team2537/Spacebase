@@ -7,6 +7,8 @@
 
 package frc.robot.arm;
 
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
@@ -43,7 +45,11 @@ public class ArmCommand extends Command {
         double actualChange_arm = actual_arm - actualPrev_arm;
         actualPrev_arm = actual_arm;
         if (Math.abs(error_arm) > TOLERANCE_arm) {
+            Robot.armSys.setArmMode(IdleMode.kCoast);
             Robot.armSys.setArmMotor(kP_arm * error_arm + kI_arm * errorSum_arm - kD_arm * actualChange_arm);
+        } else {
+            Robot.armSys.setArmMode(IdleMode.kBrake);
+            Robot.armSys.setArmMotor(0);
         }
 
         double setpoint_wrist = Robot.armSys.getWristSetpoint();
@@ -56,6 +62,8 @@ public class ArmCommand extends Command {
             Robot.armSys.setWristMotor(
                     -(kP_wrist * error_wrist + kI_wrist * errorSum_wrist - kD_wrist * actualChange_wrist));
             // temporarily negative for testing
+        } else {
+            Robot.armSys.setWristMotor(0);
         }
 
     }

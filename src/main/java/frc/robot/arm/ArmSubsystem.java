@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
@@ -13,6 +14,7 @@ import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import frc.robot.Ports;
 
 public class ArmSubsystem extends Subsystem {
+    public static final IdleMode DEFAULT_MODE = IdleMode.kBrake;
 
     private int armLevel;
     private static final int ARM_LEVEL_MIN = 0, ARM_LEVEL_MAX = 6;
@@ -29,12 +31,13 @@ public class ArmSubsystem extends Subsystem {
 
     public ArmSubsystem() {
         armMotor = new CANSparkMax(Ports.ARM_MOTOR, MotorType.kBrushless);
+        setArmMode(DEFAULT_MODE);
+
         armEncoder = new CANEncoder(armMotor);
         wristMotor = new TalonSRX(Ports.WRIST_MOTOR);
         wristEncoder = new Encoder(1,0);
         pot = new AnalogPotentiometer(Ports.WRIST_POTENTIOMETER, 3600, 0); //TODO: determine offset
         armLevel = 0;
-        
     }
 
     public void increaseArmLevel(){
@@ -86,6 +89,10 @@ public class ArmSubsystem extends Subsystem {
 
     public double getPotentiometer(){
         return pot.get();
+    }
+
+    public void setArmMode(CANSparkMax.IdleMode mode){
+        armMotor.setIdleMode(mode);
     }
 
     @Override
