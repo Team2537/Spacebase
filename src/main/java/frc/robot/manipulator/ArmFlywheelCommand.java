@@ -30,6 +30,7 @@ public class ArmFlywheelCommand extends Command {
     protected void execute() {
       if (commandState) {
         Robot.manipSys.setArmFlywheelMotor(FLYWHEEL_SPEED);
+        Robot.intakeSys.setIntakeFlywheels(-0.2);
     } else {
         Robot.manipSys.setArmFlywheelMotor(-FLYWHEEL_SPEED);
     }
