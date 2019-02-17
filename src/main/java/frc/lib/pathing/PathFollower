@@ -1,45 +1,53 @@
 package frc.lib.pathing;
 
+import frc.lib.motion.ChassisState;
+import frc.lib.motion.DriveSpecs;
 import frc.lib.motion.MotionProfile;
 import frc.lib.motion.MotionState;
+import frc.lib.motion.Pose2d;
 import frc.lib.motion.RobotConstraints;
+import frc.lib.pathing.MotionProfileGenerator.ProfileConstraints;
 import frc.lib.util.Util;
 import frc.lib.util.Vec2;
 
 public class PathFollower {
-    private final double V_kv, V_ka, V_min;
+    private final double dt, timestep;
+    private final Pose2d start;
     private final Waypoint[] waypoints;
     private final MotionProfile profile;
-    public PathFollower(Vec2 start, double startAngle, Waypoint[] waypoints, double timestep,
-         double V_kv, double V_ka, double V_min, double driveLength){
+    private final DriveSpecs drive;
+    
+    private double timeElapsed;
 
-        this.V_kv = V_kv;
-        this.V_ka = V_ka;
-        this.V_min = V_min;
+    public PathFollower(Pose2d start, DriveSpecs drive, double dt, Waypoint[] waypoints, double profileTimestep){
+        this.dt = dt;
+        this.timestep = profileTimestep;
         this.waypoints = waypoints;
+        this.drive = drive;
+        this.start = start;
 
         // Find the optimal accMax and velMax        
         final double TOLERANCE = 1e-5;
         final double accMax = findOptimalAccMax(TOLERANCE);
         final double velMax = accMaxToVelMax(accMax);
 
-        this.profile = new MotionProfile(MotionState.fromWheels(
-            new RobotConstraints(velMax, accMax, driveLength), 
-        0, start, startAngle, 0,0,0,0));
-        MotionProfileGenerator.generate(profile, timestep, waypoints);
+        final ProfileConstraints constraints = new ProfileConstraints(accMax, velMax);
+        this.profile = MotionProfileGenerator.generate(start, drive, waypoints, constraints, timestep);
+
+        timeElapsed = 0;
     }
 
     public double accMaxToVelMax(double accMax){
-        return (12 - V_min - V_ka*accMax)/V_kv;
+        return (12 - drive.voltage_min - drive.voltage_kA*accMax)/drive.voltage_kV;
     }
     public double velMaxToAccMax(double velMax){
-        return (12 - V_min - V_kv*velMax)/V_ka;
+        return (12 - drive.voltage_min - drive.voltage_kV*velMax)/drive.voltage_kA;
     }
 
     private double calculateProfileTime(double accMax){
         double velMax = accMaxToVelMax(accMax);
-        RobotConstraints constraints = new RobotConstraints(velMax, accMax, 12);
-        MotionProfile profile = MotionProfileGenerator.generate(constraints, 0.003, waypoints);
+        ProfileConstraints constraints = new ProfileConstraints(accMax, velMax);
+        MotionProfile profile = MotionProfileGenerator.generate(start, drive, waypoints, constraints, timestep);
         return profile.dt();
     }
 
@@ -82,34 +90,47 @@ public class PathFollower {
         else return (c+b)/2;
     }
 
-    private void updateNonlinearFeedback(MotionState state) {
+    public void update(MotionState stateCurrent){
+        MotionState stateSetpoint = profile.getState(timeElapsed);
+        Pose2d error = stateSetpoint.pose.delta(stateCurrent.pose);
+
+        timeElapsed += dt;
+    }
+
+    private void getNonlinearFeedback(MotionState state, Pose2d error) {
+        // Based on Team 254's 2018 code
         // Implements eqn. 5.12 from https://www.dis.uniroma1.it/~labrob/pub/papers/Ramsete01.pdf
-        final double kBeta = 2.0;  // >0.
+        final double kBeta = 3100.0;  // >0.
         final double kZeta = 0.7;  // Damping coefficient, [0, 1].
 
         // Compute gain parameter.
-        final double k = 2.0 * kZeta * Math.sqrt(kBeta*state.vel*state.vel + state.angVel*state.angVel);
+        final double k = 2.0 * kZeta * Math.sqrt(kBeta * state.vel.linear * state.vel.linear
+                + state.vel.angular * state.vel.angular);
 
         // Compute error components.
-        final double angle_error_rads = mError.getRotation().getRadians();
+        final double angle_error_rads = error.ang;
         final double sin_x_over_x = Util.epsilonEquals(angle_error_rads, 0.0, 1E-2) ?
                 1.0 : mError.getRotation().sin() / angle_error_rads;
-        final double vel = state.vel * mError.getRotation().cos() + k * mError.getTranslation().x();
-        
-        final double angVel = state.angVel + k * angle_error_rads +
-                        state.vel * kBeta * sin_x_over_x * mError.getTranslation().y();
+
+        final ChassisState adjusted_velocity = new ChassisState(
+                state.vel.linear * mError.getRotation().cos() +
+                        k * Units.inches_to_meters(mError.getTranslation().x()),
+                dynamics.chassis_velocity.angular + k * angle_error_rads +
+                        dynamics.chassis_velocity.linear * kBeta * sin_x_over_x * Units.inches_to_meters(mError
+                                .getTranslation().y()));
 
         // Compute adjusted left and right wheel velocities.
+        dynamics.chassis_velocity = adjusted_velocity;
         dynamics.wheel_velocity = mModel.solveInverseKinematics(adjusted_velocity);
 
-        final double acc = mDt == 0 ? 0.0 : (dynamics.chassis_velocity.linear - prev_velocity_
+        dynamics.chassis_acceleration.linear = mDt == 0 ? 0.0 : (dynamics.chassis_velocity.linear - prev_velocity_
                 .linear) / mDt;
         dynamics.chassis_acceleration.angular = mDt == 0 ? 0.0 : (dynamics.chassis_velocity.angular - prev_velocity_
                 .angular) / mDt;
 
         prev_velocity_ = dynamics.chassis_velocity;
 
-        DriveSpecs.WheelState feedforward_voltages = mModel.solveInverseDynamics(dynamics.chassis_velocity,
+        DifferentialDrive.WheelState feedforward_voltages = mModel.solveInverseDynamics(dynamics.chassis_velocity,
                 dynamics.chassis_acceleration).voltage;
 
         return new Output(dynamics.wheel_velocity.left, dynamics.wheel_velocity.right, dynamics.wheel_acceleration
