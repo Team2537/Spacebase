@@ -39,12 +39,15 @@ public class Robot extends TimedRobot {
         climbSys = new ClimbSubsystem();
         intakeSys = new IntakeSubsystem();
         driveSys = new DriveSubsystem();
-        pdp = new PowerDistributionPanel();
         armSys = new ArmSubsystem();
+
         visionInput = new VisionInput();
         cameras = new Cameras();
         robotState = new RobotStateEstimator(Specs.CONSTRAINTS, new Vec2(0, 0), 0);
+        pdp = new PowerDistributionPanel();
 
+        driveSys.initDefaultCommand();
+        armSys.initDefaultCommand();
         input.registerButtons();
         cameras.start();
     }
@@ -68,17 +71,20 @@ public class Robot extends TimedRobot {
     // Called periodically during the Sandstorm
     @Override
     public void autonomousPeriodic() {
+        Scheduler.getInstance().run();
     }
 
     /* Teleop Period */
     // Called at the beginning of the Teleop period
     @Override
     public void teleopInit() {
+        Scheduler.getInstance().removeAll();
     }
 
     // Called periodically during the Teleop period
     @Override
     public void teleopPeriodic() {
+        Scheduler.getInstance().run();
     }
 
     @Override
