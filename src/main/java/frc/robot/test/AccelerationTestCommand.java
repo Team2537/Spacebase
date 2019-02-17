@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.auto.test;
+package frc.robot.test;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.lib.util.CSVLogger;

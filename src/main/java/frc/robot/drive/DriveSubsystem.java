@@ -9,8 +9,6 @@ package frc.robot.drive;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.lib.units.Distances;
-import frc.lib.units.Times;
 import frc.lib.units.Units;
 import frc.robot.Ports;
 import frc.robot.Specs;
@@ -30,10 +28,10 @@ public class DriveSubsystem extends Subsystem {
 	/****************************************************************************/
 
     // convert from revolutions to inches
-    public static final double ENCODER_POSITION_FACTOR = Specs.DRIVE_WHEEL_DIAMETER*Math.PI;
+    public static final double ENCODER_POSITION_FACTOR = Units.revolutions_to_inches(1, Specs.DRIVE_WHEEL_DIAMETER);
     
     // convert from revolutions/minute to inches/second
-    public static final double ENCODER_VELOCITY_FACTOR = ENCODER_POSITION_FACTOR/60;
+    public static final double ENCODER_VELOCITY_FACTOR = Units.revoltionsPerMinute_to_inchesPerSecond(1, Specs.DRIVE_WHEEL_DIAMETER);
     
     public static final IdleMode DEFAULT_IDLE_MODE = IdleMode.kBrake;
     public static final MotorType MOTOR_TYPE = MotorType.kBrushless;
@@ -154,7 +152,7 @@ public class DriveSubsystem extends Subsystem {
             positions[i] = encoders[i].getPosition();
         }
         double avg = averageWithoutZeroes(positions);
-        return Units.convertDistance(avg, Distances.REVOLUTIONS, Distances.INCHES);
+        return Units.revolutions_to_inches(avg, Specs.DRIVE_WHEEL_DIAMETER);
     }
 
     public double getEncoderPosRight() {
@@ -171,7 +169,7 @@ public class DriveSubsystem extends Subsystem {
             vels[i] = encoders[i].getVelocity();
         }
         double avg = averageWithoutZeroes(vels);
-        return Units.convertSpeed(avg, Distances.REVOLUTIONS, Times.MINUTES, Distances.INCHES, Times.SECONDS);
+        return Units.revoltionsPerMinute_to_inchesPerSecond(avg, Specs.DRIVE_WHEEL_DIAMETER);
     }
 
     public double getEncoderVelRight() {
@@ -257,7 +255,7 @@ public class DriveSubsystem extends Subsystem {
     }
     
     public double getGyroRadians() {
-        return getGyroDegrees() * Math.PI / 180;
+        return Units.degrees_to_radians(getGyroDegrees());
     }
 
 

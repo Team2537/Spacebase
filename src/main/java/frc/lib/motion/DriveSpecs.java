@@ -3,16 +3,18 @@ package frc.lib.motion;
 public class DriveSpecs {
     public final double wheelAxleLength;
     public final double wheelDiameter;
-    public final VoltageParameters voltageParams;
+    public final double voltage_kV, voltage_kA, voltage_min;
     
-    public DriveSpecs(double wheelAxleLength, double wheelDiameter, VoltageParameters voltageParams){
+    public DriveSpecs(double wheelAxleLength, double wheelDiameter, double voltage_kA, double voltage_kV, double voltage_min){
         this.wheelAxleLength = wheelAxleLength;
         this.wheelDiameter = wheelDiameter;
-        this.voltageParams = voltageParams;
+        this.voltage_kA = voltage_kA;
+        this.voltage_kV = voltage_kV;
+        this.voltage_min = voltage_min;
     }
 
     public DriveSpecs(double wheelAxleLength, double wheelDiameter){
-        this(wheelAxleLength, wheelDiameter, new VoltageParameters(0,0,0));
+        this(wheelAxleLength, wheelDiameter, 0,0,0);
     }
 
     public ChassisState toChassis(WheelState wheels){
@@ -32,23 +34,14 @@ public class DriveSpecs {
     public double[] encode(){
         return new double[]{
             wheelAxleLength, wheelDiameter,
-            voltageParams.kV, voltageParams.kA, voltageParams.min
+            voltage_kA, voltage_kV, voltage_min
         };
     }
 
     public static DriveSpecs decode(double[] p){
         return new DriveSpecs(
             p[0], p[1],
-            new VoltageParameters(p[2], p[3], p[4])
+            p[2], p[3], p[4]
         );
-    }
-
-    public static class VoltageParameters {
-        public final double kV, kA, min;
-        public VoltageParameters(double kV, double kA, double min){
-            this.kV = kV;
-            this.kA = kA;
-            this.min = min;
-        }
     }
 }

@@ -37,4 +37,7 @@ public class Util {
         while(heading >= 180) heading -= 360;
         return heading;
     }
+    public static double roundDigits(double value, int digits){
+		return (int)(value * Math.pow(10, digits))/Math.pow(10, digits);
+    }
 }

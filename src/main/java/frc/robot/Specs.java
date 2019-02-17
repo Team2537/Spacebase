@@ -1,7 +1,6 @@
 package frc.robot;
 
 import frc.lib.motion.DriveSpecs;
-import frc.lib.motion.DriveSpecs.VoltageParameters;
 
 public class Specs {
     public static final double ROBOT_PERIOD_SECONDS = 0.02;
@@ -18,7 +17,7 @@ public class Specs {
 
     public static final DriveSpecs DRIVE_SPECS = new DriveSpecs(
         DRIVE_AXLE_LENGTH, DRIVE_WHEEL_DIAMETER,
-        new VoltageParameters(DRIVE_VOLTAGE_kV, DRIVE_VOLTAGE_kA, DRIVE_VOLTAGE_MIN)
+        DRIVE_VOLTAGE_kV, DRIVE_VOLTAGE_kA, DRIVE_VOLTAGE_MIN
     );
     
 }
