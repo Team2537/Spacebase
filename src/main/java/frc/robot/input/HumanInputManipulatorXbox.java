@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Ports;
 import frc.robot.Specs;
+import frc.robot.arm.ArmManualCommand;
 import frc.robot.arm.DecreaseArmCommand;
 import frc.robot.arm.IncreaseArmCommand;
 import frc.robot.climb.ClimbCommand;
@@ -27,35 +28,38 @@ import frc.robot.intake.PneumaticExtendCommand;
  */
 public class HumanInputManipulatorXbox {
     public Joystick joystickLeft, joystickRight, xbox;
+    public static final int AXIS_X = 0, AXIS_Y = 1;
     public JoystickButton 
         intakeFlywheelsForward, intakeFlywheelsBackward, intakeSolExtend,
-        armFlywheelIn, armFlywheelOut, increasearmbutton, decreasearmbutton, 
+        armFlywheelIn, armFlywheelOut, 
+        increasearmbutton, decreasearmbutton, armSetIntakeButton, armSetHighButton, armManualButton,
         climbEngageClutch, 
         cameraButton
+    
     ;
+
     
 
 
     public HumanInputManipulatorXbox() {
+        //Declaration of Controllers
         joystickLeft = new Joystick(Ports.LEFT_JOYSTICK);
         joystickRight = new Joystick(Ports.RIGHT_JOYSTICK);
         xbox = new Joystick(Ports.XBOX_CONTROLLER);
         
-        
-        
-
-        
+          
         // Button aliases
+        climbEngageClutch = new JoystickButton(joystickLeft, 3);
         intakeFlywheelsForward = new JoystickButton(joystickLeft, 1);
+        cameraButton = new JoystickButton(joystickLeft, 2);
         intakeFlywheelsBackward = new JoystickButton(joystickRight, 1);
-        armFlywheelIn = new JoystickButton(joystickLeft, Ports.ARM_INTAKE_FLYWHEEL_IN);
-        armFlywheelOut = new JoystickButton(joystickRight, Ports.ARM_INTAKE_FLYWHEEL_OUT);
-        intakeSolExtend = new JoystickButton(joystickRight, Ports.INTAKE_PNEUMATIC_EXTEND);
-        climbEngageClutch = new JoystickButton(joystickLeft, Ports.CLIMB_ENGAGE_CLUTCH);
-        increasearmbutton = new JoystickButton(joystickRight, Ports.ARM_UP_BUTTON);
-        decreasearmbutton = new JoystickButton(joystickRight, Ports.ARM_DOWN_BUTTON);
-        cameraButton = new JoystickButton(joystickLeft, Ports.CAMERA_BUTTON);
-        
+        intakeSolExtend = new JoystickButton(xbox, 6);
+        increasearmbutton = new JoystickButton(xbox, 4);
+        decreasearmbutton = new JoystickButton(xbox, 1);
+        armSetIntakeButton = new JoystickButton(xbox, 3);
+        armSetHighButton = new JoystickButton(xbox, 2);
+        armManualButton = new JoystickButton(xbox, 5);
+      
     }
 
     public void registerButtons() {
@@ -63,13 +67,13 @@ public class HumanInputManipulatorXbox {
         whileHeldCommand(armFlywheelOut, new ArmFlywheelCommand(false));
         whileHeldCommand(intakeFlywheelsForward, new FlywheelCommand(true));
         whileHeldCommand(intakeFlywheelsBackward, new FlywheelCommand(false));
+        whileHeldCommand(armManualButton, new ArmManualCommand());
         whenPressedCommand(intakeSolExtend, new PneumaticExtendCommand());
         whenPressedCommand(increasearmbutton, new IncreaseArmCommand());
         whenPressedCommand(decreasearmbutton, new DecreaseArmCommand());
         whenPressedCommand(climbEngageClutch, new ClimbCommand());
     }
 
-    public static final int AXIS_X = 0, AXIS_Y = 1;
 
     private double getJoystickAxis(int axis, Joystick joystick) {
         double val = joystick.getRawAxis(axis);
@@ -85,6 +89,10 @@ public class HumanInputManipulatorXbox {
 
     public double getJoystickAxisRight(int axis) {
         return getJoystickAxis(axis, joystickRight);
+    }
+
+    public double getXboxAxis(int axis){
+        return getJoystickAxis(axis, xbox);
     }
 
     private static void whenPressedCommand(Button button, Command command) {
