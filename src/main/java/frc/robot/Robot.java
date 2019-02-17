@@ -71,20 +71,20 @@ public class Robot extends TimedRobot {
     // Called periodically during the Sandstorm
     @Override
     public void autonomousPeriodic() {
-        Scheduler.getInstance().run();
+
     }
 
     /* Teleop Period */
     // Called at the beginning of the Teleop period
     @Override
     public void teleopInit() {
-        Scheduler.getInstance().removeAll();
+
     }
 
     // Called periodically during the Teleop period
     @Override
     public void teleopPeriodic() {
-        Scheduler.getInstance().run();
+
     }
 
     @Override
