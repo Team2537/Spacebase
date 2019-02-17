@@ -15,8 +15,8 @@ import frc.robot.manipulator.ArmFlywheelCommand;
 import frc.robot.manipulator.ArmPneumaticCommand;
 
 public class HumanInput {
-    public Joystick joystickLeft, joystickRight;
-    public JoystickButton 
+    public final Joystick joystickLeft, joystickRight;
+    public final JoystickButton 
         intakeFlywheelsForward, intakeFlywheelsBackward, intakeSolExtend,
         armFlywheelIn, armFlywheelOut, increasearmbutton, decreasearmbutton, armSolExtend,
         climbEngageClutch, 
@@ -24,6 +24,7 @@ public class HumanInput {
     ;
 
     public HumanInput() {
+        /*  --- Controllers ---   */
         joystickLeft = new Joystick(Ports.LEFT_JOYSTICK);
         joystickRight = new Joystick(Ports.RIGHT_JOYSTICK);
 

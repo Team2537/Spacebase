@@ -9,7 +9,6 @@ package frc.robot.input;
 
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
@@ -25,35 +24,30 @@ import frc.robot.manipulator.ArmPneumaticCommand;
 import frc.robot.intake.FlywheelCommand;
 import frc.robot.intake.PneumaticExtendCommand;
 
-/**
- * Add your docs here.
- */
 public class HumanInputManipulatorXbox {
-    public Joystick joystickLeft, joystickRight, xbox;
     public static final int AXIS_X = 0, AXIS_Y = 1;
+    public Joystick joystickLeft, joystickRight, xbox;
     public JoystickButton 
         intakeFlywheelsForward, intakeFlywheelsBackward, armSolExtend, intakeSolExtend,
         armFlywheelIn, armFlywheelOut, 
         increasearmbutton, decreasearmbutton, armSetIntakeButton, armSetHighButton, armManualButton,
         climbEngageClutch, 
         cameraButton
-    
     ;
 
-    
-
-
     public HumanInputManipulatorXbox() {
-        //Declaration of Controllers
+        /*   --- Controllers ---  */
         joystickLeft = new Joystick(Ports.LEFT_JOYSTICK);
         joystickRight = new Joystick(Ports.RIGHT_JOYSTICK);
         xbox = new Joystick(Ports.XBOX_CONTROLLER);
-        
           
-        // Button aliases
-        climbEngageClutch = new JoystickButton(joystickLeft, 3);
-        intakeFlywheelsForward = new JoystickButton(joystickLeft, 1);
-        cameraButton = new JoystickButton(joystickLeft, 2);
+        /* --- Button Aliases --- */
+        // Left Joystick
+        intakeFlywheelsForward  = new JoystickButton(joystickLeft, 1);
+        cameraButton            = new JoystickButton(joystickLeft, 2);
+        climbEngageClutch       = new JoystickButton(joystickLeft, 3);
+
+        // Right Joystick
         intakeFlywheelsBackward = new JoystickButton(joystickRight, 1);
         armSolExtend = new JoystickButton(xbox, 6);
         intakeSolExtend = new JoystickButton(joystickRight, 3);
