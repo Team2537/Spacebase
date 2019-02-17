@@ -9,7 +9,6 @@ package frc.robot.arm;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.input.HumanInput;
 
 public class ArmManualCommand extends Command {
   public ArmManualCommand() {
