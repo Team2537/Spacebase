@@ -30,7 +30,7 @@ public class ArmFlywheelCommand extends Command {
     protected void execute() {
       if (commandState) {
         Robot.manipSys.setArmFlywheelMotor(FLYWHEEL_SPEED);
-        Robot.intakeSys.setIntakeFlywheels(-0.2);
+        Robot.intakeSys.setIntakeFlywheels(-0);
     } else {
         Robot.manipSys.setArmFlywheelMotor(-FLYWHEEL_SPEED);
     }
@@ -45,13 +45,13 @@ public class ArmFlywheelCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.intakeSys.setArmFlywheel(0);
+        Robot.manipSys.setArmFlywheelMotor(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.intakeSys.setArmFlywheel(0);
+        end();
     }
 }

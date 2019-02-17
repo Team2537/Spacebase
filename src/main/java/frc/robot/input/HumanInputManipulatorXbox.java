@@ -60,8 +60,8 @@ public class HumanInputManipulatorXbox {
     }
 
     public void registerButtons() {
-        whileHeldCommand(intakeFlywheelsForward, new FlywheelCommand(true));
-        whileHeldCommand(intakeFlywheelsBackward, new FlywheelCommand(false));
+        whileHeldCommand(intakeFlywheelsForward, new FlywheelCommand(false));
+        whileHeldCommand(intakeFlywheelsBackward, new FlywheelCommand(true));
         whileHeldCommand(armManualButton, new ArmManualCommand());
         whenPressedCommand(armSolExtend, new ArmPneumaticCommand());
         whenPressedCommand(increasearmbutton, new IncreaseArmCommand());
