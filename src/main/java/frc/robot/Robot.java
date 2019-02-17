@@ -12,12 +12,11 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.climb.ClimbSubsystem;
 import frc.robot.drive.DriveSubsystem;
 import frc.robot.drive.RobotStateUpdater;
-import frc.robot.input.HumanInput;
 import frc.robot.input.HumanInputManipulatorXbox;
 import frc.robot.intake.IntakeSubsystem;
 import frc.robot.manipulator.ManipulatorSubsystem;
+import frc.lib.motion.Pose2d;
 import frc.lib.motion.RobotStateEstimator;
-import frc.lib.util.Vec2;
 import frc.lib.vision.VisionInput;
 import frc.robot.arm.ArmSubsystem;
 import frc.robot.cameras.Cameras;
@@ -47,7 +46,7 @@ public class Robot extends TimedRobot {
 
         visionInput = new VisionInput();
         cameras = new Cameras();
-        robotState = new RobotStateEstimator(Specs.CONSTRAINTS, new Vec2(0, 0), 0);
+        robotState = new RobotStateEstimator(Specs.DRIVE_SPECS, new Pose2d());
         pdp = new PowerDistributionPanel();
 
         driveSys.initDefaultCommand();

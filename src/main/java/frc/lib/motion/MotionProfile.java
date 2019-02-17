@@ -4,18 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import frc.lib.util.Util;
-import frc.lib.util.Vec2;
 
 public class MotionProfile {
+    private DriveSpecs drive;
     private List<MotionSegment> segments;
     private MotionState startState;
 
-    public MotionProfile(MotionState startState){
+    public MotionProfile(DriveSpecs drive, MotionState startState){
+        this.drive = drive;
         reset(startState);
     }
 
-    public MotionProfile(RobotConstraints constraints){
-        this(MotionState.fromWheels(constraints,0,new Vec2(0,0),0,0,0,0,0));
+    public MotionProfile(DriveSpecs drive, Pose2d start){
+        this(drive, new MotionState(start));
+    }
+
+    public MotionProfile(DriveSpecs drive){
+        this(drive, new MotionState());
     }
 
     public void reset(MotionState startState){
@@ -44,31 +49,26 @@ public class MotionProfile {
         return endTime() - startTime();
     }
 
-    public void appendControlWheels(double dt, double accL, double accR){
+    public void appendControlWheels(WheelState accWheels, double dt){
         if(dt > 0){
-            segments.add(new MotionSegment(endState().controlWheels(accL, accR), dt));
+            segments.add(new MotionSegment(drive, endState().controlWheels(drive, accWheels), dt));
         }
     }
 
-    public void appendControlAngular(double dt, double acc, double angAcc){
+    public void appendControlChassis(ChassisState acc, double dt){
         if(dt > 0){
-            segments.add(new MotionSegment(endState().controlAngular(acc, angAcc), dt));
+            segments.add(new MotionSegment(drive, endState().controlChassis(drive, acc), dt));
         }
     }
 
-    public void appendControlCurvature(double dt, double acc, double curvature){
-        final double k = curvature*startState.length/4;
-        final double accR = (k-0.5)*(endState().velR/dt) + (k+0.5)*(2*acc + endState().velL/dt);
-        final double accL = 2*acc - accR;
-        appendControlWheels(dt, accL, accR);
-    }
-
-    public void appendDeltas(double dt, double deltaPos, double deltaAng){
+    public void appendDeltas(double dt, ChassisState delta){
         if(dt > 0){
             MotionState es = endState();
-            segments.add(new MotionSegment(MotionState.fromWheels(
-                es.constraints, es.t, es.pos, es.angle+deltaAng, 
-                deltaPos/dt, deltaPos/dt, 0, 0
+            segments.add(new MotionSegment(drive, MotionState.fromWheels(
+                drive, es.t, 
+                new Pose2d(es.pose.vec, es.pose.ang+delta.angular), 
+                new WheelState(delta.linear/dt, delta.linear/dt),
+                new WheelState()
             ), dt));
         }
     }
@@ -80,21 +80,14 @@ public class MotionProfile {
             start = s.start;
             if(t < s.endTime) break;
         }
-        return start.forwardKinematics(t - start.t);
-    }
-
-    public boolean fitsConstraints(){
-        for(MotionSegment s : segments){
-            if(!s.fitsConstraints()) return false;
-        }
-        return true;
+        return start.forwardKinematics(drive, t - start.t);
     }
 
     public double arclength(double t0, double tF){
         double length = 0;
         for(MotionSegment s : segments){
             if(s.startTime >= t0 && s.endTime <= tF){
-                length += s.endPos.diff(s.startPos).mag();
+                length += s.endPose.vec.diff(s.startPose.vec).mag();
             }
         }
         return length;
@@ -102,6 +95,10 @@ public class MotionProfile {
 
     public double arclength(double tF){
         return arclength(0,tF);
+    }
+
+    public DriveSpecs getDriveSpecs(){
+        return drive;
     }
 
 }

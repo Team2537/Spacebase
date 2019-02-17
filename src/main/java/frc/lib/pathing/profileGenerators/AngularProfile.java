@@ -1,6 +1,7 @@
 package frc.lib.pathing.profileGenerators;
 
 import frc.lib.motion.MotionProfile;
+import frc.lib.motion.WheelState;
 
 public class AngularProfile {
 
@@ -23,7 +24,7 @@ public class AngularProfile {
 
         // Accelerate to v_max
         final double accel_time = (v_max - v_now)/accMax;
-        profile.appendControlWheels(accel_time, -o*accMaxLinear, o*accMaxLinear);
+        profile.appendControlWheels(new WheelState(-o*accMaxLinear, o*accMaxLinear), accel_time);
         pos_now += 0.5*accMax*accel_time*accel_time + v_now*accel_time;
         v_now += accMax*accel_time;
 
@@ -33,12 +34,12 @@ public class AngularProfile {
         // Cruise at constant velocity.
         if (distance_cruise > 0) {
             final double cruise_time = distance_cruise / v_now;
-            profile.appendControlWheels(cruise_time, 0, 0);
+            profile.appendControlWheels(new WheelState(), cruise_time);
         }
         // Decelerate to goal velocity.
         if (distance_decel > 0) {
             final double decel_time = v_now / accMax;
-            profile.appendControlWheels(decel_time, o*accMaxLinear, -o*accMaxLinear);
+            profile.appendControlWheels(new WheelState(o*accMaxLinear, -o*accMaxLinear), decel_time);
         }
     }
 

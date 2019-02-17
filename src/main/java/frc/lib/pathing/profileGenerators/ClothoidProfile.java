@@ -1,6 +1,7 @@
 package frc.lib.pathing.profileGenerators;
 
 import frc.lib.motion.MotionProfile;
+import frc.lib.motion.WheelState;
 import frc.lib.pathing.Clothoid;
 
 public class ClothoidProfile {
@@ -95,9 +96,9 @@ public class ClothoidProfile {
 
     private static void appendAccs(MotionProfile profile, double dt, double Kp, double accLow, double accHigh){
         if(Kp > 0){
-            profile.appendControlWheels(dt, accLow, accHigh);
+            profile.appendControlWheels(new WheelState(accLow, accHigh), dt);
         } else {
-            profile.appendControlWheels(dt, accHigh, accLow);
+            profile.appendControlWheels(new WheelState(accHigh, accLow), dt);
         }
     }
 

@@ -9,112 +9,75 @@ import frc.lib.util.FresnelMath;
  * and curvature of the robot's drive train at a specific point in time.
  */
 public class MotionState {    
-    public final RobotConstraints constraints;
-    public final Vec2 pos;
-    public final double t, angle, angVel, angAcc, vel, acc, velL, velR, accL, accR, curvature, length;
-    public final boolean fitsConstraints;
+    public final Pose2d pose;
+    public final ChassisState vel, acc;
+    public final WheelState velWheels, accWheels;
+    public final double t;
 
-    public MotionState(RobotConstraints constraints, 
+    public MotionState( 
                     double t, 
-                    Vec2 pos, double vel, double acc, 
-                    double angle, double angVel, double angAcc,
-                    double velL, double velR, double accL, double accR,
-                    double curvature){
-        this.constraints = constraints;
-        this.length = constraints.length;
+                    Pose2d pose,
+                    ChassisState vel, ChassisState acc,
+                    WheelState velWheels, WheelState accWheels
+                ){
         this.t = t;
-        this.pos = pos;
+        this.pose = pose;
         this.vel = vel;
         this.acc = acc;
-        this.angle = angle;
-        this.angVel = angVel;
-        this.angAcc = angAcc;
-        this.velL = velL;
-        this.velR = velR;
-        this.accL = accL;
-        this.accR = accR;
-        this.curvature = curvature;
-        fitsConstraints = (velL <= constraints.maxWheelVel) && (velR <= constraints.maxWheelVel)
-                        && (accL <= constraints.maxWheelAcc) && (accR <= constraints.maxWheelAcc);
+        this.velWheels = velWheels;
+        this.accWheels = accWheels;
+    }
+
+    public MotionState(Pose2d pose){
+        this(0, pose, new ChassisState(), new ChassisState(), new WheelState(), new WheelState());
+    }
+
+    public MotionState(){
+        this(new Pose2d());
     }
 
     /** @return a new MotionState, inferring wheel states and curvature
      * from known angular motion.
      */
-    public static MotionState fromAngular(RobotConstraints constraints,
-                    double t,
-                    Vec2 pos, double vel, double acc,
-                    double angle, double angVel, double angAcc){
-        return new MotionState(
-            constraints,
-            t,
-            pos, vel, acc,
-            angle, angVel, angAcc,
-            vel - 0.5*angVel*constraints.length,    // left wheel velocity
-            vel + 0.5*angVel*constraints.length,    // right wheel velocity
-            acc - 0.5*angAcc*constraints.length,    // left wheel acceleration
-            acc + 0.5*angAcc*constraints.length,    // right wheel acceleration
-            angVel / vel                            // curvature
-        );
+    public static MotionState fromChassis(DriveSpecs drive,
+                    double t, Pose2d pose, ChassisState vel, ChassisState acc){
+        return new MotionState(t, pose, vel, acc, drive.toWheels(vel), drive.toWheels(acc));
     }
 
     /** @return a new MotionState, replacing the old one's accelerations by using
      * the linear and angular acceleration parameters.
      */
-    public static MotionState controlAngular(MotionState old, double acc, double angAcc){
-        return fromAngular(
-            old.constraints,
-            old.t,
-            old.pos, old.vel, acc,
-            old.angle, old.angVel, angAcc
-        );
+    public static MotionState controlChassis(MotionState old, DriveSpecs drive, ChassisState acc){
+        return fromChassis(drive, old.t, old.pose, old.vel, acc);
     }
 
     /** @return a new MotionState, replacing the old one's accelerations by using
      * the linear and angular acceleration parameters.
      */
-    public MotionState controlAngular(double acc, double angAcc){
-        return controlAngular(this, acc, angAcc);
+    public MotionState controlChassis(DriveSpecs drive, ChassisState acc){
+        return controlChassis(this, drive, acc);
     }
 
     /** @return a new MotionState, inferring angular motion and curvature
      * from known wheel states.
      */
-    public static MotionState fromWheels(RobotConstraints constraints,
-                        double t,
-                        Vec2 pos, double angle,
-                        double velL, double velR,
-                        double accL, double accR){
-        return new MotionState(
-            constraints,
-            t,
-            pos, (velR+velL)/2, (accR+accL)/2,                  // linear velocity and acceleration
-            angle, 
-            (velR-velL)/constraints.length,                     // angular velocity
-            (accR-accL)/constraints.length,                     // angular acceleration
-            velL, velR, accL, accR,
-            (2*(velR-velL))/(constraints.length*(velR+velL))    // curvature
-        );
+    public static MotionState fromWheels(DriveSpecs drive,
+                double t, Pose2d pose, WheelState velWheels, WheelState accWheels){
+        return new MotionState(t, pose, drive.toChassis(velWheels), drive.toChassis(accWheels), velWheels, accWheels);
     }
 
     /** @return a new MotionState, replacing the old one's accelerations by using
      * the wheel accelerations parameters.
      */
-    public static MotionState controlWheels(MotionState old, double accL, double accR){
-        return fromWheels(
-            old.constraints,
-            old.t,
-            old.pos, old.angle, 
-            old.velL, old.velR, 
-            accL, accR
-        );
+    public static MotionState controlWheels(MotionState old, DriveSpecs drive, WheelState accWheels){
+        return fromWheels(drive, old.t, old.pose, old.velWheels, accWheels);
     }
 
     /** @return a new MotionState, replacing the old one's accelerations by using
      * the wheel accelerations parameters.
      */
-    public MotionState controlWheels(double accL, double accR){
-        return controlWheels(this, accL, accR);
+    public MotionState controlWheels(DriveSpecs drive, WheelState accWheels){
+        return controlWheels(this, drive, accWheels);
     }
 
     
@@ -124,54 +87,58 @@ public class MotionState {
      * @param dt Amount of time elapsed between the old and new MotionStates.
      * @return The new MotionState.
      */
-    public static MotionState forwardKinematics(MotionState start, double dt){
+    public static MotionState forwardKinematics(MotionState start, DriveSpecs drive, double dt){
         if(Util.epsilonEquals(dt, 0)) return start;
 
-        final double vel = start.acc*dt + start.vel, angVel = start.angAcc*dt + start.angVel;
-        final double angle = 0.5*start.angAcc*dt*dt + start.angVel*dt + start.angle;
+        final ChassisState vel = new ChassisState(
+            start.acc.linear*dt + start.vel.linear,
+            start.acc.angular*dt + start.vel.angular
+        );
+
+        final double angle = 0.5*start.acc.angular*dt*dt + start.vel.angular*dt + start.pose.ang;
 
         /* To calculate the change in x and y based on the given wheel accelerations and
          * the previous state, we must integrate over the x- and y-velocity functions:
          * v_x(t) = v(t)*cos(angle(t))  and  v_y(t) = v(t)*sin(angle(t)) .
          */
         double dx, dy;
-        if(Util.epsilonEquals(start.acc, 0) && Util.epsilonEquals(start.vel, 0)){
+        if(Util.epsilonEquals(start.acc.linear, 0) && Util.epsilonEquals(start.vel.linear, 0)){
             // Turning in place
             dx = 0;
             dy = 0;
         } else {
-            if(Util.epsilonEquals(start.angAcc, 0)){
-                if(Util.epsilonEquals(start.angVel, 0)){
+            if(Util.epsilonEquals(start.acc.angular, 0)){
+                if(Util.epsilonEquals(start.vel.angular, 0)){
                     // Integrating: (a*t + v_0)*cos(angle_0)
-                    final double ds = 0.5*start.acc*dt*dt + start.vel*dt;
-                    dx = ds*Math.cos(start.angle);
-                    dy = ds*Math.sin(start.angle);
+                    final double ds = 0.5*start.acc.linear*dt*dt + start.vel.linear*dt;
+                    dx = ds*Math.cos(start.pose.ang);
+                    dy = ds*Math.sin(start.pose.ang);
                 } else {
                     // Integrating: (a*t + v_0)*cos(angVel_0*t + angle_0)
-                    final double inv_av = 1/start.angVel;
-                    final double one = inv_av*(start.acc*dt + start.vel), two = start.acc*inv_av*inv_av;
-                    final double sin = Math.sin(angle) - Math.sin(start.angle);
-                    final double cos = Math.cos(angle) - Math.cos(start.angle);
+                    final double inv_av = 1/start.vel.angular;
+                    final double one = inv_av*(start.acc.linear*dt + start.vel.linear), two = start.acc.linear*inv_av*inv_av;
+                    final double sin = Math.sin(angle) - Math.sin(start.pose.ang);
+                    final double cos = Math.cos(angle) - Math.cos(start.pose.ang);
                     dx = one*sin + two*cos;
                     dy = two*sin - one*cos;
                 }
             } else {
                 // Integrating: (a*t + v_0)*cos(0.5*angAcc*t^2 + angVel_0*t + angle_0)
-                final double scalar = start.vel - start.angVel*start.acc/start.angAcc;
-                dx = (Math.sin(angle) - Math.sin(start.angle))*start.acc/start.angAcc
-                    + scalar*FresnelMath.integrateC(start.angAcc, start.angVel, start.angle, 0, dt);
-                dy = -(Math.cos(angle) - Math.cos(start.angle))*start.acc/start.angAcc
-                    + scalar*FresnelMath.integrateS(start.angAcc, start.angVel, start.angle, 0, dt);
+                final double scalar = start.vel.linear - start.vel.angular*start.acc.linear/start.acc.angular;
+                dx = (Math.sin(angle) - Math.sin(start.pose.ang))*start.acc.linear/start.acc.angular
+                    + scalar*FresnelMath.integrateC(start.acc.angular, start.vel.angular, start.pose.ang, 0, dt);
+                dy = -(Math.cos(angle) - Math.cos(start.pose.ang))*start.acc.linear/start.acc.angular
+                    + scalar*FresnelMath.integrateS(start.acc.angular, start.vel.angular, start.pose.ang, 0, dt);
             }
         }
 
-        Vec2 pos = new Vec2(dx,dy).add(start.pos);
+        final Vec2 vec = new Vec2(dx,dy).add(start.pose.vec);
 
-        return MotionState.fromAngular(
-            start.constraints,
+        return MotionState.fromChassis(
+            drive,
             start.t + dt,
-            pos, vel, start.acc,
-            angle, angVel, start.angAcc
+            new Pose2d(vec,angle),
+            vel, start.acc
         );
     }
 
@@ -180,20 +147,30 @@ public class MotionState {
      * @param dt Amount of time elapsed between the old and new MotionStates.
      * @return The new MotionState.
      */
-    public MotionState forwardKinematics(double dt){
-        return MotionState.forwardKinematics(this, dt);
+    public MotionState forwardKinematics(DriveSpecs drive, double dt){
+        return MotionState.forwardKinematics(this, drive, dt);
     }
 
     public double[] encode(){
-        return new double[]{
-            constraints.maxWheelVel, constraints.maxWheelAcc, constraints.length, 
-            t, pos.x, pos.y, angle, velL, velR, accL, accR
+        return new double[]{ 
+            t,
+            pose.x, pose.y, pose.ang,
+            vel.linear, vel.angular,
+            acc.linear, acc.angular,
+            velWheels.left, velWheels.right,
+            accWheels.left, accWheels.right
         };
     }
 
-    public static MotionState decode(double[] vals){
-        return MotionState.fromWheels(new RobotConstraints(vals[0], vals[1], vals[2]),
-            vals[3], new Vec2(vals[4], vals[5]), vals[6], vals[7], vals[8], vals[9], vals[10]);
+    public static MotionState decode(double[] p){
+        return new MotionState(
+            p[0],
+            new Pose2d(p[1],p[2],p[3]),
+            new ChassisState(p[4],p[5]),
+            new ChassisState(p[6],p[7]),
+            new WheelState(p[8],p[9]),
+            new WheelState(p[10],p[11])
+        );
     }
 
 }
