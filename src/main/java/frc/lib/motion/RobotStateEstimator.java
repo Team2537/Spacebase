@@ -2,22 +2,23 @@ package frc.lib.motion;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import frc.lib.util.Vec2;
 
 public class RobotStateEstimator {
     private final MotionProfile state;
     private final NetworkTable table;
-    public static final String TABLE_NAME = "RobotStateEstimator", ENTRY_STATE = "state";
+    public static final String TABLE_NAME = "RobotStateEstimator";
+    public static final String ENTRY_STATE = "state", ENTRY_SPECS = "specs";
 
-    public RobotStateEstimator(RobotConstraints constraints, Vec2 start, double startAngle){
-        state = new MotionProfile(MotionState.fromWheels(constraints,0, start,startAngle, 0,0,0,0));
+    public RobotStateEstimator(DriveSpecs drive, Pose2d start){
+        state = new MotionProfile(drive, new MotionState(start));
         table = NetworkTableInstance.getDefault().getTable(TABLE_NAME);
+        table.getEntry(ENTRY_SPECS).setDoubleArray(drive.encode());
     }
 
     public void update(double dt, double wheelDeltaLeft, double wheelDeltaRight, double angleDelta){
         if(dt > 0){
             final double wheelDelta = (wheelDeltaLeft + wheelDeltaRight)/2;
-            state.appendDeltas(dt, wheelDelta, angleDelta);
+            state.appendDeltas(dt, new ChassisState(wheelDelta, angleDelta));
             table.getEntry(ENTRY_STATE).setDoubleArray(getLatestState().encode());
         }
     }

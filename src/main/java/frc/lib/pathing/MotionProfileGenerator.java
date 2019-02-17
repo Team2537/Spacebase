@@ -3,33 +3,32 @@ package frc.lib.pathing;
 import java.util.Arrays;
 import java.util.List;
 
+import frc.lib.motion.DriveSpecs;
 import frc.lib.motion.MotionProfile;
-import frc.lib.motion.MotionState;
-import frc.lib.motion.RobotConstraints;
+import frc.lib.motion.Pose2d;
 import frc.lib.pathing.profileGenerators.AngularProfile;
 import frc.lib.pathing.profileGenerators.ClothoidProfile;
 import frc.lib.pathing.profileGenerators.LinearProfile;
 import frc.lib.util.Util;
-import frc.lib.util.Vec2;
 
 public class MotionProfileGenerator {
-    public static void generate(MotionProfile profile, RobotConstraints constraints, double timestep, Waypoint[] waypoints){
-        final double accMax = constraints.maxWheelAcc, velMax = constraints.maxWheelVel, l = constraints.length;
+    public static void generate(MotionProfile profile, Waypoint[] waypoints, ProfileConstraints constraints, double timestep){
+        final double accMax = constraints.accMax, velMax = constraints.velMax;
+        final double l = profile.getDriveSpecs().wheelAxleLength;
 
-        final Vec2 endPoint = profile.endState().pos;
-        final double endAng = profile.endState().angle;
+        final Pose2d endPose = profile.endState().pose;
 
         List<Waypoint> waypointsList = Arrays.asList(waypoints);
         
-        if(!waypoints[0].point.equals(endPoint)){
-            waypointsList.add(0, new Waypoint(endPoint,0));
+        if(!waypoints[0].point.equals(endPose.vec)){
+            waypointsList.add(0, new Waypoint(endPose.vec,0));
         }
         
         Path path = new Path(waypoints);
         Clothoid[] clothoids = path.getClothoids();
 
-        if(path.startAngle() != endAng){
-            AngularProfile.generate(profile, Util.normalizeHeadingRadians(path.startAngle() - endAng), l, accMax, velMax);
+        if(path.startAngle() != endPose.ang){
+            AngularProfile.generate(profile, Util.normalizeHeadingRadians(path.startAngle() - endPose.ang), l, accMax, velMax);
         }
 
         
@@ -79,11 +78,26 @@ public class MotionProfileGenerator {
         }
     }
 
-    public static MotionProfile generate(RobotConstraints constraints, double timestep, Waypoint[] waypoints){
-        MotionState startState = MotionState.fromWheels(constraints, 0, new Vec2(0,0), 0, 0, 0, 0, 0);
-        MotionProfile profile = new MotionProfile(startState);
-        generate(profile, constraints, timestep, waypoints);
+    public static MotionProfile generate(Pose2d start, DriveSpecs drive, 
+            Waypoint[] waypoints, ProfileConstraints constraints, double timestep){
+
+        MotionProfile profile = new MotionProfile(drive, start);
+        generate(profile, waypoints, constraints, timestep);
         return profile;
+    }
+
+    public static MotionProfile generate(DriveSpecs drive, 
+            Waypoint[] waypoints, ProfileConstraints constraints, double timestep){
+
+        return generate(new Pose2d(), drive, waypoints, constraints, timestep);
+    }
+
+    public static class ProfileConstraints{
+        public final double accMax, velMax;
+        public ProfileConstraints(double accMax, double velMax){
+            this.accMax = accMax;
+            this.velMax = velMax;
+        }
     }
 
 }

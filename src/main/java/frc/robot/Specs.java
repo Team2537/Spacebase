@@ -1,6 +1,7 @@
 package frc.robot;
 
-import frc.lib.motion.RobotConstraints;
+import frc.lib.motion.DriveSpecs;
+import frc.lib.motion.DriveSpecs.VoltageParameters;
 
 public class Specs {
     public static final double ROBOT_PERIOD_SECONDS = 0.02;
@@ -8,14 +9,16 @@ public class Specs {
     public static final double MOTION_PROFILE_TIMESTEP_SECONDS = 0.01;
 
     // TODO: these values are temp
-    public static final double DRIVE_VOLTAGE_MIN = 1,  DRIVE_VOLTAGE_kV = 1, DRIVE_VOLTAGE_kA = 1;
-    public static final double DRIVE_MAX_VELOCITY = 30;     // inches/second
-    public static final double DRIVE_MAX_ACCELERATION = 15; // inches/second^2
-    public static final double DRIVE_AXLE_LENGTH = 12;      // inches
-    public static final double DRIVE_WHEEL_DIAMETER = 6.0;
+    public static final double DRIVE_VOLTAGE_MIN = 1.0;
+    public static final double DRIVE_VOLTAGE_kV  = 1.0;
+    public static final double DRIVE_VOLTAGE_kA  = 1.0;
+    
+    public static final double DRIVE_AXLE_LENGTH = 12; // inches
+    public static final double DRIVE_WHEEL_DIAMETER = 6.0; // inches
 
-    public static final RobotConstraints CONSTRAINTS = new RobotConstraints(
-        DRIVE_MAX_VELOCITY, DRIVE_MAX_ACCELERATION, DRIVE_AXLE_LENGTH
+    public static final DriveSpecs DRIVE_SPECS = new DriveSpecs(
+        DRIVE_AXLE_LENGTH, DRIVE_WHEEL_DIAMETER,
+        new VoltageParameters(DRIVE_VOLTAGE_kV, DRIVE_VOLTAGE_kA, DRIVE_VOLTAGE_MIN)
     );
     
 }

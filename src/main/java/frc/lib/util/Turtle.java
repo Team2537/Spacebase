@@ -7,6 +7,7 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import frc.lib.motion.DriveSpecs;
 import frc.lib.motion.MotionProfile;
 import frc.lib.motion.MotionState;
  
@@ -43,8 +44,8 @@ public class Turtle {
         panel.animateProfile(profile);
     }
 
-    public void drawState(MotionState state){
-        panel.drawState(state);
+    public void drawState(DriveSpecs drive, MotionState state){
+        panel.drawState(drive, state);
     }
 
     private static class DrawPanel extends JPanel {
@@ -54,6 +55,7 @@ public class Turtle {
 
         private MotionProfile profile;
         private MotionState state;
+        private DriveSpecs drive;
 
         public final int width, height;
         public final double scale;
@@ -95,8 +97,9 @@ public class Turtle {
             this.profile = profile;
         }
 
-        public void drawState(MotionState state){
+        public void drawState(DriveSpecs drive, MotionState state){
             this.state = state;
+            this.drive = drive;
         }
 
         public Vec2 toPanelSpace(Vec2 v){
@@ -105,7 +108,7 @@ public class Turtle {
         }
 
         public Vec2 toPanelSpace(Vec2 v, MotionState center){
-            return toPanelSpace(v.rotateBy(center.angle).add(center.pos));
+            return toPanelSpace(v.rotateBy(center.pose.ang).add(center.pose.vec));
         }
         
         @Override
@@ -138,19 +141,19 @@ public class Turtle {
                 final double tTotal = System.currentTimeMillis()/1000.0;
                 final double t = tTotal - (int)(tTotal/profile.dt())*profile.dt() + profile.startTime();
                 final MotionState curState = profile.getState(t);
-                paintMotionState(g, g2, curState);
+                paintMotionState(g, g2, profile.getDriveSpecs(), curState);
             }
             if(state != null){
-                paintMotionState(g, g2, state);
+                paintMotionState(g, g2, drive, state);
             }
         }
 
-        private void paintMotionState(Graphics g, Graphics2D g2, MotionState state){
+        private void paintMotionState(Graphics g, Graphics2D g2, DriveSpecs drive, MotionState state){
             final int r = 7;
-            final Vec2 center = toPanelSpace(state.pos);
+            final Vec2 center = toPanelSpace(state.pose.vec);
 
-            Vec2 left = new Vec2(0, state.length/2), right = new Vec2(0, -state.length/2);
-            Vec2 leftVel = new Vec2(state.velL/4, left.y), rightVel = new Vec2(state.velR/4, right.y);
+            Vec2 left = new Vec2(0, drive.wheelAxleLength/2), right = new Vec2(0, -drive.wheelAxleLength/2);
+            Vec2 leftVel = new Vec2(state.velWheels.left/4, left.y), rightVel = new Vec2(state.velWheels.right/4, right.y);
 
             Vec2 arrow = toPanelSpace(new Vec2(4,0), state);
             left = toPanelSpace(left, state);
@@ -164,9 +167,9 @@ public class Turtle {
             g.drawLine((int)left.x, (int)left.y, (int)right.x, (int)right.y);
 
             g2.setStroke(new BasicStroke(3));
-            g2.setColor(state.velL > 0 ? Color.green : Color.red);
+            g2.setColor(state.velWheels.left > 0 ? Color.green : Color.red);
             g.drawLine((int)left.x, (int)left.y, (int)leftVel.x, (int)leftVel.y);
-            g2.setColor(state.velR > 0 ? Color.green : Color.red);
+            g2.setColor(state.velWheels.right > 0 ? Color.green : Color.red);
             g.drawLine((int)right.x, (int)right.y, (int)rightVel.x, (int)rightVel.y);
             g2.setColor(Color.blue);
             g.drawLine((int)center.x, (int)center.y, (int)arrow.x, (int)arrow.y);
