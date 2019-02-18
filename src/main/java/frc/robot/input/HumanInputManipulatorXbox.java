@@ -68,14 +68,14 @@ public class HumanInputManipulatorXbox {
     public void registerButtons() {
         whileHeldCommand(intakeFlywheelsForward, new FlywheelCommand(false));
         whileHeldCommand(intakeFlywheelsBackward, new FlywheelCommand(true));
-        // whileHeldCommand(armManualButton, new ArmManualCommand());
+        whileHeldCommand(armManualButton, new ArmManualCommand());
         whenPressedCommand(armSolExtend, new ArmPneumaticCommand());
-        // whenPressedCommand(increasearmbutton, new IncreaseArmCommand());
-        // whenPressedCommand(decreasearmbutton, new DecreaseArmCommand());
-        // whenPressedCommand(climbEngageClutch, new ClimbCommand());
+        whenPressedCommand(increasearmbutton, new IncreaseArmCommand());
+        whenPressedCommand(decreasearmbutton, new DecreaseArmCommand());
+        whenPressedCommand(climbEngageClutch, new ClimbCommand());
         whenPressedCommand(intakeSolExtend, new PneumaticExtendCommand());
-        // whenPressedCommand(armSetHighButton, new SetArmCommand(0));//TODO FIX THIS
-        // whenPressedCommand(armSetIntakeButton, new SetArmCommand(0)); // TODO FIX THIS TOO
+        whenPressedCommand(armSetHighButton, new SetArmCommand(0));//TODO FIX THIS
+        whenPressedCommand(armSetIntakeButton, new SetArmCommand(0)); // TODO FIX THIS TOO
     }
 
 

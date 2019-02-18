@@ -39,9 +39,9 @@ public class Robot extends TimedRobot {
         input = new HumanInputManipulatorXbox();
         cameras = new Cameras();
 
-        //climbSys = new ClimbSubsystem();
+        climbSys = new ClimbSubsystem();
         intakeSys = new IntakeSubsystem();
-        //driveSys = new DriveSubsystem();
+        driveSys = new DriveSubsystem();
         armSys = new ArmSubsystem();
         manipSys = new ManipulatorSubsystem();
 
