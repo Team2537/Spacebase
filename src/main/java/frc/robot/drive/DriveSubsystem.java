@@ -45,14 +45,17 @@ public class DriveSubsystem extends Subsystem {
     public DriveSubsystem() {
         //MAKE SURE ULTRASONIC IS CORRECT FOR PEANUT!!
         driveUltrasonic = new Ultrasonic(Ports.FRONT_ULTRASONIC_INPUT, Ports.FRONT_ULTRASONIC_OUTPUT);
+        driveUltrasonic.setAutomaticMode(true);
+        driveUltrasonic.setEnabled(true);
         RightFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_RIGHT_FRONT);
         LeftFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_LEFT_FRONT);
         
         //motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
         //encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
-        
+        /*
         IR_frontUpper = new DigitalInput(0); IR_frontLower = new DigitalInput(1);
         IR_center = new DigitalInput(2);
+        */
 
         /*
         for (int i = 0; i < MOTOR_PORTS_LEFT.length; i++) {
@@ -167,6 +170,7 @@ public class DriveSubsystem extends Subsystem {
     */
 
     // FALSE MEANS ON THE LINE
+    /*
     public boolean getIR_frontUpper() {
         System.out.println("IR Front Upper: " + IR_frontUpper.get());
         return !IR_frontUpper.get();
@@ -181,11 +185,13 @@ public class DriveSubsystem extends Subsystem {
         System.out.println("IR Center: " + IR_center.get());
         return !IR_center.get();
     }
+    */
 
-    /** @return the range of the drive ultrasonic in inches */
+    // @return the range of the drive ultrasonic in inches 
     public double getUltrasonic() {
-        System.out.println(driveUltrasonic.getRangeInches());
+        System.out.println("ULTRASONIC RANGE: " + driveUltrasonic.getRangeInches());
         return driveUltrasonic.getRangeInches();
     }
+    
 
 }

@@ -28,10 +28,10 @@ public class VisionTurnCommand extends Command{
 
 //CAM dimensions: 640 width, 480 height
 
-    public static final int LOWERTHRESHOLD = 250; 
-    public static final int HIGHERTHRESHOLD = 390;
-    public static final int INNERLOWERTHRESHOLD = 100; 
-    public static final int INNERHIGHERTHRESHOLD = 540;
+    public static final int LOWERTHRESHOLD = 300; 
+    public static final int HIGHERTHRESHOLD = 340;
+    public static final int OUTERLOWERTHRESHOLD = 200; 
+    public static final int OUTERHIGHERTHRESHOLD = 440;
     public static final double TURNSPEED = 0.2;
     private Point MidPoint;
     private Target[] targets;
@@ -43,7 +43,7 @@ public class VisionTurnCommand extends Command{
 
     @Override
     protected void initialize(){
-              
+      System.out.println("VISION STARTS!!! ");        
     }
 
     @Override
@@ -55,19 +55,20 @@ public class VisionTurnCommand extends Command{
         
         if(MidPoint.x > HIGHERTHRESHOLD || MidPoint.x < LOWERTHRESHOLD){
 
-           if(MidPoint.x > INNERLOWERTHRESHOLD && MidPoint.x < INNERHIGHERTHRESHOLD) {
-               System.out.println("INNER THRESHOLD!!");
+           if(MidPoint.x > OUTERLOWERTHRESHOLD && MidPoint.x < OUTERHIGHERTHRESHOLD) {
+               System.out.println("OUTER THRESHOLD REACHED!!");
+
                 //slows down proportionally to distance from midpoint
                 if(MidPoint.x < half) { // if midpoint is too far left
-                    Robot.driveSys.setMotorsLeft(TURNSPEED*((half-MidPoint.x)/220.0)); 
-                    //320 - midpoint = distance from middle of screen; 220 is half of full inner threshold range [100-540]
-                    Robot.driveSys.setMotorsRight(TURNSPEED*((half-MidPoint.x)/220.0)); 
+                    Robot.driveSys.setMotorsLeft(-TURNSPEED*((half-MidPoint.x)/120.0)); 
+                    //320 - midpoint = distance from middle of screen; 220 is half of full inner threshold range [200-440]
+                    Robot.driveSys.setMotorsRight(-TURNSPEED*((half-MidPoint.x)/120.0)); 
                 }
 
                 //slows down proportionally to distance from midpoint
                 if(MidPoint.x > half) { // if midpoint is too far right
-                    Robot.driveSys.setMotorsLeft(-TURNSPEED*((MidPoint.x-half)/220.0));
-                    Robot.driveSys.setMotorsRight(-TURNSPEED*((MidPoint.x-half)/220.0)); 
+                    Robot.driveSys.setMotorsLeft(TURNSPEED*((MidPoint.x-half)/120.0));
+                    Robot.driveSys.setMotorsRight(TURNSPEED*((MidPoint.x-half)/120.0)); 
                 }
 
             }
@@ -85,12 +86,17 @@ public class VisionTurnCommand extends Command{
     
 
     public boolean isFinished(){
-
-        
-        return false;
+        if(MidPoint.x < HIGHERTHRESHOLD && MidPoint.x > LOWERTHRESHOLD){
+            System.out.println("DONE!!!");
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public void end(){
+        System.out.println("1st is DONE!!");
         Robot.driveSys.setMotors(0, 0);
     }
 

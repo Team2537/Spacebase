@@ -19,8 +19,8 @@ public class Ports {
     */
     
     public static final int
-        FRONT_ULTRASONIC_INPUT = 0,
-        FRONT_ULTRASONIC_OUTPUT = 1
+        FRONT_ULTRASONIC_INPUT = 9, //INPUT IS ALWAYS SINGLE WIRED ONE
+        FRONT_ULTRASONIC_OUTPUT = 8
     ;
 
     public static final int
