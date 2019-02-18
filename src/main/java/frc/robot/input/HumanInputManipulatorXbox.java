@@ -9,6 +9,7 @@ package frc.robot.input;
 
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
@@ -26,7 +27,8 @@ import frc.robot.intake.PneumaticExtendCommand;
 
 public class HumanInputManipulatorXbox {
     public static final int AXIS_X = 0, AXIS_Y = 1;
-    public Joystick joystickLeft, joystickRight, xbox;
+    public Joystick joystickLeft, joystickRight;
+    public XboxController xbox;
     public JoystickButton 
         intakeFlywheelsForward, intakeFlywheelsBackward, armSolExtend, intakeSolExtend,
         armFlywheelIn, armFlywheelOut, 
@@ -39,7 +41,7 @@ public class HumanInputManipulatorXbox {
         /*   --- Controllers ---  */
         joystickLeft = new Joystick(Ports.LEFT_JOYSTICK);
         joystickRight = new Joystick(Ports.RIGHT_JOYSTICK);
-        xbox = new Joystick(Ports.XBOX_CONTROLLER);
+        xbox = new XboxController(Ports.XBOX_CONTROLLER);
           
         /* --- Button Aliases --- */
         // Left Joystick
@@ -81,6 +83,14 @@ public class HumanInputManipulatorXbox {
             return val;
     }
 
+    private double getXboxAxisDeadzone(int axis, XboxController xbox) {
+        double val = xbox.getRawAxis(axis);
+        if (Math.abs(val) <= Specs.JOYSTICK_DEADZONE)
+            return 0;
+        else
+            return val;
+    }
+
     public double getJoystickAxisLeft(int axis) {
         return getJoystickAxis(axis, joystickLeft);
     }
@@ -90,7 +100,7 @@ public class HumanInputManipulatorXbox {
     }
 
     public double getXboxAxis(int axis){
-        return getJoystickAxis(axis, xbox);
+        return getXboxAxisDeadzone(axis, xbox);
     }
 
     private static void whenPressedCommand(Button button, Command command) {
