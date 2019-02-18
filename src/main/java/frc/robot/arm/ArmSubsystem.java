@@ -27,7 +27,7 @@ public class ArmSubsystem extends Subsystem {
     private CANSparkMax armMotor;
     private Encoder wristEncoder;
     private CANEncoder armEncoder;
-    private Potentiometer pot;
+    private Potentiometer armPot, wristPot;
 
     public ArmSubsystem() {
         armMotor = new CANSparkMax(Ports.ARM_MOTOR, MotorType.kBrushless);
@@ -36,7 +36,8 @@ public class ArmSubsystem extends Subsystem {
         armEncoder = new CANEncoder(armMotor);
         wristMotor = new TalonSRX(Ports.WRIST_MOTOR);
         wristEncoder = new Encoder(1,0);
-        pot = new AnalogPotentiometer(Ports.WRIST_POTENTIOMETER, 3600, 0); //TODO: determine offset
+        wristPot = new AnalogPotentiometer(Ports.WRIST_POTENTIOMETER, 1080, 0); //TODO: determine offset
+        armPot = new AnalogPotentiometer(Ports.ARM_POTENTIOMETER, 1080, 0);
         armLevel = 0;
     }
 
@@ -87,8 +88,12 @@ public class ArmSubsystem extends Subsystem {
     //     return wristEncoder.get();
     // }
 
-    public double getPotentiometer(){
-        return pot.get();
+    public double getWristPotentiometer(){
+        return wristPot.get();
+    }
+
+    public double getArmPotentiometer(){
+        return armPot.get();
     }
 
     public void setArmMode(CANSparkMax.IdleMode mode){

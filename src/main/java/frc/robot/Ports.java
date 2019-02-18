@@ -20,7 +20,8 @@ public class Ports {
 
     //Analog Ports
     public static final int 
-        WRIST_POTENTIOMETER = 0
+        WRIST_POTENTIOMETER = 0,
+        ARM_POTENTIOMETER = 1
     ;
     
     public static final int
