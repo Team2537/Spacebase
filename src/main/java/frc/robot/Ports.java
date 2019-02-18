@@ -12,26 +12,21 @@ public class Ports {
         DRIVE_MOTOR_LEFT_TOP    = 5,
         DRIVE_MOTOR_LEFT_BACK   = 6, 
         ARM_MOTOR = 7,
-        WRIST_MOTOR = 8,
-        INTAKE_ARM_FLYWHEEL = 9,
-        INTAKE_FLYWHEEL_ONE = 10,
-        INTAKE_FLYWHEEL_TWO = 11
+        WRIST_MOTOR =10,
+        INTAKE_ARM_FLYWHEEL =11,
+        INTAKE_FLYWHEEL_ONE = 8,
+        INTAKE_FLYWHEEL_TWO = 9
     ;
 
     //Analog Ports
     public static final int 
-        WRIST_POTENTIOMETER = 0
+        WRIST_POTENTIOMETER = 0,
+        ARM_POTENTIOMETER = 1
     ;
     
     public static final int
         FRONT_ULTRASONIC_INPUT = 0,
         FRONT_ULTRASONIC_OUTPUT = 1
-    ;
-
-    public static final int
-        LINE_FOLLOWER_FRONT_UPPER = 2,
-        LINE_FOLLOWER_FRONT_LOWER = 0,
-        LINE_FOLLOWER_CENTER = 1
     ;
 
     // Drive station USB ports
@@ -40,12 +35,6 @@ public class Ports {
         RIGHT_JOYSTICK = 1,
         XBOX_CONTROLLER = 2
 
-    ;
-
-        
-    // infrared sensor ports for intake
-    public static final int
-        INTAKE_INFRARED = 0
     ;
 
     // solenoid ports

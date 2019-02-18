@@ -39,7 +39,7 @@ public class ArmCommand extends Command {
     protected void execute() {
 
         double setpoint_arm = Robot.armSys.getArmSetpoint();
-        double actual_arm = Robot.armSys.getArmEncoder();
+        double actual_arm = Robot.armSys.getArmPotentiometer();
         error_arm = setpoint_arm - actual_arm;
         errorSum_arm += error_arm;
         double actualChange_arm = actual_arm - actualPrev_arm;
@@ -53,7 +53,7 @@ public class ArmCommand extends Command {
         }
 
         double setpoint_wrist = Robot.armSys.getWristSetpoint();
-        double actual_wrist = Robot.armSys.getPotentiometer();
+        double actual_wrist = Robot.armSys.getWristPotentiometer();
         error_wrist = setpoint_wrist - actual_wrist;
         errorSum_wrist += error_wrist;
         double actualChange_wrist = actual_wrist - actualPrev_wrist;

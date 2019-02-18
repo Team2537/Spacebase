@@ -12,7 +12,7 @@ import frc.robot.Robot;
 
 public class FlywheelCommand extends Command {
     private boolean commandState;
-    private static final double FLYWHEEL_SPEED = 0.8;
+    private static final double FLYWHEEL_SPEED = 0.4;
 
     public FlywheelCommand(boolean state) {
         requires(Robot.intakeSys);

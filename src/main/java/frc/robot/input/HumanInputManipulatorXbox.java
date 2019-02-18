@@ -87,6 +87,14 @@ public class HumanInputManipulatorXbox {
             return val;
     }
 
+    private double getXboxAxisDeadzone(int axis, XboxController xbox) {
+        double val = xbox.getRawAxis(axis);
+        if (Math.abs(val) <= Specs.JOYSTICK_DEADZONE)
+            return 0;
+        else
+            return val;
+    }
+
     public double getJoystickAxisLeft(int axis) {
         return getJoystickAxis(axis, joystickLeft, Specs.JOYSTICK_DEADZONE);
     }

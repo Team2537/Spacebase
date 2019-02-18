@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         input = new HumanInputManipulatorXbox();
+        cameras = new Cameras();
 
         //climbSys = new ClimbSubsystem();
         intakeSys = new IntakeSubsystem();

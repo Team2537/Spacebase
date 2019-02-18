@@ -26,12 +26,13 @@ public class XboxIntakeCommand extends Command {
   protected void execute() {
     if(Robot.input.xbox.getRawAxis(2) >= 0.8){
       Robot.manipSys.setArmFlywheelMotor(-1);
-      Robot.intakeSys.setIntakeFlywheels(-0.2);
     } else if (Robot.input.xbox.getRawAxis(3) >= 0.8){
       Robot.manipSys.setArmFlywheelMotor(1);
     } else {
-      Robot.manipSys.setArmFlywheelMotor(0);
+      Robot.manipSys.setArmFlywheelMotor(-0.2);
     }
+
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()
