@@ -34,9 +34,9 @@ public class ArmSubsystem extends Subsystem {
         setArmMode(DEFAULT_MODE);
 
         armEncoder = new CANEncoder(armMotor);
-        wristMotor = new TalonSRX(Ports.WRIST_MOTOR);
-        wristEncoder = new Encoder(1,0);
-        pot = new AnalogPotentiometer(Ports.WRIST_POTENTIOMETER, 3600, 0); //TODO: determine offset
+        //wristMotor = new TalonSRX(Ports.WRIST_MOTOR);
+        //wristEncoder = new Encoder(1,0);
+        //pot = new AnalogPotentiometer(Ports.WRIST_POTENTIOMETER, 3600, 0); //TODO: determine offset
         armLevel = 0;
     }
 
@@ -74,7 +74,7 @@ public class ArmSubsystem extends Subsystem {
     }
 
     public void setWristMotor(double percentOutput){
-        wristMotor.set(ControlMode.PercentOutput, percentOutput);
+        //wristMotor.set(ControlMode.PercentOutput, percentOutput);
     }
 
     public double getArmEncoder(){
@@ -97,7 +97,8 @@ public class ArmSubsystem extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new ArmCommand());
+        //setDefaultCommand(new ArmCommand());
+        setDefaultCommand(new ArmManualCommand());
     }
 
 

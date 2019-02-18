@@ -23,6 +23,7 @@ public class FlywheelCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        System.out.println("flywheels");
         if (commandState) {
             Robot.intakeSys.setIntakeFlywheels(FLYWHEEL_SPEED);
         } else {

@@ -38,22 +38,22 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         input = new HumanInputManipulatorXbox();
 
-        climbSys = new ClimbSubsystem();
+        //climbSys = new ClimbSubsystem();
         intakeSys = new IntakeSubsystem();
-        driveSys = new DriveSubsystem();
+        //driveSys = new DriveSubsystem();
         armSys = new ArmSubsystem();
-        manipSys = new ManipulatorSubsystem();
+        //manipSys = new ManipulatorSubsystem();
 
-        visionInput = new VisionInput();
-        cameras = new Cameras();
-        robotState = new RobotStateEstimator(Specs.DRIVE_SPECS, new Pose2d());
-        pdp = new PowerDistributionPanel();
+        //visionInput = new VisionInput();
+        //cameras = new Cameras();
+        //robotState = new RobotStateEstimator(Specs.DRIVE_SPECS, new Pose2d());
+        //pdp = new PowerDistributionPanel();
 
-        driveSys.initDefaultCommand();
+        //driveSys.initDefaultCommand();
         armSys.initDefaultCommand();
-        manipSys.initDefaultCommand();
-        input.registerButtons();
-        cameras.start();
+        //manipSys.initDefaultCommand();
+        //input.registerButtons();
+        //cameras.start();
     }
 
     // Called periodically regardless of the game period

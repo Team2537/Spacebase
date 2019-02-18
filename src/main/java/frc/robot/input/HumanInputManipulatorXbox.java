@@ -8,7 +8,9 @@
 package frc.robot.input;
 
 
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
@@ -26,10 +28,11 @@ import frc.robot.intake.PneumaticExtendCommand;
 
 public class HumanInputManipulatorXbox {
     public static final int AXIS_X = 0, AXIS_Y = 1;
-    public Joystick joystickLeft, joystickRight, xbox;
-    public JoystickButton 
+    public final Joystick joystickLeft, joystickRight;
+    public final XboxController xbox;
+    public final JoystickButton 
         intakeFlywheelsForward, intakeFlywheelsBackward, armSolExtend, intakeSolExtend,
-        armFlywheelIn, armFlywheelOut, 
+        //armFlywheelIn, armFlywheelOut, 
         increasearmbutton, decreasearmbutton, armSetIntakeButton, armSetHighButton, armManualButton,
         climbEngageClutch, 
         cameraButton
@@ -39,7 +42,7 @@ public class HumanInputManipulatorXbox {
         /*   --- Controllers ---  */
         joystickLeft = new Joystick(Ports.LEFT_JOYSTICK);
         joystickRight = new Joystick(Ports.RIGHT_JOYSTICK);
-        xbox = new Joystick(Ports.XBOX_CONTROLLER);
+        xbox = new XboxController(Ports.XBOX_CONTROLLER);
           
         /* --- Button Aliases --- */
         // Left Joystick
@@ -49,48 +52,51 @@ public class HumanInputManipulatorXbox {
 
         // Right Joystick
         intakeFlywheelsBackward = new JoystickButton(joystickRight, 1);
-        armSolExtend = new JoystickButton(xbox, 6);
-        intakeSolExtend = new JoystickButton(joystickRight, 3);
-        increasearmbutton = new JoystickButton(xbox, 4);
+        // UNUSED               = new JoystickButton(joystickRight, 2);
+        intakeSolExtend         = new JoystickButton(joystickRight, 3);
+
+        // Xbox Controller
         decreasearmbutton = new JoystickButton(xbox, 1);
-        armSetIntakeButton = new JoystickButton(xbox, 3);
         armSetHighButton = new JoystickButton(xbox, 2);
+        armSetIntakeButton = new JoystickButton(xbox, 3);
+        increasearmbutton = new JoystickButton(xbox, 4);
         armManualButton = new JoystickButton(xbox, 5);
+        armSolExtend = new JoystickButton(xbox, 6);
       
     }
 
     public void registerButtons() {
         whileHeldCommand(intakeFlywheelsForward, new FlywheelCommand(false));
         whileHeldCommand(intakeFlywheelsBackward, new FlywheelCommand(true));
-        whileHeldCommand(armManualButton, new ArmManualCommand());
-        whenPressedCommand(armSolExtend, new ArmPneumaticCommand());
-        whenPressedCommand(increasearmbutton, new IncreaseArmCommand());
-        whenPressedCommand(decreasearmbutton, new DecreaseArmCommand());
-        whenPressedCommand(climbEngageClutch, new ClimbCommand());
-        whenPressedCommand(intakeSolExtend, new PneumaticExtendCommand());
-        whenPressedCommand(armSetHighButton, new SetArmCommand(0));//TODO FIX THIS
-        whenPressedCommand(armSetIntakeButton, new SetArmCommand(0)); // TODO FIX THIS TOO
+        // whileHeldCommand(armManualButton, new ArmManualCommand());
+        // whenPressedCommand(armSolExtend, new ArmPneumaticCommand());
+        // whenPressedCommand(increasearmbutton, new IncreaseArmCommand());
+        // whenPressedCommand(decreasearmbutton, new DecreaseArmCommand());
+        // whenPressedCommand(climbEngageClutch, new ClimbCommand());
+        // whenPressedCommand(intakeSolExtend, new PneumaticExtendCommand());
+        // whenPressedCommand(armSetHighButton, new SetArmCommand(0));//TODO FIX THIS
+        // whenPressedCommand(armSetIntakeButton, new SetArmCommand(0)); // TODO FIX THIS TOO
     }
 
 
-    private double getJoystickAxis(int axis, Joystick joystick) {
+    private double getJoystickAxis(int axis, GenericHID joystick, double deadzone) {
         double val = joystick.getRawAxis(axis);
-        if (Math.abs(val) <= Specs.JOYSTICK_DEADZONE)
+        if (Math.abs(val) <= deadzone)
             return 0;
         else
             return val;
     }
 
     public double getJoystickAxisLeft(int axis) {
-        return getJoystickAxis(axis, joystickLeft);
+        return getJoystickAxis(axis, joystickLeft, Specs.JOYSTICK_DEADZONE);
     }
 
     public double getJoystickAxisRight(int axis) {
-        return getJoystickAxis(axis, joystickRight);
+        return getJoystickAxis(axis, joystickRight, Specs.JOYSTICK_DEADZONE);
     }
 
     public double getXboxAxis(int axis){
-        return getJoystickAxis(axis, xbox);
+        return getJoystickAxis(axis, xbox, Specs.XBOX_DEADZONE);
     }
 
     private static void whenPressedCommand(Button button, Command command) {

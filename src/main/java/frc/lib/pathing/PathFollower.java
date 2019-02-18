@@ -6,6 +6,7 @@ import frc.lib.motion.MotionProfile;
 import frc.lib.motion.MotionState;
 import frc.lib.motion.Pose2d;
 import frc.lib.motion.RobotConstraints;
+import frc.lib.motion.WheelState;
 import frc.lib.pathing.MotionProfileGenerator.ProfileConstraints;
 import frc.lib.util.Util;
 import frc.lib.util.Vec2;
@@ -92,48 +93,40 @@ public class PathFollower {
 
     public void update(MotionState stateCurrent){
         MotionState stateSetpoint = profile.getState(timeElapsed);
-        Pose2d error = stateSetpoint.pose.delta(stateCurrent.pose);
+        WheelState vels = stateCurrent.velWheels;
+        WheelState accs = getNonlinearFeedback(stateSetpoint, stateCurrent);
 
         timeElapsed += dt;
     }
 
-    private void getNonlinearFeedback(MotionState state, Pose2d error) {
+    private WheelState getNonlinearFeedback(MotionState state, MotionState stateCurrent) {
         // Based on Team 254's 2018 code
         // Implements eqn. 5.12 from https://www.dis.uniroma1.it/~labrob/pub/papers/Ramsete01.pdf
-        final double kBeta = 3100.0;  // >0.
-        final double kZeta = 0.7;  // Damping coefficient, [0, 1].
+        final double kBeta = 0.00129;   // >0.
+        final double kZeta = 0.7;       // Damping coefficient, [0, 1].
 
         // Compute gain parameter.
         final double k = 2.0 * kZeta * Math.sqrt(kBeta * state.vel.linear * state.vel.linear
                 + state.vel.angular * state.vel.angular);
 
         // Compute error components.
-        final double angle_error_rads = error.ang;
-        final double sin_x_over_x = Util.epsilonEquals(angle_error_rads, 0.0, 1E-2) ?
-                1.0 : mError.getRotation().sin() / angle_error_rads;
+        Pose2d error = state.pose.delta(stateCurrent.pose);
+        final double sin_x_over_x = Util.epsilonEquals(error.ang, 0.0, 1E-2) ?
+                1.0 : Math.sin(error.ang) / error.ang;
 
-        final ChassisState adjusted_velocity = new ChassisState(
-                state.vel.linear * mError.getRotation().cos() +
-                        k * Units.inches_to_meters(mError.getTranslation().x()),
-                dynamics.chassis_velocity.angular + k * angle_error_rads +
-                        dynamics.chassis_velocity.linear * kBeta * sin_x_over_x * Units.inches_to_meters(mError
-                                .getTranslation().y()));
+        final Vec2 dPos = error.vec.rotateBy(stateCurrent.pose.ang);
+
+        final ChassisState adjustedVel = new ChassisState(
+                state.vel.linear * Math.cos(error.ang) + k * dPos.x,
+                state.vel.angular + k * error.ang + state.vel.linear * kBeta * sin_x_over_x * dPos.y
+        );
 
         // Compute adjusted left and right wheel velocities.
-        dynamics.chassis_velocity = adjusted_velocity;
-        dynamics.wheel_velocity = mModel.solveInverseKinematics(adjusted_velocity);
-
-        dynamics.chassis_acceleration.linear = mDt == 0 ? 0.0 : (dynamics.chassis_velocity.linear - prev_velocity_
-                .linear) / mDt;
-        dynamics.chassis_acceleration.angular = mDt == 0 ? 0.0 : (dynamics.chassis_velocity.angular - prev_velocity_
-                .angular) / mDt;
-
-        prev_velocity_ = dynamics.chassis_velocity;
-
-        DifferentialDrive.WheelState feedforward_voltages = mModel.solveInverseDynamics(dynamics.chassis_velocity,
-                dynamics.chassis_acceleration).voltage;
-
-        return new Output(dynamics.wheel_velocity.left, dynamics.wheel_velocity.right, dynamics.wheel_acceleration
-                .left, dynamics.wheel_acceleration.right, feedforward_voltages.left, feedforward_voltages.right);
+        final WheelState adjustedVelWheels = drive.toWheels(adjustedVel);
+        final WheelState adjustedAccWheels = new WheelState(
+            (adjustedVelWheels.left - state.velWheels.left)/dt,
+            (adjustedVelWheels.right - state.velWheels.right)/dt
+        );
+        return adjustedAccWheels;
     }
 }
