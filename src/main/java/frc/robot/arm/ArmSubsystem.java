@@ -25,7 +25,6 @@ public class ArmSubsystem extends Subsystem {
 
     private TalonSRX wristMotor;
     private CANSparkMax armMotor;
-    private Encoder wristEncoder;
     private CANEncoder armEncoder;
     private Potentiometer armPot, wristPot;
 
@@ -35,7 +34,6 @@ public class ArmSubsystem extends Subsystem {
 
         armEncoder = new CANEncoder(armMotor);
         wristMotor = new TalonSRX(Ports.WRIST_MOTOR);
-        wristEncoder = new Encoder(1,0);
         wristPot = new AnalogPotentiometer(Ports.WRIST_POTENTIOMETER, 1080, 0); //TODO: determine offset
         armPot = new AnalogPotentiometer(Ports.ARM_POTENTIOMETER, 1080, 0);
         armLevel = 0;
@@ -102,7 +100,7 @@ public class ArmSubsystem extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new ArmCommand());
+        setDefaultCommand(new ArmManualCommand());
     }
 
 

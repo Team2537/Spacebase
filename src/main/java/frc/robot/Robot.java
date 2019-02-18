@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         input = new HumanInputManipulatorXbox();
+        cameras = new Cameras();
 
         climbSys = new ClimbSubsystem();
         intakeSys = new IntakeSubsystem();
@@ -44,10 +45,10 @@ public class Robot extends TimedRobot {
         armSys = new ArmSubsystem();
         manipSys = new ManipulatorSubsystem();
 
-        visionInput = new VisionInput();
-        cameras = new Cameras();
-        robotState = new RobotStateEstimator(Specs.DRIVE_SPECS, new Pose2d());
-        pdp = new PowerDistributionPanel();
+        // visionInput = new VisionInput();
+        // cameras = new Cameras();
+        // robotState = new RobotStateEstimator(Specs.DRIVE_SPECS, new Pose2d());
+        // pdp = new PowerDistributionPanel();
 
         driveSys.initDefaultCommand();
         armSys.initDefaultCommand();

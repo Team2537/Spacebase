@@ -22,14 +22,12 @@ public class IntakeSubsystem extends Subsystem {
     // here. Call these from Commands.
 
     private TalonSRX intakeFlywheelOne, intakeFlywheelTwo;
-    private DigitalInput infrared;
     private Solenoid intakePneumatic;
     private static final double FLYWHEEL_SPEED = 0.8;
 
     public IntakeSubsystem() {
         intakeFlywheelOne = new TalonSRX(Ports.INTAKE_FLYWHEEL_ONE);
         intakeFlywheelTwo = new TalonSRX(Ports.INTAKE_FLYWHEEL_TWO);
-        infrared = new DigitalInput(Ports.INTAKE_INFRARED);
         intakePneumatic = new Solenoid(Ports.INTAKE_PNEUMATIC_ONE);
 
     }
@@ -49,16 +47,10 @@ public class IntakeSubsystem extends Subsystem {
         return intakePneumatic.get();
     }
 
-    public boolean getInfrared() {
-        return infrared.get();
-    }
-
     @Override
     public void initDefaultCommand() {
         
     }
 
-	public void setArmFlywheelMotor(int i) {
-	}
 
 }

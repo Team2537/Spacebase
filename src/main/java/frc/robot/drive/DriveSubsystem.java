@@ -33,7 +33,7 @@ public class DriveSubsystem extends Subsystem {
     // convert from revolutions/minute to inches/second
     public static final double ENCODER_VELOCITY_FACTOR = Units.revoltionsPerMinute_to_inchesPerSecond(1, Specs.DRIVE_WHEEL_DIAMETER);
     
-    public static final IdleMode DEFAULT_IDLE_MODE = IdleMode.kBrake;
+    public static final IdleMode DEFAULT_IDLE_MODE = IdleMode.kCoast;
     public static final MotorType MOTOR_TYPE = MotorType.kBrushless;
     private static final int NUM_VELS_TO_SAMPLE = 4;
 
@@ -71,7 +71,7 @@ public class DriveSubsystem extends Subsystem {
         encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
         for (int i = 0; i < MOTOR_PORTS_LEFT.length; i++) {
             motorsLeft[i] = new CANSparkMax(MOTOR_PORTS_LEFT[i], MOTOR_TYPE);
-            if (i > 0) motorsLeft[i].follow(motorsLeft[0]);
+            //if (i > 0) motorsLeft[i].follow(motorsLeft[0]);
 
             encodersLeft[i] = motorsLeft[i].getEncoder();
             encodersLeft[i].setPositionConversionFactor(ENCODER_POSITION_FACTOR);
@@ -85,7 +85,7 @@ public class DriveSubsystem extends Subsystem {
         encodersRight = new CANEncoder[MOTOR_PORTS_RIGHT.length];
         for (int i = 0; i < MOTOR_PORTS_RIGHT.length; i++) {
             motorsRight[i] = new CANSparkMax(MOTOR_PORTS_RIGHT[i], MOTOR_TYPE);
-            if (i > 0) motorsRight[i].follow(motorsRight[0]);
+            //if (i > 0) motorsRight[i].follow(motorsRight[0]);
 
             encodersRight[i] = motorsRight[i].getEncoder();
             encodersRight[i].setPositionConversionFactor(ENCODER_POSITION_FACTOR);
@@ -124,11 +124,17 @@ public class DriveSubsystem extends Subsystem {
 	/****************************************************************************/
 
     public void setMotorsLeft(double percentOutput) {
-        motorsLeft[0].set(-percentOutput);
+        for(CANSparkMax motor : motorsLeft) {
+            motor.set(-percentOutput);
+        }
+        // motorsLeft[2].set(-percentOutput);
     }
 
     public void setMotorsRight(double percentOutput) {
-        motorsRight[0].set(percentOutput);
+        for(CANSparkMax motor : motorsRight) {
+            motor.set(percentOutput);
+        }
+        //motorsRight[0].set(percentOutput);
     }
 
     public void setMotors(double percentOutputLeft, double percentOutputRight) {
