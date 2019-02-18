@@ -73,18 +73,13 @@ public class ArmSubsystem extends Subsystem {
     }
 
     public void setWristMotor(double percentOutput){
-        //wristMotor.set(ControlMode.PercentOutput, percentOutput);
+        wristMotor.set(ControlMode.PercentOutput, percentOutput);
     }
 
     public double getArmEncoder(){
         return armEncoder.getPosition();
 
     }
-
-    // public double getWristEncoder() {
-    //     System.out.println(wristEncoder.get());
-    //     return wristEncoder.get();
-    // }
 
     public double getWristPotentiometer(){
         return wristPot.get();

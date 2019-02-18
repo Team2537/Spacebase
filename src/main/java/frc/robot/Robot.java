@@ -43,7 +43,7 @@ public class Robot extends TimedRobot {
         intakeSys = new IntakeSubsystem();
         //driveSys = new DriveSubsystem();
         armSys = new ArmSubsystem();
-        //manipSys = new ManipulatorSubsystem();
+        manipSys = new ManipulatorSubsystem();
 
         //visionInput = new VisionInput();
         //cameras = new Cameras();
@@ -52,9 +52,9 @@ public class Robot extends TimedRobot {
 
         //driveSys.initDefaultCommand();
         armSys.initDefaultCommand();
-        //manipSys.initDefaultCommand();
-        //input.registerButtons();
-        //cameras.start();
+        manipSys.initDefaultCommand();
+        input.registerButtons();
+        cameras.start();
     }
 
     // Called periodically regardless of the game period
