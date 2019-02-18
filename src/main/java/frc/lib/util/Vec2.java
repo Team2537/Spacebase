@@ -95,9 +95,28 @@ public class Vec2 {
     public double angle(){
         return angle(this);
     }
+    /** Returns a new vector, representing the original vector rotated by some radians around the origin. */
+    public static Vec2 rotateBy(Vec2 v, double angle){
+        final double sin = Math.sin(angle), cos = Math.cos(angle);
+        return new Vec2(v.x*cos - v.y*sin, v.x*sin + v.y*cos);
+    }
+     /** Returns a new vector, representing this vector rotated by some radians around the origin. */
+    public Vec2 rotateBy(double angle){
+        return rotateBy(this, angle);
+    }
 
     @Override
     public String toString(){
         return "("+x+", "+y+")";
     }
+
+    @Override
+    public boolean equals(Object other){
+        if(other instanceof Vec2){
+            final Vec2 v = (Vec2)other;
+            return x == v.x && y == v.y;
+        }
+        return false;
+    }
+
 }

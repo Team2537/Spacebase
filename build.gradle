@@ -51,6 +51,11 @@ dependencies {
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
     compile "com.revrobotics.frc:SparkMax-java:1.0.26"
+    
+    compile "edu.wpi.first.ntcore:ntcore-java:2019.+"
+    compile "edu.wpi.first.wpiutil:wpiutil-java:2019.+"
+    runtime "edu.wpi.first.ntcore:ntcore-jni:2019.+:all"
+    
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     testCompile 'junit:junit:4.12'

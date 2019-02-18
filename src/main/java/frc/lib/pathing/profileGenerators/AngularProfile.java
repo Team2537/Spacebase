@@ -1,16 +1,15 @@
 package frc.lib.pathing.profileGenerators;
 
 import frc.lib.motion.MotionProfile;
-import frc.lib.pathing.Clothoid;
 
 public class AngularProfile {
 
-    public static void generate(MotionProfile profile, Clothoid segment, double robotLength, double accMax, double velMax){
-        final double o = Math.signum(segment.dTheta);
-        final double dist = Math.abs(segment.dTheta);
+    public static void generate(MotionProfile profile, double dTheta, double robotLength, double accMax, double velMax){
+        final double o = Math.signum(dTheta);
+        final double dist = Math.abs(dTheta);
         final double accMaxLinear = accMax;
-        accMax /= robotLength;
-        velMax /= robotLength;
+        accMax *= 2/robotLength;
+        velMax *= 2/robotLength;
 
         // What is the maximum velocity we can reach (Vmax)? This is the intersection of two curves: one accelerating
         // towards the goal from profile.finalState(), the other coming from the goal at max vel (in reverse). If Vmax
