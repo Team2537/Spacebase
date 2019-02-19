@@ -31,6 +31,7 @@ public class DriveCommand extends Command {
             Robot.input.getJoystickAxisLeft(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX,
             Robot.input.getJoystickAxisRight(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX
         );
+        //System.out.println("ULTRASONIC: " + Robot.driveSys.getUltrasonic());
 
     }
 

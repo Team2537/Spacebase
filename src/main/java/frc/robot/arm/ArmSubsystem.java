@@ -1,39 +1,42 @@
 package frc.robot.arm;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import frc.robot.Ports;
 
 public class ArmSubsystem extends Subsystem {
-    public static final IdleMode DEFAULT_MODE = IdleMode.kBrake;
+    public static final IdleMode DEFAULT_ARM_MODE = IdleMode.kBrake;
+    public static final NeutralMode DEFAULT_WRIST_MODE = NeutralMode.Brake;
 
     private int armLevel;
-    private static final int ARM_LEVEL_MIN = 0, ARM_LEVEL_MAX = 6;
+    private static final int ARM_LEVEL_MIN = 0, ARM_LEVEL_MAX = 7;
     private static final double[] armLevelSetpoints = 
-        {0,33,50,82,97,145,164};
+        {509, 487, 427, 462, 433, 419, 382, 367};
+        //frame perimeter, low hatch level, ship cargo, cargo rocket 1, hatch 2, cargo rocket 2, hatch 3, cargo rocket 3
     private static final double[] wristLevelSetpoints =
-        {0,-8,-35,-67,-82,-130,-35}; //TODO: fix the hell out of this
+        {735, 701, 592, 667, 633, 617, 569, 573}; //TODO: fix the hell out of this
+
+    // intake setpoint: arm: 476, wrist: 488
 
     private TalonSRX wristMotor;
     private CANSparkMax armMotor;
-    private CANEncoder armEncoder;
     private Potentiometer armPot, wristPot;
 
     public ArmSubsystem() {
         armMotor = new CANSparkMax(Ports.ARM_MOTOR, MotorType.kBrushless);
-        setArmMode(DEFAULT_MODE);
+        setArmMode(DEFAULT_ARM_MODE);
 
-        armEncoder = new CANEncoder(armMotor);
         wristMotor = new TalonSRX(Ports.WRIST_MOTOR);
+        setWristMode(DEFAULT_WRIST_MODE);
+
         wristPot = new AnalogPotentiometer(Ports.WRIST_POTENTIOMETER, 1080, 0); //TODO: determine offset
         armPot = new AnalogPotentiometer(Ports.ARM_POTENTIOMETER, 1080, 0);
         armLevel = 0;
@@ -73,12 +76,7 @@ public class ArmSubsystem extends Subsystem {
     }
 
     public void setWristMotor(double percentOutput){
-        wristMotor.set(ControlMode.PercentOutput, percentOutput);
-    }
-
-    public double getArmEncoder(){
-        return armEncoder.getPosition();
-
+        wristMotor.set(ControlMode.PercentOutput, -percentOutput);
     }
 
     public double getWristPotentiometer(){
@@ -89,13 +87,17 @@ public class ArmSubsystem extends Subsystem {
         return armPot.get();
     }
 
-    public void setArmMode(CANSparkMax.IdleMode mode){
+    public void setArmMode(IdleMode mode){
         armMotor.setIdleMode(mode);
+    }
+
+    public void setWristMode(NeutralMode mode){
+        wristMotor.setNeutralMode(mode);
     }
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new ArmManualCommand());
+        setDefaultCommand(new ArmCommand());
     }
 
 

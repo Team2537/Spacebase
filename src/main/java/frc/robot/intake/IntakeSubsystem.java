@@ -9,12 +9,8 @@ package frc.robot.intake;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-
-import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import frc.robot.Ports;
 
 public class IntakeSubsystem extends Subsystem {
@@ -23,7 +19,6 @@ public class IntakeSubsystem extends Subsystem {
 
     private TalonSRX intakeFlywheelOne, intakeFlywheelTwo;
     private Solenoid intakePneumatic;
-    private static final double FLYWHEEL_SPEED = 0.8;
 
     public IntakeSubsystem() {
         intakeFlywheelOne = new TalonSRX(Ports.INTAKE_FLYWHEEL_ONE);

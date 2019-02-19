@@ -15,7 +15,6 @@ import frc.robot.drive.RobotStateUpdater;
 import frc.robot.input.HumanInputManipulatorXbox;
 import frc.robot.intake.IntakeSubsystem;
 import frc.robot.manipulator.ManipulatorSubsystem;
-import frc.lib.motion.Pose2d;
 import frc.lib.motion.RobotStateEstimator;
 import frc.lib.vision.VisionInput;
 import frc.robot.arm.ArmSubsystem;

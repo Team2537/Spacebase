@@ -106,11 +106,7 @@ public class DriveSubsystem extends Subsystem {
         
         navX = new AHRS(SPI.Port.kMXP);
         frontUltrasonic = new Ultrasonic(Ports.FRONT_ULTRASONIC_INPUT, Ports.FRONT_ULTRASONIC_OUTPUT);
-        /*
-        IR_frontUpper = new DigitalInput(Ports.LINE_FOLLOWER_FRONT_UPPER);
-        IR_frontLower = new DigitalInput(Ports.LINE_FOLLOWER_FRONT_LOWER);
-        IR_center = new DigitalInput(Ports.LINE_FOLLOWER_CENTER);
-        */
+        frontUltrasonic.setAutomaticMode(true);
     }
 
     @Override

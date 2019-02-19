@@ -24,7 +24,7 @@ public class ArmManualCommand extends Command {
   @Override
   protected void execute() {
     Robot.armSys.setArmMotor(-Robot.input.getXboxAxis(1));
-    Robot.armSys.setWristMotor(Robot.input.getXboxAxis(5));
+    Robot.armSys.setWristMotor(-Robot.input.getXboxAxis(5));
 
     System.out.println("WRIST POTENTIOMETER: " + Robot.armSys.getWristPotentiometer());
     System.out.println("ARM POTENTIOMETER: " + Robot.armSys.getArmPotentiometer());

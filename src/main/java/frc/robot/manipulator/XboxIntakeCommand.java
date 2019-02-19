@@ -24,9 +24,9 @@ public class XboxIntakeCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    if(Robot.input.xbox.getRawAxis(2) >= 0.8){
+    if(Robot.input.getXboxAxis(2) >= 0.8){
       Robot.manipSys.setArmFlywheelMotor(-1);
-    } else if (Robot.input.xbox.getRawAxis(3) >= 0.8){
+    } else if (Robot.input.getXboxAxis(3) >= 0.8){
       Robot.manipSys.setArmFlywheelMotor(1);
     } else {
       Robot.manipSys.setArmFlywheelMotor(-0.2);

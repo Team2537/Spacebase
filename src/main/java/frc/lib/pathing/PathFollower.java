@@ -5,7 +5,6 @@ import frc.lib.motion.DriveSpecs;
 import frc.lib.motion.MotionProfile;
 import frc.lib.motion.MotionState;
 import frc.lib.motion.Pose2d;
-import frc.lib.motion.RobotConstraints;
 import frc.lib.motion.WheelState;
 import frc.lib.pathing.MotionProfileGenerator.ProfileConstraints;
 import frc.lib.util.Util;
