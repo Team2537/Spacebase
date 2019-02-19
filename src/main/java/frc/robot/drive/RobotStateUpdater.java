@@ -19,7 +19,7 @@ public class RobotStateUpdater extends Command {
     protected void execute() {
         final double posLeft = Robot.driveSys.getEncoderPosLeft();
         final double posRight = Robot.driveSys.getEncoderPosRight();
-        System.out.format("posLeft: %f\nposRight: %f\n\n",posLeft,posRight);
+        //System.out.format("posLeft: %f\nposRight: %f\n\n",posLeft,posRight);
 
         final double angle = Robot.driveSys.getGyroRadians();
 
@@ -28,7 +28,7 @@ public class RobotStateUpdater extends Command {
         final double angleDelta = angle - lastAngle;
 
         Robot.robotState.update(Specs.ROBOT_PERIOD_SECONDS, wheelDeltaLeft, wheelDeltaRight, angleDelta);
-        //System.out.println(Robot.robotState.getLatestState().pos);
+        //System.out.println(Robot.robotState.getLatestState().pose.vec);
 
         lastPosLeft = posLeft;
         lastPosRight = posRight;

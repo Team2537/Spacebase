@@ -23,7 +23,7 @@ public class RobotStateViewer {
         inst.startClientTeam(TEAM_NUMBER); 
         inst.startDSClient();  // this gets the robot IP from the DS
 
-        Turtle turtle = new Turtle(800, 800, 12);
+        Turtle turtle = new Turtle(800, 800, 2);
         turtle.addPoints(new Vec2[]{}, new Color(100,210,60)); // green
 
         table.addEntryListener(RobotStateEstimator.ENTRY_SPECS, (table_, key, entry, value, flags) -> {

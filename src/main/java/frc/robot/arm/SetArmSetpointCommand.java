@@ -5,34 +5,29 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.drive;
+package frc.robot.arm;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.input.HumanInput;
+import frc.robot.arm.ArmSubsystem.ArmSetpoint;
 
-public class DriveCommand extends Command {
-    private double PERCENT_OUTPUT_MAX = 1.0;
+public class SetArmSetpointCommand extends Command {
+    private ArmSetpoint setpoint;
 
-    public DriveCommand() {
-        requires(Robot.driveSys);
+    public SetArmSetpointCommand(ArmSetpoint setpoint){
+        requires(Robot.armSys);
+        this.setpoint = setpoint;
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        System.out.println("we rollin");
+        Robot.armSys.setArmSetpoint(setpoint);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.driveSys.setMotors(
-            -Robot.input.getJoystickAxisLeft(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX,
-            -Robot.input.getJoystickAxisRight(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX
-        );
-        //System.out.println("ULTRASONIC: " + Robot.driveSys.getUltrasonic());
-
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -9,7 +9,7 @@ package frc.robot.test;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.arm.ArmCommand;
-import frc.robot.arm.SetArmCommand;
+import frc.robot.arm.SetArmLevelCommand;
 import frc.robot.climb.ClimbCommand;
 import frc.robot.drive.DriveTestCommand;
 import frc.robot.intake.FlywheelCommand;
@@ -23,11 +23,11 @@ public class PreLaunchSequence extends CommandGroup {
    */
   public PreLaunchSequence() {
     addSequential(new DriveTestCommand(0.5), 0.5);
-    addSequential(new DriveTestCommand(0.5), 0.5);
+    addSequential(new DriveTestCommand(-0.5), 0.5);
 
-    addSequential(new SetArmCommand(7)); // TODO Set this for the high forward level
+    addSequential(new SetArmLevelCommand(7)); // TODO Set this for the high forward level
     addSequential(new ArmCommand(), 5); //TODO modify all these times
-    addSequential(new SetArmCommand(3)); //TODO hatch level
+    addSequential(new SetArmLevelCommand(1)); //TODO hatch level
     addSequential(new ArmCommand(), 5);
 
     addParallel(new PneumaticExtendCommand());
@@ -39,11 +39,11 @@ public class PreLaunchSequence extends CommandGroup {
     addParallel(new ArmFlywheelCommand(false));
     addSequential(new FlywheelCommand(false), 2);
 
-    addSequential(new SetArmCommand(0)); // TODO in frame perimeter level
+    addSequential(new SetArmLevelCommand(0)); // TODO in frame perimeter level
     addSequential(new ArmCommand(), 5);
     
     addSequential(new ClimbCommand());
-    addSequential(new DriveTestCommand(0.3), 1);
+    addSequential(new DriveTestCommand(-0.3), 2);
     addSequential(new ClimbCommand());
 
     // Add Commands here:

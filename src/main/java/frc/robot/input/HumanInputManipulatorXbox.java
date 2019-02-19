@@ -17,9 +17,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Ports;
 import frc.robot.Specs;
 import frc.robot.arm.ArmManualCommand;
+import frc.robot.arm.ArmSubsystem;
 import frc.robot.arm.DecreaseArmCommand;
 import frc.robot.arm.IncreaseArmCommand;
-import frc.robot.arm.SetArmCommand;
+import frc.robot.arm.SetArmLevelCommand;
+import frc.robot.arm.SetArmSetpointCommand;
 import frc.robot.climb.ClimbCommand;
 import frc.robot.manipulator.ArmPneumaticCommand;
 import frc.robot.intake.FlywheelCommand;
@@ -73,8 +75,8 @@ public class HumanInputManipulatorXbox {
         whenPressedCommand(decreasearmbutton, new DecreaseArmCommand());
         whenPressedCommand(climbEngageClutch, new ClimbCommand());
         whenPressedCommand(intakeSolExtend, new PneumaticExtendCommand());
-        whenPressedCommand(armSetHighButton, new SetArmCommand(0));//TODO FIX THIS
-        whenPressedCommand(armSetIntakeButton, new SetArmCommand(0)); // TODO FIX THIS TOO
+        whenPressedCommand(armSetHighButton, new SetArmLevelCommand(0));//TODO FIX THIS
+        whenPressedCommand(armSetIntakeButton, new SetArmSetpointCommand(ArmSubsystem.SETPOINT_INTAKE));
     }
 
 

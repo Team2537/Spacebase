@@ -11,20 +11,38 @@ import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import frc.robot.Ports;
+import frc.robot.Robot;
+import frc.robot.Specs;
 
 public class ArmSubsystem extends Subsystem {
     public static final IdleMode DEFAULT_ARM_MODE = IdleMode.kBrake;
     public static final NeutralMode DEFAULT_WRIST_MODE = NeutralMode.Brake;
 
     private int armLevel;
-    private static final int ARM_LEVEL_MIN = 0, ARM_LEVEL_MAX = 7;
-    private static final double[] armLevelSetpoints = 
-        {509, 487, 427, 462, 433, 419, 382, 367};
-        //frame perimeter, low hatch level, ship cargo, cargo rocket 1, hatch 2, cargo rocket 2, hatch 3, cargo rocket 3
-    private static final double[] wristLevelSetpoints =
-        {735, 701, 592, 667, 633, 617, 569, 573}; //TODO: fix the hell out of this
+    
+    public static final ArmSetpoint 
+        SETPOINT_INTAKE = new ArmSetpoint(476, 488),
+        SETPOINT_DEFAULT = new ArmSetpoint(509, 735),
+        SETPOINT_SHIP_HATCH = new ArmSetpoint(487, 701),
+        SETPOINT_SHIP_CARGO = new ArmSetpoint(427, 592),
+        SETPOINT_ROCKET_CARGO_1 = new ArmSetpoint(462, 667),
+        SETPOINT_ROCKET_HATCH_2 = new ArmSetpoint(433, 633),
+        SETPOINT_ROCKET_CARGO_2 = new ArmSetpoint(419, 617),
+        SETPOINT_ROCKET_HATCH_3 = new ArmSetpoint(382, 569),
+        SETPOINT_ROCKET_CARGO_3 = new ArmSetpoint(367, 573)
+    ;
 
-    // intake setpoint: arm: 476, wrist: 488
+    public static final ArmSetpoint[] SETPOINTS_LEVELS = {
+        SETPOINT_DEFAULT,            // frame perimeter
+        SETPOINT_SHIP_HATCH,
+        SETPOINT_SHIP_CARGO,
+        SETPOINT_ROCKET_CARGO_1,
+        SETPOINT_ROCKET_HATCH_2,
+        SETPOINT_ROCKET_CARGO_2,
+        SETPOINT_ROCKET_HATCH_3,
+        SETPOINT_ROCKET_CARGO_3
+    };
+    private ArmSetpoint currentSetpoint;
 
     private TalonSRX wristMotor;
     private CANSparkMax armMotor;
@@ -37,38 +55,40 @@ public class ArmSubsystem extends Subsystem {
         wristMotor = new TalonSRX(Ports.WRIST_MOTOR);
         setWristMode(DEFAULT_WRIST_MODE);
 
-        wristPot = new AnalogPotentiometer(Ports.WRIST_POTENTIOMETER, 1080, 0); //TODO: determine offset
+        wristPot = new AnalogPotentiometer(Ports.WRIST_POTENTIOMETER, 1080, 0);
         armPot = new AnalogPotentiometer(Ports.ARM_POTENTIOMETER, 1080, 0);
         armLevel = 0;
+        currentSetpoint = null;
     }
 
-    public void increaseArmLevel(){
-        if(armLevel < ARM_LEVEL_MAX){
-            armLevel++;
+    public void setArmSetpoint(ArmSetpoint setpoint){
+        // Safety feature: make sure nothing is inside intake before we go back to default position
+        if(setpoint != SETPOINT_DEFAULT 
+            || Robot.driveSys.getUltrasonic() >= Specs.FRONT_ULTRASONIC_TO_BALL){
+            
+            this.currentSetpoint = setpoint;
         }
     }
 
     public void setArmLevel(int level){
-        if(armLevel < ARM_LEVEL_MAX && armLevel > ARM_LEVEL_MIN){
+        if(level < SETPOINTS_LEVELS.length && level >= 0){
             armLevel = level;
+            setArmSetpoint(SETPOINTS_LEVELS[level]);
         } else {
             System.out.println("error in Arm Subsystem method setArmLevel()");
-            armLevel = 0;
         }
-        
     }
+
+    public void increaseArmLevel(){
+        setArmLevel(armLevel + 1);
+    }
+
     public void decreaseArmLevel(){
-        if(armLevel > ARM_LEVEL_MIN){
-            armLevel--;
-        }
+        setArmLevel(armLevel - 1);
     }
 
-    public double getArmSetpoint(){
-        return armLevelSetpoints[armLevel];
-    }
-
-    public double getWristSetpoint(){
-        return wristLevelSetpoints[armLevel];
+    public ArmSetpoint getSetpoint(){
+        return currentSetpoint;
     }
 
     public void setArmMotor(double percentOutput){
@@ -98,6 +118,14 @@ public class ArmSubsystem extends Subsystem {
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new ArmCommand());
+    }
+
+    public static class ArmSetpoint {
+        public final double arm, wrist;
+        public ArmSetpoint(double arm, double wrist) {
+            this.arm = arm;
+            this.wrist = wrist;
+        }
     }
 
 

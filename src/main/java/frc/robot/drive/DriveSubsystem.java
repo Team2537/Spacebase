@@ -28,11 +28,15 @@ public class DriveSubsystem extends Subsystem {
 	/****************************************************************************/
 
     // convert from revolutions to inches
-    public static final double ENCODER_POSITION_FACTOR = Units.revolutions_to_inches(1, Specs.DRIVE_WHEEL_DIAMETER);
+    public static final double ENCODER_POSITION_FACTOR = 
+        Units.revolutions_to_inches(1, Specs.DRIVE_WHEEL_DIAMETER*Specs.DRIVE_GEARBOX_RATIO);
     
     // convert from revolutions/minute to inches/second
-    public static final double ENCODER_VELOCITY_FACTOR = Units.revoltionsPerMinute_to_inchesPerSecond(1, Specs.DRIVE_WHEEL_DIAMETER);
+    public static final double ENCODER_VELOCITY_FACTOR = 
+        Units.revoltionsPerMinute_to_inchesPerSecond(1, Specs.DRIVE_WHEEL_DIAMETER*Specs.DRIVE_GEARBOX_RATIO);
     
+    public static final double SIGN_LEFT = 1.0, SIGN_RIGHT = -1.0;
+
     public static final IdleMode DEFAULT_IDLE_MODE = IdleMode.kCoast;
     public static final MotorType MOTOR_TYPE = MotorType.kBrushless;
     private static final int NUM_VELS_TO_SAMPLE = 4;
@@ -73,9 +77,11 @@ public class DriveSubsystem extends Subsystem {
             motorsLeft[i] = new CANSparkMax(MOTOR_PORTS_LEFT[i], MOTOR_TYPE);
             //if (i > 0) motorsLeft[i].follow(motorsLeft[0]);
 
-            encodersLeft[i] = motorsLeft[i].getEncoder();
-            encodersLeft[i].setPositionConversionFactor(ENCODER_POSITION_FACTOR);
-            encodersLeft[i].setVelocityConversionFactor(ENCODER_VELOCITY_FACTOR);
+            CANEncoder enc = motorsLeft[i].getEncoder();
+            enc.setPositionConversionFactor(SIGN_LEFT*ENCODER_POSITION_FACTOR);
+            enc.setVelocityConversionFactor(SIGN_LEFT*ENCODER_VELOCITY_FACTOR);
+            enc.setPosition(0);
+            encodersLeft[i] = enc;
         }
 
         /*********************************/
@@ -87,9 +93,11 @@ public class DriveSubsystem extends Subsystem {
             motorsRight[i] = new CANSparkMax(MOTOR_PORTS_RIGHT[i], MOTOR_TYPE);
             //if (i > 0) motorsRight[i].follow(motorsRight[0]);
 
-            encodersRight[i] = motorsRight[i].getEncoder();
-            encodersRight[i].setPositionConversionFactor(ENCODER_POSITION_FACTOR);
-            encodersRight[i].setVelocityConversionFactor(ENCODER_VELOCITY_FACTOR);
+            CANEncoder enc = motorsRight[i].getEncoder();
+            enc.setPositionConversionFactor(SIGN_RIGHT*ENCODER_POSITION_FACTOR);
+            enc.setVelocityConversionFactor(SIGN_RIGHT*ENCODER_VELOCITY_FACTOR);
+            enc.setPosition(0);
+            encodersRight[i] = enc;
         }
 
         setIdleMode(DEFAULT_IDLE_MODE);
@@ -121,14 +129,14 @@ public class DriveSubsystem extends Subsystem {
 
     public void setMotorsLeft(double percentOutput) {
         for(CANSparkMax motor : motorsLeft) {
-            motor.set(-percentOutput);
+            motor.set(SIGN_LEFT*percentOutput);
         }
         // motorsLeft[2].set(-percentOutput);
     }
 
     public void setMotorsRight(double percentOutput) {
         for(CANSparkMax motor : motorsRight) {
-            motor.set(percentOutput);
+            motor.set(SIGN_RIGHT*percentOutput);
         }
         //motorsRight[0].set(percentOutput);
     }
@@ -153,8 +161,7 @@ public class DriveSubsystem extends Subsystem {
         for (int i = 0; i < encoders.length; i++) {
             positions[i] = encoders[i].getPosition();
         }
-        double avg = averageWithoutZeroes(positions);
-        return Units.revolutions_to_inches(avg, Specs.DRIVE_WHEEL_DIAMETER);
+        return averageWithoutZeroes(positions);
     }
 
     public double getEncoderPosRight() {
@@ -170,8 +177,7 @@ public class DriveSubsystem extends Subsystem {
         for (int i = 0; i < encoders.length; i++) {
             vels[i] = encoders[i].getVelocity();
         }
-        double avg = averageWithoutZeroes(vels);
-        return Units.revoltionsPerMinute_to_inchesPerSecond(avg, Specs.DRIVE_WHEEL_DIAMETER);
+        return averageWithoutZeroes(vels);
     }
 
     public double getEncoderVelRight() {

@@ -15,6 +15,8 @@ import frc.robot.drive.RobotStateUpdater;
 import frc.robot.input.HumanInputManipulatorXbox;
 import frc.robot.intake.IntakeSubsystem;
 import frc.robot.manipulator.ManipulatorSubsystem;
+import frc.robot.test.PreLaunchSequence;
+import frc.lib.motion.Pose2d;
 import frc.lib.motion.RobotStateEstimator;
 import frc.lib.vision.VisionInput;
 import frc.robot.arm.ArmSubsystem;
@@ -46,14 +48,11 @@ public class Robot extends TimedRobot {
 
         //visionInput = new VisionInput();
         //cameras = new Cameras();
-        //robotState = new RobotStateEstimator(Specs.DRIVE_SPECS, new Pose2d());
+        robotState = new RobotStateEstimator(Specs.DRIVE_SPECS, new Pose2d());
         //pdp = new PowerDistributionPanel();
 
-        //driveSys.initDefaultCommand();
-        armSys.initDefaultCommand();
-        manipSys.initDefaultCommand();
         input.registerButtons();
-        cameras.start();
+        //cameras.start();
     }
 
     // Called periodically regardless of the game period
@@ -66,9 +65,7 @@ public class Robot extends TimedRobot {
     // Called at the beginning of the Sandstorm
     @Override
     public void autonomousInit() {
-        Robot.driveSys.resetGyro();
         Scheduler.getInstance().add(new RobotStateUpdater());
-
         // Scheduler.getInstance().add(new VisionAlignmentCommand());
     }
 
@@ -93,6 +90,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testInit() {
+        Scheduler.getInstance().removeAll();
+        Scheduler.getInstance().add(new PreLaunchSequence());
 
     }
 

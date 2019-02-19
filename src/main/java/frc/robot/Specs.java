@@ -13,12 +13,15 @@ public class Specs {
     public static final double DRIVE_VOLTAGE_kV  = 1.0;
     public static final double DRIVE_VOLTAGE_kA  = 1.0;
     
-    public static final double DRIVE_AXLE_LENGTH = 12; // inches
+    public static final double DRIVE_AXLE_LENGTH = 24.0; // inches
     public static final double DRIVE_WHEEL_DIAMETER = 6.0; // inches
 
     public static final DriveSpecs DRIVE_SPECS = new DriveSpecs(
         DRIVE_AXLE_LENGTH, DRIVE_WHEEL_DIAMETER,
         DRIVE_VOLTAGE_kV, DRIVE_VOLTAGE_kA, DRIVE_VOLTAGE_MIN
     );
+
+    public static final double DRIVE_GEARBOX_RATIO = (12/50)*(14/60);
+    public static final double FRONT_ULTRASONIC_TO_BALL = 3; // inches
     
 }
