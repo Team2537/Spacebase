@@ -79,7 +79,6 @@ public class Robot extends TimedRobot {
     // Called at the beginning of the Teleop period
     @Override
     public void teleopInit() {
-
     }
 
     // Called periodically during the Teleop period

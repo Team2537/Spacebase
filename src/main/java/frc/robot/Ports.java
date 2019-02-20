@@ -2,7 +2,6 @@ package frc.robot;
 
 public class Ports {
 
-
     // CAN Bus ports
     public static final int
         DRIVE_MOTOR_RIGHT_BACK  = 1,
@@ -25,7 +24,7 @@ public class Ports {
     ;
     
     public static final int
-        FRONT_ULTRASONIC_INPUT = 0,
+        FRONT_ULTRASONIC_INPUT = 0, //INPUT IS ALWAYS SINGLE WIRED ONE
         FRONT_ULTRASONIC_OUTPUT = 1
     ;
 

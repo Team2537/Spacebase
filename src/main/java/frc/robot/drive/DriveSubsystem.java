@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-//TALON SRX
 package frc.robot.drive;
 
 import edu.wpi.first.wpilibj.Notifier;
@@ -15,6 +8,7 @@ import frc.robot.Specs;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
+//import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -119,7 +113,7 @@ public class DriveSubsystem extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new DriveCommand());
+        //setDefaultCommand(new DriveCommand());
     }
 
 
@@ -273,6 +267,7 @@ public class DriveSubsystem extends Subsystem {
 
     /*
     // FALSE MEANS ON THE LINE
+    /*
     public boolean getIR_frontUpper() {
         System.out.println("IR Front Upper: " + IR_frontUpper.get());
         return !IR_frontUpper.get();
@@ -286,9 +281,10 @@ public class DriveSubsystem extends Subsystem {
     public boolean getIR_center() {
         System.out.println("IR Center: " + IR_center.get());
         return !IR_center.get();
-    }*/
+    }
+    */
 
-    /** @return the range of the drive ultrasonic in inches */
+    // @return the range of the drive ultrasonic in inches 
     public double getUltrasonic() {
         return frontUltrasonic.getRangeInches();
     }
