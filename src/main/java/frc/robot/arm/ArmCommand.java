@@ -37,6 +37,9 @@ public class ArmCommand extends Command {
     @Override
     protected void execute() {
         ArmSetpoint setpoint = Robot.armSys.getSetpoint();
+        if(Robot.armSys.getArmPotentiometer() < 364){
+            Robot.armSys.setArmMotor(-0.2);
+        } else {
         if(setpoint == null){
             Robot.armSys.setArmMode(IdleMode.kBrake);
             Robot.armSys.setArmMotor(0);
@@ -54,6 +57,7 @@ public class ArmCommand extends Command {
                 Robot.armSys.setArmMode(IdleMode.kBrake);
                 Robot.armSys.setArmMotor(0);
             }
+        }
 
 
             wristPID.setSetpoint(setpoint.wrist);

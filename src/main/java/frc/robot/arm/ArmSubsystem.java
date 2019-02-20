@@ -21,7 +21,7 @@ public class ArmSubsystem extends Subsystem {
     private int armLevel;
     
     public static final ArmSetpoint 
-        SETPOINT_INTAKE = new ArmSetpoint(476, 488),
+        SETPOINT_INTAKE = new ArmSetpoint(469, 478),
         SETPOINT_DEFAULT = new ArmSetpoint(509, 735),
         SETPOINT_SHIP_HATCH = new ArmSetpoint(487, 701),
         SETPOINT_SHIP_CARGO = new ArmSetpoint(427, 592),
@@ -71,12 +71,14 @@ public class ArmSubsystem extends Subsystem {
     }
 
     public void setArmLevel(int level){
-        if(level < SETPOINTS_LEVELS.length && level >= 0){
-            armLevel = level;
-            setArmSetpoint(SETPOINTS_LEVELS[level]);
-        } else {
-            System.out.println("error in Arm Subsystem method setArmLevel()");
+        if(level > SETPOINTS_LEVELS.length-1){
+            level = SETPOINTS_LEVELS.length-1;
         }
+        if(level < 0){
+            level = 0;
+        }
+        armLevel = level;
+        setArmSetpoint(SETPOINTS_LEVELS[level]);
     }
 
     public void increaseArmLevel(){
@@ -113,6 +115,12 @@ public class ArmSubsystem extends Subsystem {
 
     public void setWristMode(NeutralMode mode){
         wristMotor.setNeutralMode(mode);
+    }
+
+    public void safetyNet(double min){
+        if(getArmPotentiometer() < min){
+            Robot.armSys.setArmMotor(-0.2);
+        }
     }
 
     @Override

@@ -22,6 +22,6 @@ public class Specs {
     );
 
     public static final double DRIVE_GEARBOX_RATIO = (12/50)*(14/60);
-    public static final double FRONT_ULTRASONIC_TO_BALL = 3; // inches
+    public static final double FRONT_ULTRASONIC_TO_BALL = 11.0; // inches
     
 }
