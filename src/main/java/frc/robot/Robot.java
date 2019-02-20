@@ -11,7 +11,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.lib.motion.RobotStateEstimator;
 import frc.lib.util.Vec2;
 import frc.lib.vision.VisionInput;
+import frc.robot.auto.UltrasonicFrontDriveCommand;
 import frc.robot.auto.VisionAlignmentCommand;
+import frc.robot.auto.VisionTurnCommand;
 import frc.robot.drive.DriveSubsystem;
 import frc.robot.drive.RobotStateUpdater;
 
@@ -44,7 +46,9 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         Scheduler.getInstance().removeAll();
-        Scheduler.getInstance().add(new VisionAlignmentCommand());
+        Scheduler.getInstance().add(new VisionTurnCommand());
+        //Scheduler.getInstance().add(new UltrasonicFrontDriveCommand(50, 0.1));
+        //Scheduler.getInstance().add(new VisionAlignmentCommand());
         //Robot.driveSys.resetGyro();
         //Scheduler.getInstance().add(new RobotStateUpdater());
     }

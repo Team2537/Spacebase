@@ -97,7 +97,7 @@ public class DriveSubsystem extends Subsystem {
 
     public void setMotorsLeft(double percentOutput) {
         //LeftFront.set(percentOutput);
-        setMotorsSide(-percentOutput, motorsLeft);
+        setMotorsSide(percentOutput, motorsLeft);
     }
 
     public void setMotorsRight(double percentOutput) {

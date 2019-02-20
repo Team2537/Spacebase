@@ -32,7 +32,7 @@ public class VisionTurnCommand extends Command{
     public static final int HIGHERTHRESHOLD = 340;
     public static final int OUTERLOWERTHRESHOLD = 200; 
     public static final int OUTERHIGHERTHRESHOLD = 440;
-    public static final double TURNSPEED = 0.2;
+    public static final double TURNSPEED = 0.15;
     private Point MidPoint;
     private Target[] targets;
     private double half = 320; //midpoint of screen
@@ -75,7 +75,7 @@ public class VisionTurnCommand extends Command{
             
             else{
                 Robot.driveSys.setMotorsLeft(TURNSPEED);
-                Robot.driveSys.setMotorsRight(TURNSPEED);
+                Robot.driveSys.setMotorsRight(-TURNSPEED);
                 
             }
         }
