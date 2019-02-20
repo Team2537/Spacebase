@@ -62,13 +62,13 @@ public class VisionTurnCommand extends Command{
                 if(MidPoint.x < half) { // if midpoint is too far left
                     Robot.driveSys.setMotorsLeft(-TURNSPEED*((half-MidPoint.x)/120.0)); 
                     //320 - midpoint = distance from middle of screen; 220 is half of full inner threshold range [200-440]
-                    Robot.driveSys.setMotorsRight(-TURNSPEED*((half-MidPoint.x)/120.0)); 
+                    Robot.driveSys.setMotorsRight(TURNSPEED*((half-MidPoint.x)/120.0)); 
                 }
 
                 //slows down proportionally to distance from midpoint
                 if(MidPoint.x > half) { // if midpoint is too far right
                     Robot.driveSys.setMotorsLeft(TURNSPEED*((MidPoint.x-half)/120.0));
-                    Robot.driveSys.setMotorsRight(TURNSPEED*((MidPoint.x-half)/120.0)); 
+                    Robot.driveSys.setMotorsRight(-TURNSPEED*((MidPoint.x-half)/120.0)); 
                 }
 
             }
@@ -86,17 +86,11 @@ public class VisionTurnCommand extends Command{
     
 
     public boolean isFinished(){
-        if(MidPoint.x < HIGHERTHRESHOLD && MidPoint.x > LOWERTHRESHOLD){
-            System.out.println("DONE!!!");
-            return true;
-        }
-        else{
-            return false;
-        }
+        return(MidPoint.x < HIGHERTHRESHOLD && MidPoint.x > LOWERTHRESHOLD);
     }
 
     public void end(){
-        System.out.println("1st is DONE!!");
+        System.out.println("VISIONTURN is DONE!!");
         Robot.driveSys.setMotors(0, 0);
     }
 

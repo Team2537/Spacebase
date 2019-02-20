@@ -15,7 +15,7 @@ public class UltrasonicFrontDriveCommand extends Command {
 
   @Override
   protected void initialize() {
-    Robot.driveSys.setMotors(percentOutput, -percentOutput);
+    Robot.driveSys.setMotors(percentOutput, percentOutput);
     System.out.println("ULTRASONIC COMMAND STARTED!!!");
   }
 
@@ -27,12 +27,11 @@ public class UltrasonicFrontDriveCommand extends Command {
   @Override
   protected boolean isFinished() {
     return Robot.driveSys.getUltrasonic() <= targetDistInches;
-    //return false;
   }
 
   @Override
   protected void end() {
-    System.out.println("2nd is DONE!!!");
+    System.out.println("ULTRASONIC is DONE!!!");
     Robot.driveSys.setMotors(0, 0);
   }
 
