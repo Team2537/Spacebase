@@ -3,7 +3,7 @@ package frc.robot.drive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Ports;
 
-//import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 //import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
@@ -13,15 +13,15 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.Talon;
+//import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class DriveSubsystem extends Subsystem {
-    //private WPI_TalonSRX RightFront, LeftFront;
+    private WPI_TalonSRX RightFront, LeftFront;
     private Encoder RightEnc, LeftEnc;
     
-    private static final MotorType MOTOR_TYPE = MotorType.kBrushless;
-    
+    //private static final MotorType MOTOR_TYPE = MotorType.kBrushless;
+    /*
     private static final int[] MOTOR_PORTS_LEFT = { 
         Ports.DRIVE_MOTOR_LEFT_FRONT, 
         Ports.DRIVE_MOTOR_LEFT_TOP,
@@ -33,6 +33,7 @@ public class DriveSubsystem extends Subsystem {
         Ports.DRIVE_MOTOR_RIGHT_TOP,
         Ports.DRIVE_MOTOR_RIGHT_BACK 
     };
+    */
 
     
 
@@ -50,17 +51,17 @@ public class DriveSubsystem extends Subsystem {
         driveUltrasonic = new Ultrasonic(Ports.FRONT_ULTRASONIC_INPUT, Ports.FRONT_ULTRASONIC_OUTPUT);
         driveUltrasonic.setAutomaticMode(true);
         driveUltrasonic.setEnabled(true);
-        //RightFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_RIGHT_FRONT);
-        //LeftFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_LEFT_FRONT);
+        RightFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_RIGHT_FRONT);
+        LeftFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_LEFT_FRONT);
         
-        motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
+        //motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
         //encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
         /*
         IR_frontUpper = new DigitalInput(0); IR_frontLower = new DigitalInput(1);
         IR_center = new DigitalInput(2);
         */
 
-        
+        /*
         for (int i = 0; i < MOTOR_PORTS_LEFT.length; i++) {
             motorsLeft[i] = new CANSparkMax(MOTOR_PORTS_LEFT[i], MOTOR_TYPE);
             encodersLeft[i] = motorsLeft[i].getEncoder();
@@ -96,21 +97,21 @@ public class DriveSubsystem extends Subsystem {
     
 
     public void setMotorsLeft(double percentOutput) {
-        //LeftFront.set(percentOutput);
-        setMotorsSide(percentOutput, motorsLeft);
+        LeftFront.set(percentOutput);
+        //setMotorsSide(percentOutput, motorsLeft);
     }
 
     public void setMotorsRight(double percentOutput) {
-        //RightFront.set(percentOutput);
-        setMotorsSide(percentOutput, motorsRight);
+        RightFront.set(percentOutput);
+        //setMotorsSide(percentOutput, motorsRight);
     }
 
     public void setMotors(double percentOutputLeft, double percentOutputRight) {
-        //setMotorsLeft(percentOutputLeft);
-        System.out.println("LEFT MOTOR: " + percentOutputLeft);
+        setMotorsLeft(percentOutputLeft);
+        //System.out.println("LEFT MOTOR: " + percentOutputLeft);
 
-        //setMotorsRight(percentOutputRight);
-        System.out.println("RIGHT MOTOR: " + percentOutputRight);
+        setMotorsRight(percentOutputRight);
+        //System.out.println("RIGHT MOTOR: " + percentOutputRight);
     }
 
     public String encoderStatus() {
