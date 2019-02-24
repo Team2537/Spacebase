@@ -1,8 +1,4 @@
 package frc.robot.auto;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.PIDSource;
-import frc.lib.util.PID;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.lib.vision.Point;
 import frc.lib.vision.Target;
