@@ -125,7 +125,7 @@ public class ArmSubsystem extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new ArmCommand());
+        setDefaultCommand(new ArmManualCommand());
     }
 
     public static class ArmSetpoint {

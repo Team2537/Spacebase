@@ -20,10 +20,11 @@ import frc.lib.motion.Pose2d;
 import frc.lib.motion.RobotStateEstimator;
 import frc.lib.vision.VisionInput;
 import frc.robot.arm.ArmSubsystem;
+import frc.robot.auto.VisionAlignmentCommand;
 import frc.robot.cameras.Cameras;
 
 public class Robot extends TimedRobot {
-    public static HumanInputManipulatorXbox input;
+	public static HumanInputManipulatorXbox input;
     public static DriveSubsystem driveSys;
     public static IntakeSubsystem intakeSys;
     public static ArmSubsystem armSys;
@@ -46,13 +47,13 @@ public class Robot extends TimedRobot {
         armSys = new ArmSubsystem();
         manipSys = new ManipulatorSubsystem();
 
-        //visionInput = new VisionInput();
-        //cameras = new Cameras();
+        visionInput = new VisionInput();
+        cameras = new Cameras();
         robotState = new RobotStateEstimator(Specs.DRIVE_SPECS, new Pose2d());
         //pdp = new PowerDistributionPanel();
 
         input.registerButtons();
-        //cameras.start();
+        cameras.start();
     }
 
     // Called periodically regardless of the game period
@@ -66,12 +67,13 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         Scheduler.getInstance().add(new RobotStateUpdater());
-        // Scheduler.getInstance().add(new VisionAlignmentCommand());
+        Scheduler.getInstance().add(new VisionAlignmentCommand());
     }
 
     // Called periodically during the Sandstorm
     @Override
     public void autonomousPeriodic() {
+        Scheduler.getInstance().run();
 
     }
 
@@ -79,11 +81,13 @@ public class Robot extends TimedRobot {
     // Called at the beginning of the Teleop period
     @Override
     public void teleopInit() {
+        Scheduler.getInstance().removeAll();
     }
 
     // Called periodically during the Teleop period
     @Override
     public void teleopPeriodic() {
+        Scheduler.getInstance().run();
 
     }
 

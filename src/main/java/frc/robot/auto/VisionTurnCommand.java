@@ -26,6 +26,9 @@ public class VisionTurnCommand extends Command{
     //lower or higher than certain pt can adjust wheels
     //300 lower threshold, 340 higher threshold; tolerance
 
+/////////PLUG THE DAMN PI INTO RX AND GROUND. RX. NOT TX. RX. RX
+//RRRRRRRRRRRRRRRRRRRXXXXXXXXXXXXXXXXXXXXXX
+
 //CAM dimensions: 640 width, 480 height
 
     public static final int LOWERTHRESHOLD = 300; 
