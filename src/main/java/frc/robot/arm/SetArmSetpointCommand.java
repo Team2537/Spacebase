@@ -17,6 +17,7 @@ public class SetArmSetpointCommand extends Command {
     public SetArmSetpointCommand(ArmSetpoint setpoint){
         requires(Robot.armSys);
         this.setpoint = setpoint;
+        
     }
 
     // Called just before this Command runs the first time

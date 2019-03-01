@@ -41,7 +41,8 @@ public class Ports {
         INTAKE_PNEUMATIC_ONE = 2 ,
         CLIMB_SOLENOID_TWO = 0 ,
         CLIMB_SOLENOID_ONE = 1, 
-        ARM_SOLENOID_ONE = 3
+        ARM_SOLENOID_ONE = 3,
+        CLIMB_SOLENOID_THREE = 4
     ;
 
 }
