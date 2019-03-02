@@ -267,7 +267,7 @@ public class DriveSubsystem extends Subsystem {
 	/****************************************************************************/
 
     public void currentTest(){
-        Boolean noError = true;
+        boolean noError = true;
         String[] leftErrorArray = new String[motorsLeft.length];
         String[] rightErrorArray = new String[motorsRight.length];
         for(int i = 0; i < motorsLeft.length; i++){

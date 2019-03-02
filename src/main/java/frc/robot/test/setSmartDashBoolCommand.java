@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class setSmartDashBoolCommand extends Command {
   private String key;
-  private Boolean value;
-  public setSmartDashBoolCommand(String key, Boolean value) {
+  private boolean value;
+  public setSmartDashBoolCommand(String key, boolean value) {
     this.key = key;
     this.value = value;
   }
