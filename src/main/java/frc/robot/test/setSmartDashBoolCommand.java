@@ -5,49 +5,44 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.drive;
+package frc.robot.test;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 
-public class DriveTestCommand extends Command {
-  private double speed;
-
-  public DriveTestCommand(double speed) {
-    requires(Robot.driveSys);
-    this.speed = speed;
+public class setSmartDashBoolCommand extends Command {
+  private String key;
+  private boolean value;
+  public setSmartDashBoolCommand(String key, boolean value) {
+    this.key = key;
+    this.value = value;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.driveSys.setMotors(speed, speed);
-
+    SmartDashboard.putBoolean(key, value);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.driveSys.currentTest();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return true;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.driveSys.setMotors(0, 0);
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
-    end();
   }
 }

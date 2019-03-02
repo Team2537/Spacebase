@@ -26,7 +26,19 @@ public class Pose2d {
         return Pose2d.delta(this, other);
     }
 
+    public static Pose2d addDelta(Pose2d pose, Pose2d delta){
+        return new Pose2d(pose.vec.add(delta.vec.rotateBy(pose.ang)), pose.ang+delta.ang);
+    }
+
+    public Pose2d addDelta(Pose2d delta){
+        return addDelta(this, delta);
+    }
+
     public Pose2d(){
         this(0,0,0);
+    }
+
+    public String toString(){
+        return String.format("{vec: %s, ang: %f}", vec, ang);
     }
 }

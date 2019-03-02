@@ -3,6 +3,8 @@ package frc.lib.pathing;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import frc.lib.motion.Pose2d;
 import frc.lib.util.Vec2;
 
 public class Path {
@@ -145,6 +147,24 @@ public class Path {
         if(!isComplete()) return Double.NaN;
         return endAngle;
     }
+
+    public List<Pose2d> split(double ds){
+        if(!isComplete()) return null;
+        
+        List<Pose2d> out = new ArrayList<>();
+        Pose2d currentPose = new Pose2d(start,startAngle);
+        double s;
+        for(Clothoid c : clothoids){
+            s = 0;
+            while(s < c.length){
+                out.add(c.getPose(currentPose, s));
+                s += ds;
+            }
+        }
+        out.add(new Pose2d(end, endAngle));
+        return out;
+    }
+
 
     public static class Segment {
         public final Waypoint start, end;

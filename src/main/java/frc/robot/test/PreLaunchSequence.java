@@ -22,6 +22,13 @@ public class PreLaunchSequence extends CommandGroup {
    * Add your docs here.
    */
   public PreLaunchSequence() {
+    addParallel(new setSmartDashBoolCommand("driveTest", false));
+    addParallel(new setSmartDashBoolCommand("armTest", false));
+    addParallel(new setSmartDashBoolCommand("manipTest", false));
+    addParallel(new setSmartDashBoolCommand("intakeTest", false));
+    addSequential(new setSmartDashBoolCommand("climbTest", false));
+
+
     addSequential(new DriveTestCommand(0.5), 0.5);
     addSequential(new DriveTestCommand(-0.5), 0.5);
 
@@ -29,22 +36,29 @@ public class PreLaunchSequence extends CommandGroup {
     addSequential(new ArmCommand(), 5); //TODO modify all these times
     addSequential(new SetArmLevelCommand(1)); //TODO hatch level
     addSequential(new ArmCommand(), 5);
+    
 
     addParallel(new PneumaticExtendCommand());
     addParallel(new FlywheelCommand(true));
     addParallel(new ArmPneumaticCommand());
     addSequential(new ArmFlywheelCommand(true), 2);
+  
 
     addParallel(new PneumaticExtendCommand());
     addParallel(new ArmFlywheelCommand(false));
     addSequential(new FlywheelCommand(false), 2);
 
+    addParallel(new setSmartDashBoolCommand("manipTest", true));
+    addSequential(new setSmartDashBoolCommand("intakeTest", true));
+
     addSequential(new SetArmLevelCommand(0)); // TODO in frame perimeter level
     addSequential(new ArmCommand(), 5);
+    addSequential(new setSmartDashBoolCommand("armTest", true));
     
     addSequential(new ClimbCommand());
     addSequential(new DriveTestCommand(-0.3), 2);
     addSequential(new ClimbCommand());
+    addSequential(new setSmartDashBoolCommand("climbTest", true));
 
     // Add Commands here:
     // e.g. addSequential(new Command1());
