@@ -11,14 +11,33 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class ClimbCommand extends Command {
-    public ClimbCommand() {
+    private int caseNumber;
+
+    public ClimbCommand(int caseNumber) {
         requires(Robot.climbSys);
+        this.caseNumber = caseNumber;
+    }
+
+    public ClimbCommand(){
+        this(0);
+        
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.climbSys.setClimbSolenoid(!Robot.climbSys.getSolenoid());
+        switch(caseNumber){
+            case 0:
+                Robot.climbSys.setClimbSolenoid(!Robot.climbSys.getClimbSolenoid());
+                break;
+            case 1:
+                Robot.climbSys.setBoosterSolenoid(!Robot.climbSys.getBoosterSolenoid());
+                break;
+            default:
+                Robot.climbSys.setClimbSolenoid(!Robot.climbSys.getClimbSolenoid());
+                
+        }
+        
     }
 
     // Called repeatedly when this Command is scheduled to run

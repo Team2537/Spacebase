@@ -32,7 +32,11 @@ public class ClimbSubsystem extends Subsystem {
         climbSolThree.set(state);
     }
 
-    public boolean getSolenoid() {
+    public boolean getBoosterSolenoid(){
+        return climbSolThree.get();
+    }
+
+    public boolean getClimbSolenoid() {
         return climbSolOne.get();
     }
 
