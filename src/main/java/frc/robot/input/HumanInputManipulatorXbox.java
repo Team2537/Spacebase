@@ -36,7 +36,7 @@ public class HumanInputManipulatorXbox {
     public final XboxController xbox;
     public final JoystickButton 
         intakeFlywheelsLeft, intakeFlywheelsRight, armSolExtend, intakeSolExtend,
-        //armFlywheelIn, armFlywheelOut, expelCargo, intakeCargo,
+        expelCargo, intakeCargo,
         increasearmbutton, decreasearmbutton, armSetIntakeButton, armSetHighButton, armManualButton,
         climbEngageClutch, 
         cameraButton,
@@ -55,14 +55,14 @@ public class HumanInputManipulatorXbox {
         // Left Joystick
         intakeFlywheelsLeft     = new JoystickButton(joystickLeft, 1);
         cameraButton            = new JoystickButton(joystickLeft, 2);
+        expelCargo              = new JoystickButton(joystickLeft, 3);
+        // UNUSED               = new JoystickButton(joystickLeft, 4);
+        // UNUSED               = new JoystickButton(joystickLeft, 5);
         armSolExtend            = new JoystickButton(joystickLeft, 6);
-        expelCargo              = new JoystickButton(JoystickLeft, 3);
 
         // Right Joystick
         intakeFlywheelsRight    = new JoystickButton(joystickRight, 1);
-        // UNUSED               = new JoystickButton(joystickRight, 2);
         visionAlignment         = new JoystickButton(joystickRight, 2);
-        ////
         intakeSolExtend         = new JoystickButton(joystickRight, 3);
         climbEngageClutch       = new JoystickButton(joystickRight, 4);
 

@@ -12,7 +12,7 @@ import frc.robot.Robot;
 import frc.robot.input.HumanInput;
 
 public class DriveCommand extends Command {
-    private double PERCENT_OUTPUT_MAX = 1.0;
+    private double PERCENT_OUTPUT_MAX = 0.5;
 
     public DriveCommand() {
         requires(Robot.driveSys);

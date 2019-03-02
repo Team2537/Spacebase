@@ -22,6 +22,11 @@ public class ArmSubsystem extends Subsystem {
     private boolean enableManual = true;
 
     private int armLevel;
+
+    public static final double
+        OFFSET_ARM = -319,
+        OFFSET_WRIST = -171
+    ;
     
     public static final ArmSetpoint 
         SETPOINT_INTAKE = new ArmSetpoint(469, 478, "INTAKE"),
@@ -90,7 +95,8 @@ public class ArmSubsystem extends Subsystem {
     }
 
     public void updateSmartDash(){
-        SmartDashboard.putString("Arm Level", currentSetpoint.name);
+        final String name = currentSetpoint == null ? "NONE" : currentSetpoint.name;
+        SmartDashboard.putString("Arm Level", name);
     }
 
     public void decreaseArmLevel(){
@@ -142,15 +148,15 @@ public class ArmSubsystem extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new ArmManualCommand());
+        setDefaultCommand(new ArmCommand());
     }
 
     public static class ArmSetpoint {
         public final double arm, wrist;
         public final String name;
         public ArmSetpoint(double arm, double wrist, String name) {
-            this.arm = arm;
-            this.wrist = wrist;
+            this.arm = arm + OFFSET_ARM;
+            this.wrist = wrist + OFFSET_WRIST;
             this.name = name;
         }
     }
