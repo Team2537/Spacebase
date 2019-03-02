@@ -22,6 +22,7 @@ import frc.robot.arm.DecreaseArmCommand;
 import frc.robot.arm.IncreaseArmCommand;
 import frc.robot.arm.SetArmLevelCommand;
 import frc.robot.arm.SetArmSetpointCommand;
+import frc.robot.auto.VisionAlignmentCommand;
 import frc.robot.climb.ClimbCommand;
 import frc.robot.manipulator.ArmPneumaticCommand;
 import frc.robot.intake.FlywheelCommand;
@@ -36,7 +37,8 @@ public class HumanInputManipulatorXbox {
         //armFlywheelIn, armFlywheelOut, 
         increasearmbutton, decreasearmbutton, armSetIntakeButton, armSetHighButton, armManualButton,
         climbEngageClutch, 
-        cameraButton
+        cameraButton,
+        visionAlignment
     ;
 
     public HumanInputManipulatorXbox() {
@@ -54,6 +56,8 @@ public class HumanInputManipulatorXbox {
         // Right Joystick
         intakeFlywheelsBackward = new JoystickButton(joystickRight, 1);
         // UNUSED               = new JoystickButton(joystickRight, 2);
+        visionAlignment         = new JoystickButton(joystickRight, 2);
+        ////
         intakeSolExtend         = new JoystickButton(joystickRight, 3);
 
         // Xbox Controller
@@ -77,6 +81,7 @@ public class HumanInputManipulatorXbox {
         whenPressedCommand(intakeSolExtend, new PneumaticExtendCommand());
         whenPressedCommand(armSetHighButton, new SetArmLevelCommand(0));//TODO FIX THIS
         whenPressedCommand(armSetIntakeButton, new SetArmSetpointCommand(ArmSubsystem.SETPOINT_INTAKE));
+        whenPressedCommand(visionAlignment, new VisionAlignmentCommand());
     }
 
 
