@@ -1,6 +1,8 @@
 package frc.robot.drive;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
 import frc.robot.Ports;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -10,13 +12,19 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 //import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
 public class DriveSubsystem extends Subsystem {
+    private NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    private NetworkTable table = inst.getTable("datatable");
+    
     private WPI_TalonSRX RightFront, LeftFront;
     private Encoder RightEnc, LeftEnc;
     
@@ -42,6 +50,8 @@ public class DriveSubsystem extends Subsystem {
     private CANSparkMax[] motorsLeft, motorsRight;
     private CANEncoder[] encodersLeft, encodersRight;
     
+    private PowerDistributionPanel pdp;
+
     private AHRS navX;
     private Ultrasonic driveUltrasonic;
     private DigitalInput IR_frontUpper, IR_frontLower, IR_center;
@@ -54,6 +64,9 @@ public class DriveSubsystem extends Subsystem {
         RightFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_RIGHT_FRONT);
         LeftFront = new WPI_TalonSRX(Ports.DRIVE_MOTOR_LEFT_FRONT);
         
+        pdp = new PowerDistributionPanel(0);
+        pdp.clearStickyFaults();
+        pdp.resetTotalEnergy();
         //motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
         //encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
         /*
@@ -95,6 +108,7 @@ public class DriveSubsystem extends Subsystem {
         }
     }
     
+
 
     public void setMotorsLeft(double percentOutput) {
         LeftFront.set(-percentOutput);
@@ -143,6 +157,8 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public double getEncoderPosRight() {
+        NetworkTableEntry Encoder = table.getEntry("Encoder");
+        Encoder.setDouble(RightEnc.getDistance()*8*Math.PI/360.0);
         return RightEnc.getDistance()*8*Math.PI/360.0;
         //return getEncoderPos(encodersRight);
     }
@@ -190,8 +206,24 @@ public class DriveSubsystem extends Subsystem {
     */
 
     // @return the range of the drive ultrasonic in inches 
+    public double getTemperature() {
+        NetworkTableEntry PdpEntry = table.getEntry("Temperature");
+        PdpEntry.setDouble(pdp.getTemperature());
+        
+        return pdp.getTemperature();
+    }
+    public double getCurrent() {
+        NetworkTableEntry PdpEntry = table.getEntry("Current");
+        PdpEntry.setDouble(pdp.getTotalCurrent());
+        
+        return pdp.getTotalCurrent();
+    }
     public double getUltrasonic() {
+        NetworkTableEntry UltraDistance = table.getEntry("Ultra");
+        UltraDistance.setDouble(driveUltrasonic.getRangeInches());
+        
         return driveUltrasonic.getRangeInches();
     }
+
     
 }

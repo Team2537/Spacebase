@@ -6,8 +6,14 @@
 /*----------------------------------------------------------------------------*/
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+//
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.NetworkTableEntry;
+//
 import frc.lib.motion.RobotStateEstimator;
 import frc.lib.util.Vec2;
 import frc.lib.vision.VisionInput;
@@ -22,6 +28,11 @@ public class Robot extends TimedRobot {
         super(Specs.ROBOT_PERIOD_SECONDS);
     }
 
+    NetworkTableEntry UltrasonicDistance;
+    NetworkTableEntry yEntry;
+    private static NetworkTableInstance inst;
+    private static NetworkTable table;
+
     public static DriveSubsystem driveSys;
     public static VisionInput visionInput;
     public static RobotStateEstimator robotState;
@@ -31,7 +42,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         driveSys = new DriveSubsystem();
         visionInput = new VisionInput();
-        
+;
         robotState = new RobotStateEstimator(Specs.CONSTRAINTS, new Vec2(0,0), 0);
     }
 
@@ -47,8 +58,8 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         Scheduler.getInstance().removeAll();
         //Scheduler.getInstance().add(new VisionTurnCommand());
-        Scheduler.getInstance().add(new UltrasonicFrontDriveCommand(12, 0.3));
-        
+        //Scheduler.getInstance().add(new UltrasonicFrontDriveCommand(12, 0.3));
+        Robot.driveSys.getCurrent();
         //Scheduler.getInstance().add(new VisionAlignmentCommand());
         //Robot.driveSys.resetGyro();
         //Scheduler.getInstance().add(new RobotStateUpdater());
@@ -59,14 +70,16 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+
     }
 
     /* Teleop Period */
     // Called at the beginning of the Teleop period
     @Override
     public void teleopInit() {
-        Robot.driveSys.setMotors(.1, .1);
-        Robot.driveSys.getUltrasonic();
+        Robot.driveSys.setMotors(.3, .3);
+        //Robot.driveSys.getUltrasonic();
+ 
         
     }
 
@@ -74,6 +87,9 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        Robot.driveSys.getCurrent();
+        Robot.driveSys.getTemperature();
+
         System.out.println("ULTRA: " + Robot.driveSys.getUltrasonic());
     }
 
