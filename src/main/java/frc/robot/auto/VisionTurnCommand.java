@@ -16,6 +16,9 @@ import frc.robot.Robot;
 
 */
 
+//CHECK ULTASONIC--WHY DOES IT DO THAT??? CHARGING
+//
+
 public class VisionTurnCommand extends Command{
 
 // pi CAM should be at least 8 inches above ground! hatch is 31.5 inches off ground

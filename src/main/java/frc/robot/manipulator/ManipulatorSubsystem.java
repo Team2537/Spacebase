@@ -24,7 +24,7 @@ public class ManipulatorSubsystem extends Subsystem {
   private Solenoid armPneumatic;
 
   public ManipulatorSubsystem(){
-    armFlywheel = new TalonSRX(Ports.INTAKE_ARM_FLYWHEEL);
+   // armFlywheel = new TalonSRX(Ports.INTAKE_ARM_FLYWHEEL);
     armPneumatic = new Solenoid(Ports.ARM_SOLENOID_ONE);
   }
 

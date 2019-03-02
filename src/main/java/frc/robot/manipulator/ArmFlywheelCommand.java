@@ -28,12 +28,14 @@ public class ArmFlywheelCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-      if (commandState) {
+      //if (commandState) {
+        /*
         Robot.manipSys.setArmFlywheelMotor(FLYWHEEL_SPEED);
         Robot.intakeSys.setIntakeFlywheels(-0);
     } else {
         Robot.manipSys.setArmFlywheelMotor(-FLYWHEEL_SPEED);
     }
+    */
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -51,10 +51,10 @@ public class ArmSubsystem extends Subsystem {
     private Potentiometer armPot, wristPot;
 
     public ArmSubsystem() {
-        armMotor = new CANSparkMax(Ports.ARM_MOTOR, MotorType.kBrushless);
+        //armMotor = new CANSparkMax(Ports.ARM_MOTOR, MotorType.kBrushless);
         setArmMode(DEFAULT_ARM_MODE);
 
-        wristMotor = new TalonSRX(Ports.WRIST_MOTOR);
+        //wristMotor = new TalonSRX(Ports.WRIST_MOTOR);
         setWristMode(DEFAULT_WRIST_MODE);
 
         wristPot = new AnalogPotentiometer(Ports.WRIST_POTENTIOMETER, 1080, 0);
