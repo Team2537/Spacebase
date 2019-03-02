@@ -19,6 +19,8 @@ public class ArmSubsystem extends Subsystem {
     public static final IdleMode DEFAULT_ARM_MODE = IdleMode.kBrake;
     public static final NeutralMode DEFAULT_WRIST_MODE = NeutralMode.Brake;
 
+    private boolean enableManual = true;
+
     private int armLevel;
     
     public static final ArmSetpoint 
@@ -127,6 +129,15 @@ public class ArmSubsystem extends Subsystem {
         if(getArmPotentiometer() < min){
             Robot.armSys.setArmMotor(-0.2);
         }
+    }
+
+    public boolean getManualEnabled(){
+        return enableManual;
+    }
+
+    public void setManualEnabled(){
+        enableManual = !enableManual;
+        SmartDashboard.putBoolean("armEnabled", !enableManual);
     }
 
     @Override

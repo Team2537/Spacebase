@@ -18,6 +18,8 @@ public class ArmManualCommand extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.armSys.setManualEnabled();
+   
   }
 
   // Called repeatedly when this Command is scheduled to run
@@ -31,7 +33,7 @@ public class ArmManualCommand extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return Robot.armSys.getManualEnabled();
   }
 
   // Called once after isFinished returns true
