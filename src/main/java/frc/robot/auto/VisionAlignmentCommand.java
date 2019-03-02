@@ -5,7 +5,7 @@ public class VisionAlignmentCommand extends CommandGroup {
 
     public VisionAlignmentCommand() {
         addSequential(new VisionTurnCommand());
-        addSequential(new UltrasonicFrontDriveCommand(30, 0.3, 10));
+        addSequential(new UltrasonicFrontDriveCommand(30, 0.3, 10)); //remove time???
         addSequential(new VisionTurnCommand());
         addSequential(new UltrasonicFrontDriveCommand(20, 0.1));
     }
