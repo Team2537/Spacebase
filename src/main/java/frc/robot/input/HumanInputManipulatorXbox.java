@@ -24,7 +24,9 @@ import frc.robot.arm.SetArmLevelCommand;
 import frc.robot.arm.SetArmSetpointCommand;
 import frc.robot.auto.VisionAlignmentCommand;
 import frc.robot.climb.ClimbCommand;
+import frc.robot.manipulator.ArmFlywheelCommand;
 import frc.robot.manipulator.ArmPneumaticCommand;
+import frc.robot.manipulator.XboxIntakeCommand;
 import frc.robot.intake.FlywheelCommand;
 import frc.robot.intake.PneumaticExtendCommand;
 
@@ -33,13 +35,15 @@ public class HumanInputManipulatorXbox {
     public final Joystick joystickLeft, joystickRight;
     public final XboxController xbox;
     public final JoystickButton 
-        intakeFlywheelsForward, intakeFlywheelsBackward, armSolExtend, intakeSolExtend,
-        //armFlywheelIn, armFlywheelOut, 
+        intakeFlywheelsLeft, intakeFlywheelsRight, armSolExtend, intakeSolExtend,
+        //armFlywheelIn, armFlywheelOut, expelCargo, intakeCargo,
         increasearmbutton, decreasearmbutton, armSetIntakeButton, armSetHighButton, armManualButton,
         climbEngageClutch, 
         cameraButton,
-        visionAlignment
+        visionAlignment,
+        hatchConfig, cargoConfig
     ;
+    public boolean configState;
 
     public HumanInputManipulatorXbox() {
         /*   --- Controllers ---  */
@@ -49,31 +53,35 @@ public class HumanInputManipulatorXbox {
           
         /* --- Button Aliases --- */
         // Left Joystick
-        intakeFlywheelsForward  = new JoystickButton(joystickLeft, 1);
+        intakeFlywheelsLeft     = new JoystickButton(joystickLeft, 1);
         cameraButton            = new JoystickButton(joystickLeft, 2);
-        climbEngageClutch       = new JoystickButton(joystickLeft, 3);
+        armSolExtend            = new JoystickButton(joystickLeft, 6);
+        expelCargo              = new JoystickButton(JoystickLeft, 3);
 
         // Right Joystick
-        intakeFlywheelsBackward = new JoystickButton(joystickRight, 1);
+        intakeFlywheelsRight    = new JoystickButton(joystickRight, 1);
         // UNUSED               = new JoystickButton(joystickRight, 2);
         visionAlignment         = new JoystickButton(joystickRight, 2);
         ////
         intakeSolExtend         = new JoystickButton(joystickRight, 3);
+        climbEngageClutch       = new JoystickButton(joystickRight, 4);
+
 
         // Xbox Controller
-        decreasearmbutton = new JoystickButton(xbox, 1);
-        armSetHighButton = new JoystickButton(xbox, 2);
-        armSetIntakeButton = new JoystickButton(xbox, 3);
-        increasearmbutton = new JoystickButton(xbox, 4);
-        armManualButton = new JoystickButton(xbox, 5);
-        armSolExtend = new JoystickButton(xbox, 6);
-      
+        decreasearmbutton       = new JoystickButton(xbox, 1);
+        armSetHighButton        = new JoystickButton(xbox, 2);
+        armSetIntakeButton      = new JoystickButton(xbox, 3);
+        increasearmbutton       = new JoystickButton(xbox, 4);
+        armManualButton         = new JoystickButton(xbox, 5);
+        hatchConfig             = new JoystickButton(xbox, 6);
+        cargoConfig             = new JoystickButton(xbox, 7);
+        intakeCargo             = new JoystickButton(xbox, 8);
     }
 
     public void registerButtons() {
-        whileHeldCommand(intakeFlywheelsForward, new FlywheelCommand(false));
-        whileHeldCommand(intakeFlywheelsBackward, new FlywheelCommand(true));
-        whileHeldCommand(armManualButton, new ArmManualCommand());
+        whileHeldCommand(intakeFlywheelsLeft, new FlywheelCommand(false));
+        whileHeldCommand(intakeFlywheelsRight, new FlywheelCommand(false));
+        whenPressedCommand(armManualButton, new ArmManualCommand());
         whenPressedCommand(armSolExtend, new ArmPneumaticCommand());
         whenPressedCommand(increasearmbutton, new IncreaseArmCommand());
         whenPressedCommand(decreasearmbutton, new DecreaseArmCommand());
@@ -82,6 +90,8 @@ public class HumanInputManipulatorXbox {
         whenPressedCommand(armSetHighButton, new SetArmLevelCommand(0));//TODO FIX THIS
         whenPressedCommand(armSetIntakeButton, new SetArmSetpointCommand(ArmSubsystem.SETPOINT_INTAKE));
         whenPressedCommand(visionAlignment, new VisionAlignmentCommand());
+        whenPressedCommand(expelCargo, new ArmFlywheelCommand(false));
+        whenPressedCommand(intakeCargo, new XboxIntakeCommand());
     }
 
 
