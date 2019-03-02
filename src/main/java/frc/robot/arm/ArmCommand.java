@@ -37,6 +37,7 @@ public class ArmCommand extends Command {
     @Override
     protected void execute() {
         ArmSetpoint setpoint = Robot.armSys.getSetpoint();
+        Robot.armSys.updateSmartDash();
         if(Robot.armSys.getArmPotentiometer() < 364){
             Robot.armSys.setArmMotor(-0.2);
         } else {

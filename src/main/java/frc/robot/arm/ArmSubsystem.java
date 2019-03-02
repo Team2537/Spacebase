@@ -10,6 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Ports;
 import frc.robot.Robot;
 import frc.robot.Specs;
@@ -21,15 +22,15 @@ public class ArmSubsystem extends Subsystem {
     private int armLevel;
     
     public static final ArmSetpoint 
-        SETPOINT_INTAKE = new ArmSetpoint(469, 478),
-        SETPOINT_DEFAULT = new ArmSetpoint(509, 735),
-        SETPOINT_SHIP_HATCH = new ArmSetpoint(487, 701),
-        SETPOINT_SHIP_CARGO = new ArmSetpoint(427, 592),
-        SETPOINT_ROCKET_CARGO_1 = new ArmSetpoint(462, 667),
-        SETPOINT_ROCKET_HATCH_2 = new ArmSetpoint(433, 633),
-        SETPOINT_ROCKET_CARGO_2 = new ArmSetpoint(419, 617),
-        SETPOINT_ROCKET_HATCH_3 = new ArmSetpoint(382, 569),
-        SETPOINT_ROCKET_CARGO_3 = new ArmSetpoint(367, 573)
+        SETPOINT_INTAKE = new ArmSetpoint(469, 478, "INTAKE"),
+        SETPOINT_DEFAULT = new ArmSetpoint(509, 735, "FRAME PERIMETER"),
+        SETPOINT_SHIP_HATCH = new ArmSetpoint(487, 701, "SHIP HATCH"),
+        SETPOINT_SHIP_CARGO = new ArmSetpoint(427, 592, "SHIP CARGO"),
+        SETPOINT_ROCKET_CARGO_1 = new ArmSetpoint(462, 667, "LOW ROCKET CARGO"),
+        SETPOINT_ROCKET_HATCH_2 = new ArmSetpoint(433, 633, "MID ROCKET HATCH"),
+        SETPOINT_ROCKET_CARGO_2 = new ArmSetpoint(419, 617, "MID ROCKET CARGO"),
+        SETPOINT_ROCKET_HATCH_3 = new ArmSetpoint(382, 569, "HIGH ROCKET HATCH"),
+        SETPOINT_ROCKET_CARGO_3 = new ArmSetpoint(367, 573, "HIGH ROCKET CARGO")
     ;
 
     public static final ArmSetpoint[] SETPOINTS_LEVELS = {
@@ -42,6 +43,7 @@ public class ArmSubsystem extends Subsystem {
         SETPOINT_ROCKET_HATCH_3,
         SETPOINT_ROCKET_CARGO_3
     };
+
     private ArmSetpoint currentSetpoint;
 
     private TalonSRX wristMotor;
@@ -85,6 +87,10 @@ public class ArmSubsystem extends Subsystem {
         setArmLevel(armLevel + 1);
     }
 
+    public void updateSmartDash(){
+        SmartDashboard.putString("Arm Level", currentSetpoint.name);
+    }
+
     public void decreaseArmLevel(){
         setArmLevel(armLevel - 1);
     }
@@ -125,14 +131,16 @@ public class ArmSubsystem extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new ArmCommand());
+        setDefaultCommand(new ArmManualCommand());
     }
 
     public static class ArmSetpoint {
         public final double arm, wrist;
-        public ArmSetpoint(double arm, double wrist) {
+        public final String name;
+        public ArmSetpoint(double arm, double wrist, String name) {
             this.arm = arm;
             this.wrist = wrist;
+            this.name = name;
         }
     }
 

@@ -15,16 +15,21 @@ import frc.robot.Ports;
  * Add your docs here.
  */
 public class ClimbSubsystem extends Subsystem {
-    private Solenoid climbSolOne, climbSolTwo;
+    private Solenoid climbSolOne, climbSolTwo, climbSolThree;
 
     public ClimbSubsystem() {
         climbSolOne = new Solenoid(Ports.CLIMB_SOLENOID_ONE);
         climbSolTwo = new Solenoid(Ports.CLIMB_SOLENOID_TWO);
+        climbSolThree = new Solenoid(Ports.CLIMB_SOLENOID_THREE);
     }
 
     public void setClimbSolenoid(boolean state) {
         climbSolOne.set(state);
         climbSolTwo.set(!state);
+    }
+
+    public void setBoosterSolenoid(boolean state){
+        climbSolThree.set(state);
     }
 
     public boolean getSolenoid() {
