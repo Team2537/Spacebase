@@ -21,11 +21,10 @@ public class IntakeSubsystem extends Subsystem {
     private Solenoid intakePneumatic;
 
     public IntakeSubsystem() {
-        /*
         intakeFlywheelOne = new TalonSRX(Ports.INTAKE_FLYWHEEL_ONE);
         intakeFlywheelTwo = new TalonSRX(Ports.INTAKE_FLYWHEEL_TWO);
         intakePneumatic = new Solenoid(Ports.INTAKE_PNEUMATIC_ONE);
-*/
+
     }
 
     public void setIntakeFlywheels(double speed) {

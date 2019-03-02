@@ -12,7 +12,7 @@ import frc.robot.Robot;
 
 public class AutoFlywheelCommand extends Command {
   public AutoFlywheelCommand() {
-    //requires(Robot.intakeSys);
+    requires(Robot.intakeSys);
   }
 
   // Called just before this Command runs the first time
@@ -23,7 +23,7 @@ public class AutoFlywheelCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //Robot.intakeSys.setIntakeFlywheels(0.2);
+    Robot.intakeSys.setIntakeFlywheels(0.2);
   }
 
   // Make this return true when this Command no longer needs to run execute()

@@ -15,8 +15,8 @@ public class FlywheelCommand extends Command {
     private static final double FLYWHEEL_SPEED = 0.4;
 
     public FlywheelCommand(boolean state) {
-        //requires(Robot.intakeSys);
-        //commandState = state;
+        requires(Robot.intakeSys);
+        commandState = state;
 
     }
 
@@ -24,13 +24,11 @@ public class FlywheelCommand extends Command {
     @Override
     protected void initialize() {
         System.out.println("flywheels");
-       /*
         if (commandState) {
             Robot.intakeSys.setIntakeFlywheels(FLYWHEEL_SPEED);
         } else {
             Robot.intakeSys.setIntakeFlywheels(-FLYWHEEL_SPEED);
         }
-        */
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -47,13 +45,13 @@ public class FlywheelCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-       // Robot.intakeSys.setIntakeFlywheels(0);
+        Robot.intakeSys.setIntakeFlywheels(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        //Robot.intakeSys.setIntakeFlywheels(0);
+        Robot.intakeSys.setIntakeFlywheels(0);
     }
 }

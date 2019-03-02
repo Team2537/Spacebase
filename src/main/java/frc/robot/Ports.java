@@ -2,12 +2,6 @@ package frc.robot;
 
 public class Ports {
 
-    public static final int
-        RIGHT = 1,
-        LEFT = 0
-    ;
-
-    /*
     // CAN Bus ports
     public static final int
         DRIVE_MOTOR_RIGHT_BACK  = 1,
@@ -22,7 +16,6 @@ public class Ports {
         INTAKE_FLYWHEEL_ONE = 8,
         INTAKE_FLYWHEEL_TWO = 9
     ;
-    */
 
     //Analog Ports
     public static final int 

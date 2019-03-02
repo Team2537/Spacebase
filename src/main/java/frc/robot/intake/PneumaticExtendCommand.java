@@ -13,14 +13,14 @@ import frc.robot.Robot;
 public class PneumaticExtendCommand extends Command {
     public PneumaticExtendCommand() {
 
-       // requires(Robot.intakeSys);
+        requires(Robot.intakeSys);
 
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        //Robot.intakeSys.setPneumatic(!Robot.intakeSys.getIntakePneumatic());
+        Robot.intakeSys.setPneumatic(!Robot.intakeSys.getIntakePneumatic());
     }
 
     // Called repeatedly when this Command is scheduled to run

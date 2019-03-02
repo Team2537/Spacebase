@@ -13,7 +13,7 @@ import frc.robot.climb.ClimbSubsystem;
 import frc.robot.drive.DriveSubsystem;
 import frc.robot.drive.RobotStateUpdater;
 import frc.robot.input.HumanInputManipulatorXbox;
-//import frc.robot.intake.IntakeSubsystem;
+import frc.robot.intake.IntakeSubsystem;
 import frc.robot.manipulator.ManipulatorSubsystem;
 import frc.robot.test.PreLaunchSequence;
 import frc.lib.motion.Pose2d;
@@ -26,7 +26,7 @@ import frc.robot.cameras.Cameras;
 public class Robot extends TimedRobot {
 	public static HumanInputManipulatorXbox input;
     public static DriveSubsystem driveSys;
-    //public static IntakeSubsystem intakeSys;
+    public static IntakeSubsystem intakeSys;
     public static ArmSubsystem armSys;
     public static ClimbSubsystem climbSys;
     public static ManipulatorSubsystem manipSys;
@@ -42,7 +42,7 @@ public class Robot extends TimedRobot {
         cameras = new Cameras();
 
         climbSys = new ClimbSubsystem();
-        //intakeSys = new IntakeSubsystem();
+        intakeSys = new IntakeSubsystem();
         driveSys = new DriveSubsystem();
         armSys = new ArmSubsystem();
         manipSys = new ManipulatorSubsystem();
@@ -66,7 +66,7 @@ public class Robot extends TimedRobot {
     // Called at the beginning of the Sandstorm
     @Override
     public void autonomousInit() {
-        //Scheduler.getInstance().add(new RobotStateUpdater());
+        Scheduler.getInstance().add(new RobotStateUpdater());
         Scheduler.getInstance().add(new VisionAlignmentCommand());
     }
 
@@ -82,7 +82,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         Scheduler.getInstance().removeAll();
-        Robot.driveSys.setMotors(0.3, 0.3);
     }
 
     // Called periodically during the Teleop period

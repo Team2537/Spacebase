@@ -8,7 +8,7 @@ import frc.robot.Specs;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Ultrasonic;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+//import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -20,9 +20,6 @@ public class DriveSubsystem extends Subsystem {
 	/****************************************************************************/
 	/*                            PUBLIC CONSTANTS                              */
 	/****************************************************************************/
-
-    
-    private WPI_TalonSRX RightFront, LeftFront;
 
     // convert from revolutions to inches
     public static final double ENCODER_POSITION_FACTOR = 
@@ -38,7 +35,6 @@ public class DriveSubsystem extends Subsystem {
     public static final MotorType MOTOR_TYPE = MotorType.kBrushless;
     private static final int NUM_VELS_TO_SAMPLE = 4;
 
-/*
     public static final int[] MOTOR_PORTS_LEFT = { 
         Ports.DRIVE_MOTOR_LEFT_FRONT, 
         Ports.DRIVE_MOTOR_LEFT_TOP,
@@ -49,7 +45,6 @@ public class DriveSubsystem extends Subsystem {
         Ports.DRIVE_MOTOR_RIGHT_TOP,
         Ports.DRIVE_MOTOR_RIGHT_BACK 
     };
-*/
 
 
     /****************************************************************************/
@@ -69,10 +64,7 @@ public class DriveSubsystem extends Subsystem {
     public DriveSubsystem() {
         /*********************************/
 	    /*   INIT LEFT MOTORS/ENCODERS   */
-        /*********************************/
-        RightFront = new WPI_TalonSRX(Ports.RIGHT);
-        LeftFront = new WPI_TalonSRX(Ports.LEFT);
-/*
+	    /*********************************/
         motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
         encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
         for (int i = 0; i < MOTOR_PORTS_LEFT.length; i++) {
@@ -85,11 +77,10 @@ public class DriveSubsystem extends Subsystem {
             enc.setPosition(0);
             encodersLeft[i] = enc;
         }
-*/
+
         /*********************************/
 	    /*  INIT RIGHT MOTORS/ENCODERS   */
-        /*********************************/
-/*
+	    /*********************************/
         motorsRight = new CANSparkMax[MOTOR_PORTS_RIGHT.length];
         encodersRight = new CANEncoder[MOTOR_PORTS_RIGHT.length];
         for (int i = 0; i < MOTOR_PORTS_RIGHT.length; i++) {
@@ -116,14 +107,13 @@ public class DriveSubsystem extends Subsystem {
         accelUpdater.startPeriodic(Specs.ROBOT_PERIOD_SECONDS);
         
         navX = new AHRS(SPI.Port.kMXP);
-*/
         frontUltrasonic = new Ultrasonic(Ports.FRONT_ULTRASONIC_INPUT, Ports.FRONT_ULTRASONIC_OUTPUT);
         frontUltrasonic.setAutomaticMode(true);
     }
 
     @Override
     public void initDefaultCommand() {
-        //setDefaultCommand(new DriveCommand());
+        setDefaultCommand(new DriveCommand());
     }
 
 
@@ -132,22 +122,16 @@ public class DriveSubsystem extends Subsystem {
 	/****************************************************************************/
 
     public void setMotorsLeft(double percentOutput) {
-        LeftFront.set(percentOutput);
-        /*
         for(CANSparkMax motor : motorsLeft) {
             motor.set(SIGN_LEFT*percentOutput);
         }
-        */
         // motorsLeft[2].set(-percentOutput);
     }
 
     public void setMotorsRight(double percentOutput) {
-        RightFront.set(percentOutput);
-        /*
         for(CANSparkMax motor : motorsRight) {
             motor.set(SIGN_RIGHT*percentOutput);
         }
-        */
         //motorsRight[0].set(percentOutput);
     }
 
