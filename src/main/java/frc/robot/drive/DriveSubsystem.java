@@ -2,6 +2,7 @@ package frc.robot.drive;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.units.Units;
 import frc.robot.Ports;
 import frc.robot.Specs;
@@ -34,6 +35,7 @@ public class DriveSubsystem extends Subsystem {
     public static final IdleMode DEFAULT_IDLE_MODE = IdleMode.kCoast;
     public static final MotorType MOTOR_TYPE = MotorType.kBrushless;
     private static final int NUM_VELS_TO_SAMPLE = 4;
+    private static final double RUNNING_CURRENT = 2.0;
 
     public static final int[] MOTOR_PORTS_LEFT = { 
         Ports.DRIVE_MOTOR_LEFT_FRONT, 
@@ -260,6 +262,36 @@ public class DriveSubsystem extends Subsystem {
         return Units.degrees_to_radians(getGyroDegrees());
     }
 
+    /****************************************************************************/
+	/*                          Test Methods                                    */
+	/****************************************************************************/
+
+    public void currentTest(){
+        Boolean noError = true;
+        String[] leftErrorArray = new String[motorsLeft.length];
+        String[] rightErrorArray = new String[motorsRight.length];
+        for(int i = 0; i < motorsLeft.length; i++){
+            if (motorsLeft[i].getOutputCurrent() <= RUNNING_CURRENT){
+                leftErrorArray[i] =  (motorsLeft[i] + "ERROR CHECK MOTOR");
+                noError = false;
+            } else {
+                leftErrorArray[i] =  (motorsLeft[i] + "All Clear");
+            }
+        }
+        for(int i = 0; i < motorsRight.length; i++){
+            if (motorsLeft[i].getOutputCurrent() <= RUNNING_CURRENT){
+                rightErrorArray[i] = (motorsRight[i] + "ERROR CHECK MOTOR");
+                noError = false;
+            } else {
+                rightErrorArray[i] = (motorsRight[i] + "All Clear");
+            }
+        }
+        SmartDashboard.putStringArray("leftErrorArray", leftErrorArray);
+        SmartDashboard.putStringArray("rightErrorArray", rightErrorArray);
+        SmartDashboard.putBoolean("driveTest", noError);
+        
+
+    }
 
     /****************************************************************************/
 	/*                          MISC. SENSOR METHODS                            */
