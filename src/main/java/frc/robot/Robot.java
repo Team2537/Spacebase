@@ -46,8 +46,9 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         Scheduler.getInstance().removeAll();
-        Scheduler.getInstance().add(new VisionTurnCommand());
-        //Scheduler.getInstance().add(new UltrasonicFrontDriveCommand(50, 0.1));
+        //Scheduler.getInstance().add(new VisionTurnCommand());
+        Scheduler.getInstance().add(new UltrasonicFrontDriveCommand(12, 0.3));
+        
         //Scheduler.getInstance().add(new VisionAlignmentCommand());
         //Robot.driveSys.resetGyro();
         //Scheduler.getInstance().add(new RobotStateUpdater());
@@ -64,13 +65,16 @@ public class Robot extends TimedRobot {
     // Called at the beginning of the Teleop period
     @Override
     public void teleopInit() {
-        Robot.driveSys.setMotors(.3, .3);
+        Robot.driveSys.setMotors(.1, .1);
+        Robot.driveSys.getUltrasonic();
+        
     }
 
     // Called periodically during the Teleop period
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        System.out.println("ULTRA: " + Robot.driveSys.getUltrasonic());
     }
 
     @Override

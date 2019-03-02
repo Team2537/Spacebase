@@ -1,5 +1,5 @@
 package frc.robot.auto;
-
+import frc.lib.util.PID;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
@@ -7,14 +7,16 @@ import frc.robot.Robot;
 
 public class UltrasonicFrontDriveCommand extends Command {
   private double targetDistInches, startTime;
+  private double defaultPercentOutput;
   private long timeout;
   private PID pid;
   public UltrasonicFrontDriveCommand(double targetDistInches, double percentOutput, double timeout) {
     requires(Robot.driveSys);
-    pid = new PID(Math.abs(percentOutput)/30,0.005,0);
+    pid = new PID(percentOutput/30, 0.000005,0.000003); //I = 0.000007 //D controls oscillations
     pid.setSetpoint(-targetDistInches);
     this.targetDistInches = targetDistInches;
     this.timeout = (long)(1000*timeout);
+    this.defaultPercentOutput = percentOutput;
   }
 
   public UltrasonicFrontDriveCommand(double targetDistInches, double percentOutput){
@@ -29,11 +31,19 @@ public class UltrasonicFrontDriveCommand extends Command {
 
   @Override
     protected void execute(){
+      final double percentOutput;
       pid.update(-Robot.driveSys.getUltrasonic());
-      final double percentOutput = pid.getOutput();
+      if(Robot.driveSys.getUltrasonic() <= 35) { //gotta love arbitrary values
+         percentOutput = pid.getOutput();
+      } else {
+        percentOutput = defaultPercentOutput;
+      }
+      
       Robot.driveSys.setMotors(percentOutput, percentOutput);
-     System.out.println(Robot.driveSys.getUltrasonic());
+     System.out.println("ULTRA: " + Robot.driveSys.getUltrasonic());
+
     }
+     
 
   @Override
   protected boolean isFinished() {

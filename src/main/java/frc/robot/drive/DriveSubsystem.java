@@ -97,7 +97,7 @@ public class DriveSubsystem extends Subsystem {
     
 
     public void setMotorsLeft(double percentOutput) {
-        LeftFront.set(percentOutput);
+        LeftFront.set(-percentOutput);
         //setMotorsSide(percentOutput, motorsLeft);
     }
 
@@ -108,10 +108,10 @@ public class DriveSubsystem extends Subsystem {
 
     public void setMotors(double percentOutputLeft, double percentOutputRight) {
         setMotorsLeft(percentOutputLeft);
-        //System.out.println("LEFT MOTOR: " + percentOutputLeft);
+        System.out.println("LEFT MOTOR: " + percentOutputLeft);
 
         setMotorsRight(percentOutputRight);
-        //System.out.println("RIGHT MOTOR: " + percentOutputRight);
+        System.out.println("RIGHT MOTOR: " + percentOutputRight);
     }
 
     public String encoderStatus() {
@@ -191,7 +191,6 @@ public class DriveSubsystem extends Subsystem {
 
     // @return the range of the drive ultrasonic in inches 
     public double getUltrasonic() {
-        System.out.println("ULTRASONIC RANGE: " + driveUltrasonic.getRangeInches());
         return driveUltrasonic.getRangeInches();
     }
     
