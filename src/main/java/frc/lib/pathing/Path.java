@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import frc.lib.motion.Pose2d;
+import frc.lib.motion.Pose2dCurved;
 import frc.lib.util.Vec2;
 
 public class Path {
@@ -115,19 +116,11 @@ public class Path {
                 final double nodeAngle = segNext.diff.angleBetween(seg.diff.inverse());
                 Clothoid turn = new Clothoid(seg.end.radius(), nodeAngle);
                 clothoids.add(turn);
-                // clothoids.add(turn.flip());
+                clothoids.add(turn.flip());
             }
         }
 
         return true;
-    }
-
-    public Clothoid[] getClothoids(){
-        if(!isComplete()) return null;
-
-        Clothoid[] arr = new Clothoid[clothoids.size()];
-        clothoids.toArray(arr);
-        return arr;
     }
 
     public Vec2 start(){
@@ -148,20 +141,24 @@ public class Path {
         return endAngle;
     }
 
-    public List<Pose2d> split(double ds){
+    public List<Pose2dCurved> split(double ds){
         if(!isComplete()) return null;
         
-        List<Pose2d> out = new ArrayList<>();
+        List<Pose2dCurved> out = new ArrayList<>();
         Pose2d currentPose = new Pose2d(start,startAngle);
+        out.add(new Pose2dCurved(currentPose, 0));
+
         double s;
         for(Clothoid c : clothoids){
-            s = 0;
-            while(s < c.length){
+            
+            s = ds;
+            while(s < c.length) {
                 out.add(c.getPose(currentPose, s));
                 s += ds;
             }
+            currentPose = out.get(out.size() - 1);
         }
-        out.add(new Pose2d(end, endAngle));
+        out.add(new Pose2dCurved(end, endAngle, 0));
         return out;
     }
 

@@ -27,10 +27,23 @@ public class DriveCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.driveSys.setMotors(
-            -Robot.input.getJoystickAxisLeft(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX,
-            -Robot.input.getJoystickAxisRight(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX
-        );
+        if(!Robot.climbSys.getClimbSolenoid()){
+            Robot.driveSys.setMotors(
+                -Robot.input.getJoystickAxisLeft(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX,
+                -Robot.input.getJoystickAxisRight(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX
+            );
+        } else if(Robot.climbSys.getClimbSolenoid()) {
+            Robot.driveSys.setMotors(
+                -Robot.input.getJoystickAxisLeft(Math.abs(HumanInput.AXIS_Y)) * PERCENT_OUTPUT_MAX,
+                -Robot.input.getJoystickAxisRight(Math.abs(HumanInput.AXIS_Y)) * PERCENT_OUTPUT_MAX
+            );
+        } else {
+            Robot.driveSys.setMotors(
+                -Robot.input.getJoystickAxisLeft(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX,
+                -Robot.input.getJoystickAxisRight(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX
+            );
+        }
+        
         System.out.println("ULTRASONIC: " + Robot.driveSys.getUltrasonic());
 
     }

@@ -31,6 +31,14 @@ public class DriveSpecs {
         );
     }
 
+    public double getMaxVelocity(Pose2dCurved state){
+        return Double.MAX_VALUE; //TODO: temp
+    }
+
+    public MinMaxAcceleration getMinMaxAcceleration(Pose2dCurved state, double velMax){
+        return new MinMaxAcceleration(-Double.MAX_VALUE, Double.MAX_VALUE); //TODO: temp
+    }
+
     public double[] encode(){
         return new double[]{
             wheelAxleLength, wheelDiameter,
@@ -43,5 +51,16 @@ public class DriveSpecs {
             p[0], p[1],
             p[2], p[3], p[4]
         );
+    }
+
+    public static class MinMaxAcceleration {
+        public final double min, max;
+        public MinMaxAcceleration(double min, double max){
+            this.min = min;
+            this.max = max;
+        }
+        public boolean valid(){
+            return max > min;
+        }
     }
 }

@@ -18,14 +18,6 @@ public class Pose2d {
         this(new Vec2(x,y), ang);
     }
 
-    public static Pose2d delta(Pose2d one, Pose2d two){
-        return new Pose2d(one.vec.diff(two.vec), one.ang - two.ang);
-    }
-
-    public Pose2d delta(Pose2d other){
-        return Pose2d.delta(this, other);
-    }
-
     public static Pose2d addDelta(Pose2d pose, Pose2d delta){
         return new Pose2d(pose.vec.add(delta.vec.rotateBy(pose.ang)), pose.ang+delta.ang);
     }

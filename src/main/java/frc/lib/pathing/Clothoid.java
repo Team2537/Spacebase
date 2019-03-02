@@ -1,14 +1,13 @@
 package frc.lib.pathing;
 
 import frc.lib.motion.Pose2d;
+import frc.lib.motion.Pose2dCurved;
 import frc.lib.util.FresnelMath;
 import frc.lib.util.Util;
 import frc.lib.util.Vec2;
 
 public class Clothoid {
-    public final double length, Kp;
-    public final Pose2d delta;
-    public final boolean flipped;
+    public final double length, Kp, K0, dTheta;
 
     /**
     * @param startAngle Initial angle of the robot
@@ -26,29 +25,33 @@ public class Clothoid {
         length = r/FresnelMath.integrateC(-2*dTheta_abs, 0, dPhi, 0,1);
 
         // calculate change in curvature with respect to distance traveled along the path
-        final double dTheta = dir*dTheta_abs;
+        dTheta = dir*dTheta_abs;
         Kp = (2*dTheta)/(length*length);
-        flipped = false;
-        delta = new Pose2d(FresnelMath.integrate(Kp, 0, 0, 0, length), dTheta);
+        K0 = 0;
     }
 
-    private Clothoid(double length, double Kp, Pose2d delta, boolean flipped){
+    private Clothoid(double length, double dTheta, double K0, double Kp){
         this.length = length;
+        this.dTheta = dTheta;
+        this.K0 = K0;
         this.Kp = Kp;
-        this.delta = delta;
-        this.flipped = flipped;
     }  
 
     public Clothoid flip(){
-        return new Clothoid(length, Kp, delta, true);
+        return new Clothoid(
+            length,
+            dTheta, // TODO: correct this even though it's unused
+            Kp*length, 
+            -Kp
+        );
     }
 
     public static Clothoid fromAngle(double dTheta){
-        return new Clothoid(0, Double.POSITIVE_INFINITY, new Pose2d(new Vec2(0,0), Util.normalizeHeadingRadians(dTheta)), false);
+        return new Clothoid(0, 0, Double.POSITIVE_INFINITY, Util.normalizeHeadingRadians(dTheta));
     }
 
     public static Clothoid fromLength(double length){
-        return new Clothoid(length, 0, new Pose2d(new Vec2(length, 0), 0), false);
+        return new Clothoid(length, 0, 0, 0);
     }
 
     public double getMaxStartVelocity(double accMax, double robotLength){
@@ -57,19 +60,17 @@ public class Clothoid {
 
     public String toString(){
         return String.format("Length: %f\nKp: %f\ndTheta: %f\nFlipped: %s\n",
-            length, Kp, delta, flipped ? "yes" : "no");
+            length, Kp);
     }
 
-    public Pose2d getPose(Pose2d start, double s){
+    public Pose2dCurved getPose(Pose2d start, double s){
         if(s < 0 || s > length) return null;
 
-        final Vec2 pos = FresnelMath.integrate(Kp, 0, 0, 0, s);
-        final double ang = Math.tan(0.5*Kp*s*s);
-        Pose2d deltaPartial = new Pose2d(pos,ang);
-        if(flipped){
-            deltaPartial = delta.delta(deltaPartial);
-        }
+        final double curvature = Kp*s + K0;
+        final Vec2 pos = FresnelMath.integrate(Kp, K0, 0, 0, s);
+        final double ang = 0.5*Kp*s*s + K0*s;
+        final Pose2d deltaPartial = new Pose2d(pos,ang);
 
-        return start.addDelta(deltaPartial);
+        return new Pose2dCurved(start.addDelta(deltaPartial), curvature);
     }
 }
