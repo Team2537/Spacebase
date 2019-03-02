@@ -6,27 +6,39 @@ import frc.robot.Robot;
 //drives forward until Ultrasonic max distance reached
 
 public class UltrasonicFrontDriveCommand extends Command {
-  private double percentOutput, targetDistInches;
-  public UltrasonicFrontDriveCommand(double targetDistInches, double percentOutput) {
+  private double targetDistInches, startTime;
+  private long timeout;
+  private PID pid;
+  public UltrasonicFrontDriveCommand(double targetDistInches, double percentOutput, double timeout) {
     requires(Robot.driveSys);
-    this.percentOutput = Math.abs(percentOutput);
+    pid = new PID(Math.abs(percentOutput)/30,0.005,0);
+    pid.setSetpoint(-targetDistInches);
     this.targetDistInches = targetDistInches;
+    this.timeout = (long)(1000*timeout);
+  }
+
+  public UltrasonicFrontDriveCommand(double targetDistInches, double percentOutput){
+    this(targetDistInches, percentOutput, Long.MAX_VALUE);
   }
 
   @Override
   protected void initialize() {
-    Robot.driveSys.setMotors(percentOutput, percentOutput);
     System.out.println("ULTRASONIC COMMAND STARTED!!!");
+    startTime = System.currentTimeMillis();
   }
 
   @Override
     protected void execute(){
-     Robot.driveSys.getUltrasonic();
+      pid.update(-Robot.driveSys.getUltrasonic());
+      final double percentOutput = pid.getOutput();
+      Robot.driveSys.setMotors(percentOutput, percentOutput);
+     System.out.println(Robot.driveSys.getUltrasonic());
     }
 
   @Override
   protected boolean isFinished() {
-    return Robot.driveSys.getUltrasonic() <= targetDistInches;
+    return (Robot.driveSys.getUltrasonic() <= targetDistInches ||
+      System.currentTimeMillis() - startTime >= timeout);
   }
 
   @Override
