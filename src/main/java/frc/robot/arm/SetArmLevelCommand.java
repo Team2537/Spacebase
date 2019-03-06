@@ -36,9 +36,12 @@ public class SetArmLevelCommand extends Command {
     protected void initialize() {
         if(setSetpoint == 0){
             Robot.armSys.setArmLevel(Robot.armSys.getArmArray(), level);
-        } else {
-            Robot.armSys.setArmLevel(Robot.armSys.getArmArray(), level);
-        } // TODO fix the hell out of this
+        } else if (setSetpoint == 1){
+            Robot.armSys.setArmLevel(Robot.armSys.getArmArray(), 0);
+        }  else {
+            Robot.armSys.setArmLevel(Robot.armSys.getArmArray(), Robot.armSys.getArmArray().length - 1);
+            // TODO fix the hell out of this
+        }
         
     }
 
