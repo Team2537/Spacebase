@@ -30,7 +30,7 @@ public class DriveSubsystem extends Subsystem {
     public static final double ENCODER_VELOCITY_FACTOR = 
         Units.revoltionsPerMinute_to_inchesPerSecond(1, Specs.DRIVE_WHEEL_DIAMETER*Specs.DRIVE_GEARBOX_RATIO);
     
-    public static final double SIGN_LEFT = 1.0, SIGN_RIGHT = -1.0;
+    public static final double SIGN_LEFT = 1.0, SIGN_RIGHT = -1.0, PRACTICE_BOT_MULTIPLIER = -1;
 
     public static final IdleMode DEFAULT_IDLE_MODE = IdleMode.kCoast;
     public static final MotorType MOTOR_TYPE = MotorType.kBrushless;
@@ -138,8 +138,8 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public void setMotors(double percentOutputLeft, double percentOutputRight) {
-        setMotorsLeft(percentOutputLeft);
-        setMotorsRight(percentOutputRight);
+        setMotorsLeft(percentOutputLeft * PRACTICE_BOT_MULTIPLIER); // TODO: FLIP THESE SIGNS BEFORE COMPETITION YOU IDIOTS
+        setMotorsRight(percentOutputRight * PRACTICE_BOT_MULTIPLIER);
     }
 
     public void setIdleMode(IdleMode mode){
@@ -296,25 +296,6 @@ public class DriveSubsystem extends Subsystem {
     /****************************************************************************/
 	/*                          MISC. SENSOR METHODS                            */
 	/****************************************************************************/
-
-    /*
-    // FALSE MEANS ON THE LINE
-    /*
-    public boolean getIR_frontUpper() {
-        System.out.println("IR Front Upper: " + IR_frontUpper.get());
-        return !IR_frontUpper.get();
-    }
-
-    public boolean getIR_frontLower() {
-        System.out.println("IR Front Lower: " + IR_frontLower.get());
-        return !IR_frontLower.get();
-    }
-
-    public boolean getIR_center() {
-        System.out.println("IR Center: " + IR_center.get());
-        return !IR_center.get();
-    }
-    */
 
     // @return the range of the drive ultrasonic in inches 
     public double getUltrasonic() {

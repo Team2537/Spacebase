@@ -17,14 +17,14 @@ import frc.robot.arm.ArmSubsystem.ArmSetpoint;
 
 public class ArmCommand extends Command {
     private PID armPID, wristPID;
-    private static final double kP_arm = 0.02, kI_arm = 0.0008, kD_arm = 0.01;
-    private static final double kP_wrist = 0.02, kI_wrist = 0.0008, kD_wrist = 0.01;
+    private static final double kP_arm = 0.004, kI_arm = 0.0002, kD_arm = 0.002;
+    private static final double kP_wrist = 0.004, kI_wrist = 0.0002, kD_wrist = 0.002;
     private static final double TOLERANCE_arm = 2, TOLERANCE_wrist = 2;
 
     public ArmCommand() {
         requires(Robot.armSys);
-        armPID = new PID(kP_arm, kI_arm, kD_arm);
-        wristPID = new PID(kP_wrist, kI_wrist, kD_wrist);
+        armPID = new PID(kP_arm, kI_arm, kD_arm, TOLERANCE_arm);
+        wristPID = new PID(kP_wrist, kI_wrist, kD_wrist, TOLERANCE_wrist);
     }
 
     // Called just before this Command runs the first time
@@ -38,39 +38,19 @@ public class ArmCommand extends Command {
     protected void execute() {
         ArmSetpoint setpoint = Robot.armSys.getSetpoint();
         Robot.armSys.updateSmartDash();
-        if(Robot.armSys.getArmPotentiometer() < 364){
-            Robot.armSys.setArmMotor(-0.2);
-        } else {
+ 
         if(setpoint == null){
-            Robot.armSys.setArmMode(IdleMode.kBrake);
             Robot.armSys.setArmMotor(0);
-            Robot.armSys.setWristMode(NeutralMode.Brake);
             Robot.armSys.setWristMotor(0);
         } else {
             
             armPID.setSetpoint(-setpoint.arm);
             armPID.update(-Robot.armSys.getArmPotentiometer());
-
-            if (!armPID.withinTolerance(TOLERANCE_arm)) {
-                Robot.armSys.setArmMode(IdleMode.kCoast);
-                Robot.armSys.setArmMotor(armPID.getOutput());
-            } else {
-                Robot.armSys.setArmMode(IdleMode.kBrake);
-                Robot.armSys.setArmMotor(0);
-            }
-        }
-
+            Robot.armSys.setArmMotor(armPID.getOutput());
 
             wristPID.setSetpoint(setpoint.wrist);
             wristPID.update(Robot.armSys.getWristPotentiometer());
-
-            if (!wristPID.withinTolerance(TOLERANCE_wrist)) {
-                Robot.armSys.setWristMode(NeutralMode.Coast);
-                Robot.armSys.setWristMotor(wristPID.getOutput());
-            } else {
-                Robot.armSys.setWristMode(NeutralMode.Brake);
-                Robot.armSys.setWristMotor(0);
-            }
+            Robot.armSys.setWristMotor(wristPID.getOutput());
         }
 
     }

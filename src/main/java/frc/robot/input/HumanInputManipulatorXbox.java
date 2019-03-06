@@ -68,20 +68,21 @@ public class HumanInputManipulatorXbox {
 
 
         // Xbox Controller
-        decreasearmbutton       = new JoystickButton(xbox, 1);
-        armSetHighButton        = new JoystickButton(xbox, 2);
-        armSetIntakeButton      = new JoystickButton(xbox, 3);
-        increasearmbutton       = new JoystickButton(xbox, 4);
-        armManualButton         = new JoystickButton(xbox, 5);
-        hatchConfig             = new JoystickButton(xbox, 6);
-        cargoConfig             = new JoystickButton(xbox, 7);
-        intakeCargo             = new JoystickButton(xbox, 8);
+        decreasearmbutton       = new JoystickButton(xbox, 1); //A
+        armSetHighButton        = new JoystickButton(xbox, 2); //B
+        armSetIntakeButton      = new JoystickButton(xbox, 3); //X
+        increasearmbutton       = new JoystickButton(xbox, 4); //Y
+        armManualButton         = new JoystickButton(xbox, 5); //LB
+        hatchConfig             = new JoystickButton(xbox, 6); //RB
+        cargoConfig             = new JoystickButton(xbox, 7); //BACK
+        intakeCargo             = new JoystickButton(xbox, 8); //START
+
     }
 
     public void registerButtons() {
         whileHeldCommand(intakeFlywheelsLeft, new FlywheelCommand(false));
         whileHeldCommand(intakeFlywheelsRight, new FlywheelCommand(false));
-        whenPressedCommand(armManualButton, new ArmManualCommand());
+        whileHeldCommand(armManualButton, new ArmManualCommand());
         whenPressedCommand(armSolExtend, new ArmPneumaticCommand());
         whenPressedCommand(increasearmbutton, new IncreaseArmCommand());
         whenPressedCommand(decreasearmbutton, new DecreaseArmCommand());

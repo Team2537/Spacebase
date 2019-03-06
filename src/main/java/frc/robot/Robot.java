@@ -88,7 +88,6 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
         System.out.println("ARM POT: "+armSys.getArmPotentiometer());
         System.out.println("WST POT: "+armSys.getWristPotentiometer());
-        System.out.println();
     }
 
     @Override

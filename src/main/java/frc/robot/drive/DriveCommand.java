@@ -44,7 +44,7 @@ public class DriveCommand extends Command {
             );
         }
         
-        System.out.println("ULTRASONIC: " + Robot.driveSys.getUltrasonic());
+        //System.out.println("ULTRASONIC: " + Robot.driveSys.getUltrasonic());
 
     }
 
