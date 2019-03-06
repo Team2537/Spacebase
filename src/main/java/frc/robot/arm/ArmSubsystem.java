@@ -42,14 +42,18 @@ public class ArmSubsystem extends Subsystem {
         SETPOINT_ROCKET_CARGO_3 = new ArmSetpoint(367, 573, "HIGH ROCKET CARGO")
     ;
 
-    public static final ArmSetpoint[] SETPOINTS_LEVELS = {
+    public static final ArmSetpoint[] HATCH_SETPOINTS_LEVELS = {
         SETPOINT_DEFAULT,            // frame perimeter
         SETPOINT_SHIP_HATCH,
+        SETPOINT_ROCKET_HATCH_2,
+        SETPOINT_ROCKET_HATCH_3,
+    };
+
+    public static final ArmSetpoint[] CARGO_SETPOINTS_LEVELS = {
+        SETPOINT_INTAKE,
         SETPOINT_SHIP_CARGO,
         SETPOINT_ROCKET_CARGO_1,
-        SETPOINT_ROCKET_HATCH_2,
         SETPOINT_ROCKET_CARGO_2,
-        SETPOINT_ROCKET_HATCH_3,
         SETPOINT_ROCKET_CARGO_3
     };
 
@@ -72,6 +76,15 @@ public class ArmSubsystem extends Subsystem {
         currentSetpoint = null;
     }
 
+    public ArmSetpoint[] getArmArray(){
+        if(Robot.manipSys.getArmConfiguration() == 0){
+            return HATCH_SETPOINTS_LEVELS;
+        } else {
+            return CARGO_SETPOINTS_LEVELS;
+        }
+    }
+
+
     public void setArmSetpoint(ArmSetpoint setpoint){
         // Safety feature: make sure nothing is inside intake before we go back to default position
         //if(setpoint != SETPOINT_DEFAULT 
@@ -81,7 +94,7 @@ public class ArmSubsystem extends Subsystem {
         //}
     }
 
-    public void setArmLevel(int level){
+    public void setArmLevel(ArmSetpoint[] SETPOINTS_LEVELS, int level){
         if(level > SETPOINTS_LEVELS.length-1){
             level = SETPOINTS_LEVELS.length-1;
         }
@@ -92,8 +105,8 @@ public class ArmSubsystem extends Subsystem {
         setArmSetpoint(SETPOINTS_LEVELS[level]);
     }
 
-    public void increaseArmLevel(){
-        setArmLevel(armLevel + 1);
+    public void increaseArmLevel(ArmSetpoint[] SETPOINT_LEVELS){
+        setArmLevel(SETPOINT_LEVELS, armLevel + 1);
     }
 
     public void updateSmartDash(){
@@ -101,8 +114,8 @@ public class ArmSubsystem extends Subsystem {
         SmartDashboard.putString("Arm Level", name);
     }
 
-    public void decreaseArmLevel(){
-        setArmLevel(armLevel - 1);
+    public void decreaseArmLevel(ArmSetpoint[] SETPOINT_LEVELS){
+        setArmLevel(SETPOINT_LEVELS, armLevel - 1);
     }
 
     public ArmSetpoint getSetpoint(){

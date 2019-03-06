@@ -19,7 +19,7 @@ public class DecreaseArmCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.armSys.decreaseArmLevel();
+        Robot.armSys.decreaseArmLevel(Robot.armSys.getArmArray());
     }
 
     // Called repeatedly when this Command is scheduled to run

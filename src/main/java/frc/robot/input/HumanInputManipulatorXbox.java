@@ -26,6 +26,7 @@ import frc.robot.auto.VisionAlignmentCommand;
 import frc.robot.climb.ClimbCommand;
 import frc.robot.manipulator.ArmFlywheelCommand;
 import frc.robot.manipulator.ArmPneumaticCommand;
+import frc.robot.manipulator.SetArmConfiguration;
 import frc.robot.manipulator.XboxIntakeCommand;
 import frc.robot.intake.FlywheelCommand;
 import frc.robot.intake.PneumaticExtendCommand;
@@ -36,7 +37,7 @@ public class HumanInputManipulatorXbox {
     public final XboxController xbox;
     public final JoystickButton 
         intakeFlywheelsLeft, intakeFlywheelsRight, armSolExtend, intakeSolExtend,
-        expelCargo, intakeCargo,
+        expelCargo, 
         increasearmbutton, decreasearmbutton, armSetIntakeButton, armSetHighButton, armManualButton,
         climbEngageClutch, 
         cameraButton,
@@ -73,9 +74,9 @@ public class HumanInputManipulatorXbox {
         armSetIntakeButton      = new JoystickButton(xbox, 3); //X
         increasearmbutton       = new JoystickButton(xbox, 4); //Y
         armManualButton         = new JoystickButton(xbox, 5); //LB
-        hatchConfig             = new JoystickButton(xbox, 6); //RB
+        //UNUSED                = new JoystickButton(xbox, 6); //RB
         cargoConfig             = new JoystickButton(xbox, 7); //BACK
-        intakeCargo             = new JoystickButton(xbox, 8); //START
+        hatchConfig             = new JoystickButton(xbox, 8); //START
 
     }
 
@@ -91,8 +92,8 @@ public class HumanInputManipulatorXbox {
         whenPressedCommand(armSetHighButton, new SetArmLevelCommand(0));//TODO FIX THIS
         whenPressedCommand(armSetIntakeButton, new SetArmSetpointCommand(ArmSubsystem.SETPOINT_INTAKE));
         whenPressedCommand(visionAlignment, new VisionAlignmentCommand());
-        whenPressedCommand(expelCargo, new ArmFlywheelCommand(false));
-        whenPressedCommand(intakeCargo, new XboxIntakeCommand());
+        whenPressedCommand(hatchConfig, new SetArmConfiguration(0));
+        whenPressedCommand(cargoConfig, new SetArmConfiguration(1));
     }
 
 

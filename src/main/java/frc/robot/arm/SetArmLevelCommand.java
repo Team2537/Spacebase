@@ -12,16 +12,34 @@ import frc.robot.Robot;
 
 public class SetArmLevelCommand extends Command {
     private int level;
+    private int setSetpoint;
 
-    public SetArmLevelCommand(int level){
+    /**
+     * 
+     * @param level
+     * @param setSetpoint 0 if just want to set level, 1 to set lowest point, 2 to set highest point
+     */
+    public SetArmLevelCommand(int level, int setSetpoint){
         requires(Robot.armSys);
         this.level = level;
+        this.setSetpoint = setSetpoint;
     }
+
+    public SetArmLevelCommand(int level){
+        this(level, 0);
+    }
+
+
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.armSys.setArmLevel(level);
+        if(setSetpoint == 0){
+            Robot.armSys.setArmLevel(Robot.armSys.getArmArray(), level);
+        } else {
+            Robot.armSys.setArmLevel(Robot.armSys.getArmArray(), level);
+        }
+        
     }
 
     // Called repeatedly when this Command is scheduled to run
