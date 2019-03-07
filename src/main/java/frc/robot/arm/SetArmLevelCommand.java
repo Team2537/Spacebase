@@ -25,8 +25,8 @@ public class SetArmLevelCommand extends Command {
         this.setSetpoint = setSetpoint;
     }
 
-    public SetArmLevelCommand(int level){
-        this(level, 0);
+    public SetArmLevelCommand(int setSetpoint){
+        this(0, setSetpoint);
     }
 
 
@@ -35,11 +35,11 @@ public class SetArmLevelCommand extends Command {
     @Override
     protected void initialize() {
         if(setSetpoint == 0){
-            Robot.armSys.setArmLevel(Robot.armSys.getArmArray(), level);
+            Robot.armSys.setArmLevel(level);
         } else if (setSetpoint == 1){
-            Robot.armSys.setArmLevel(Robot.armSys.getArmArray(), 0);
+            Robot.armSys.setArmLevel(0);
         }  else {
-            Robot.armSys.setArmLevel(Robot.armSys.getArmArray(), Robot.armSys.getArmArray().length - 1);
+            Robot.armSys.setArmLevel(Robot.armSys.getArmArray().length - 1);
             // TODO fix the hell out of this
         }
         

@@ -94,19 +94,21 @@ public class ArmSubsystem extends Subsystem {
         //}
     }
 
-    public void setArmLevel(ArmSetpoint[] SETPOINTS_LEVELS, int level){
-        if(level > SETPOINTS_LEVELS.length-1){
-            level = SETPOINTS_LEVELS.length-1;
+    public void setArmLevel(int level){
+        ArmSetpoint[] setpoints = getArmArray();
+
+        if(level > setpoints.length-1){
+            level = setpoints.length-1;
         }
         if(level < 0){
             level = 0;
         }
         armLevel = level;
-        setArmSetpoint(SETPOINTS_LEVELS[level]);
+        setArmSetpoint(setpoints[level]);
     }
 
-    public void increaseArmLevel(ArmSetpoint[] SETPOINT_LEVELS){
-        setArmLevel(SETPOINT_LEVELS, armLevel + 1);
+    public void increaseArmLevel(){
+        setArmLevel(armLevel + 1);
     }
 
     public void updateSmartDash(){
@@ -114,8 +116,8 @@ public class ArmSubsystem extends Subsystem {
         SmartDashboard.putString("Arm Level", name);
     }
 
-    public void decreaseArmLevel(ArmSetpoint[] SETPOINT_LEVELS){
-        setArmLevel(SETPOINT_LEVELS, armLevel - 1);
+    public void decreaseArmLevel(){
+        setArmLevel(armLevel - 1);
     }
 
     public ArmSetpoint getSetpoint(){

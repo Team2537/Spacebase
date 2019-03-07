@@ -23,6 +23,7 @@ public class SetArmConfiguration extends Command {
   @Override
   protected void initialize() {
     Robot.manipSys.setArmConfiguration(armConfig);
+    System.out.println("ARM CONFIGURATION NOW " + Robot.armSys.getArmArray());
     
   }
 

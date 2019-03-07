@@ -89,8 +89,8 @@ public class HumanInputManipulatorXbox {
         whenPressedCommand(decreasearmbutton, new DecreaseArmCommand());
         whenPressedCommand(climbEngageClutch, new ClimbCommand());
         whenPressedCommand(intakeSolExtend, new PneumaticExtendCommand());
-        whenPressedCommand(armSetHighButton, new SetArmLevelCommand(0));//TODO FIX THIS
-        whenPressedCommand(armSetIntakeButton, new SetArmSetpointCommand(ArmSubsystem.SETPOINT_INTAKE));
+        whenPressedCommand(armSetHighButton, new SetArmLevelCommand(2));//TODO FIX THIS
+        whenPressedCommand(armSetIntakeButton, new SetArmLevelCommand(1));
         whenPressedCommand(visionAlignment, new VisionAlignmentCommand());
         whenPressedCommand(hatchConfig, new SetArmConfiguration(0));
         whenPressedCommand(cargoConfig, new SetArmConfiguration(1));
