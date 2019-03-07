@@ -58,13 +58,13 @@ public class HumanInputManipulatorXbox {
         expelCargo              = new JoystickButton(joystickLeft, 3);
         // UNUSED               = new JoystickButton(joystickLeft, 4);
         // UNUSED               = new JoystickButton(joystickLeft, 5);
-        armSolExtend            = new JoystickButton(joystickLeft, 6);
+        armSolExtend            = new JoystickButton(joystickLeft, 8);
 
         // Right Joystick
         intakeFlywheelsRight    = new JoystickButton(joystickRight, 1);
         visionAlignment         = new JoystickButton(joystickRight, 2);
         intakeSolExtend         = new JoystickButton(joystickRight, 3);
-        climbEngageClutch       = new JoystickButton(joystickRight, 4);
+        climbEngageClutch       = new JoystickButton(joystickRight, 10);
 
 
         // Xbox Controller
