@@ -3,6 +3,7 @@ package frc.robot.drive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.Ports;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -12,8 +13,6 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -157,8 +156,8 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public double getEncoderPosRight() {
-        NetworkTableEntry Encoder = table.getEntry("Encoder");
-        Encoder.setDouble(RightEnc.getDistance()*8*Math.PI/360.0);
+        //NetworkTableEntry Encoder = table.getEntry("Encoder");
+        //Encoder.setDouble(RightEnc.getDistance()*8*Math.PI/360.0);
         return RightEnc.getDistance()*8*Math.PI/360.0;
         //return getEncoderPos(encodersRight);
     }
@@ -207,15 +206,14 @@ public class DriveSubsystem extends Subsystem {
 
     // @return the range of the drive ultrasonic in inches 
     public double getTemperature() {
-        NetworkTableEntry PdpEntry = table.getEntry("Temperature");
-        PdpEntry.setDouble(pdp.getTemperature());
+        //NetworkTableEntry PdpEntry = table.getEntry("Temperature");
+        //PdpEntry.setDouble(pdp.getTemperature());
         
         return pdp.getTemperature();
     }
     public double getCurrent() {
-        NetworkTableEntry PdpEntry = table.getEntry("Current");
-        PdpEntry.setDouble(pdp.getTotalCurrent());
-        
+        //NetworkTableEntry PdpEntry = table.getEntry("Current");
+        //PdpEntry.setDouble(pdp.getTotalCurrent());
         return pdp.getTotalCurrent();
     }
     public double getUltrasonic() {

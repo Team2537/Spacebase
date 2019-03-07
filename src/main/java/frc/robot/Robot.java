@@ -22,6 +22,7 @@ import frc.robot.auto.VisionAlignmentCommand;
 import frc.robot.auto.VisionTurnCommand;
 import frc.robot.drive.DriveSubsystem;
 import frc.robot.drive.RobotStateUpdater;
+import frc.robot.drive.CustomDashboardCommand;
 
 public class Robot extends TimedRobot {
     public Robot(){
@@ -42,7 +43,6 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         driveSys = new DriveSubsystem();
         visionInput = new VisionInput();
-;
         robotState = new RobotStateEstimator(Specs.CONSTRAINTS, new Vec2(0,0), 0);
     }
 
@@ -79,6 +79,7 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         Robot.driveSys.setMotors(.3, .3);
         //Robot.driveSys.getUltrasonic();
+        Scheduler.getInstance().add(new CustomDashboardCommand());
  
         
     }
@@ -87,10 +88,9 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        Robot.driveSys.getCurrent();
-        Robot.driveSys.getTemperature();
+        
 
-        System.out.println("ULTRA: " + Robot.driveSys.getUltrasonic());
+        //System.out.println("ULTRA: " + Robot.driveSys.getUltrasonic());
     }
 
     @Override
