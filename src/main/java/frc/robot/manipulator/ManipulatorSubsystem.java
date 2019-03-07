@@ -22,10 +22,20 @@ public class ManipulatorSubsystem extends Subsystem {
   // here. Call these from Commands.
   private TalonSRX armFlywheel;
   private Solenoid armPneumatic;
+  private int armConfig;
 
   public ManipulatorSubsystem(){
     armFlywheel = new TalonSRX(Ports.INTAKE_ARM_FLYWHEEL);
     armPneumatic = new Solenoid(Ports.ARM_SOLENOID_ONE);
+    armConfig = 0; // 0 = hatch mode, 1 = cargo mode
+  }
+
+  public void setArmConfiguration(int armConfig){
+    this.armConfig = armConfig;
+  }
+
+  public double getArmConfiguration(){
+    return armConfig;
   }
 
   public void setArmFlywheelMotor(double speed){

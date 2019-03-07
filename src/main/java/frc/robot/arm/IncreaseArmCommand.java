@@ -20,6 +20,8 @@ public class IncreaseArmCommand extends Command {
     @Override
     protected void initialize() {
         Robot.armSys.increaseArmLevel();
+        
+        
     }
 
     // Called repeatedly when this Command is scheduled to run

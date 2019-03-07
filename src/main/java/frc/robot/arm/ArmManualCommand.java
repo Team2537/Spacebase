@@ -24,8 +24,8 @@ public class ArmManualCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.armSys.setArmMotor(-Robot.input.getXboxAxis(1));
-    Robot.armSys.setWristMotor(-Robot.input.getXboxAxis(5));
+    Robot.armSys.setArmMotor(Robot.input.getXboxAxis(1));
+    Robot.armSys.setWristMotor(Robot.input.getXboxAxis(5));
 
     }
 
