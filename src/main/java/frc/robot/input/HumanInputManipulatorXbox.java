@@ -17,17 +17,14 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Ports;
 import frc.robot.Specs;
 import frc.robot.arm.ArmManualCommand;
-import frc.robot.arm.ArmSubsystem;
 import frc.robot.arm.DecreaseArmCommand;
 import frc.robot.arm.IncreaseArmCommand;
 import frc.robot.arm.SetArmLevelCommand;
-import frc.robot.arm.SetArmSetpointCommand;
 import frc.robot.auto.VisionAlignmentCommand;
 import frc.robot.climb.ClimbCommand;
-import frc.robot.manipulator.ArmFlywheelCommand;
 import frc.robot.manipulator.ArmPneumaticCommand;
-import frc.robot.manipulator.SetArmConfiguration;
-import frc.robot.manipulator.XboxIntakeCommand;
+import frc.robot.manipulator.SetPlacementMode;
+import frc.robot.manipulator.ManipulatorSubsystem.PlacementMode;
 import frc.robot.intake.FlywheelCommand;
 import frc.robot.intake.PneumaticExtendCommand;
 
@@ -81,7 +78,7 @@ public class HumanInputManipulatorXbox {
     }
 
     public void registerButtons() {
-        whileHeldCommand(intakeFlywheelsLeft, new FlywheelCommand(false));
+        whileHeldCommand(intakeFlywheelsLeft, new FlywheelCommand(true));
         whileHeldCommand(intakeFlywheelsRight, new FlywheelCommand(false));
         whileHeldCommand(armManualButton, new ArmManualCommand());
         whenPressedCommand(armSolExtend, new ArmPneumaticCommand());
@@ -92,8 +89,8 @@ public class HumanInputManipulatorXbox {
         whenPressedCommand(armSetHighButton, new SetArmLevelCommand(2));//TODO FIX THIS
         whenPressedCommand(armSetIntakeButton, new SetArmLevelCommand(1));
         whenPressedCommand(visionAlignment, new VisionAlignmentCommand());
-        whenPressedCommand(hatchConfig, new SetArmConfiguration(0));
-        whenPressedCommand(cargoConfig, new SetArmConfiguration(1));
+        whenPressedCommand(hatchConfig, new SetPlacementMode(PlacementMode.HATCH));
+        whenPressedCommand(cargoConfig, new SetPlacementMode(PlacementMode.CARGO));
     }
 
 

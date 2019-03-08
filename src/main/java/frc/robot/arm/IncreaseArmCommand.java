@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class IncreaseArmCommand extends Command {
+    private long startTime;
+
     public IncreaseArmCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -19,7 +21,9 @@ public class IncreaseArmCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.armSys.increaseArmLevel();
+        startTime = System.currentTimeMillis();
+        Robot.armSys.increaseLevel();
+        Robot.intakeSys.setIntakeFlywheels(-0.3);
         
         
     }
@@ -32,12 +36,13 @@ public class IncreaseArmCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return true;
+        return (System.currentTimeMillis() - startTime >= 500);
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.intakeSys.setIntakeFlywheels(0);
     }
 
     // Called when another command which requires one or more of the same

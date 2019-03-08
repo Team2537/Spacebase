@@ -23,7 +23,7 @@ public class SetArmSetpointCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.armSys.setArmSetpoint(setpoint);
+        Robot.armSys.setSetpoint(setpoint);
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -20,7 +20,6 @@ public class SetArmLevelCommand extends Command {
      * @param setSetpoint 0 if just want to set level, 1 to set lowest point, 2 to set highest point
      */
     public SetArmLevelCommand(int level, int setSetpoint){
-        requires(Robot.armSys);
         this.level = level;
         this.setSetpoint = setSetpoint;
     }
@@ -35,11 +34,11 @@ public class SetArmLevelCommand extends Command {
     @Override
     protected void initialize() {
         if(setSetpoint == 0){
-            Robot.armSys.setArmLevel(level);
+            Robot.armSys.setLevel(level);
         } else if (setSetpoint == 1){
-            Robot.armSys.setArmLevel(0);
+            Robot.armSys.setLevel(0);
         }  else {
-            Robot.armSys.setArmLevel(Robot.armSys.getArmArray().length - 1);
+            Robot.armSys.setLevel(Robot.armSys.getCurrentSetpointArray().length - 1);
             // TODO fix the hell out of this
         }
         
@@ -53,7 +52,7 @@ public class SetArmLevelCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true

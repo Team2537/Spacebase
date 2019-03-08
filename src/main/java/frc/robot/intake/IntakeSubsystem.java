@@ -8,6 +8,7 @@
 package frc.robot.intake;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -24,6 +25,9 @@ public class IntakeSubsystem extends Subsystem {
         intakeFlywheelOne = new TalonSRX(Ports.INTAKE_FLYWHEEL_ONE);
         intakeFlywheelTwo = new TalonSRX(Ports.INTAKE_FLYWHEEL_TWO);
         intakePneumatic = new Solenoid(Ports.INTAKE_PNEUMATIC_ONE);
+        
+        intakeFlywheelOne.setNeutralMode(NeutralMode.Coast);
+        intakeFlywheelTwo.setNeutralMode(NeutralMode.Coast);
 
     }
 

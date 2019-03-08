@@ -18,37 +18,40 @@ import frc.robot.Ports;
  * Add your docs here.
  */
 public class ManipulatorSubsystem extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-  private TalonSRX armFlywheel;
-  private Solenoid armPneumatic;
-  private int armConfig;
+    // Put methods for controlling this subsystem
+    // here. Call these from Commands.
+    private TalonSRX armFlywheel;
+    private Solenoid armPneumatic;
+    private PlacementMode placementMode;
 
-  public ManipulatorSubsystem(){
-    armFlywheel = new TalonSRX(Ports.INTAKE_ARM_FLYWHEEL);
-    armPneumatic = new Solenoid(Ports.ARM_SOLENOID_ONE);
-    armConfig = 0; // 0 = hatch mode, 1 = cargo mode
-  }
+    public ManipulatorSubsystem() {
+        armFlywheel = new TalonSRX(Ports.INTAKE_ARM_FLYWHEEL);
+        armPneumatic = new Solenoid(Ports.ARM_SOLENOID_ONE);
+        placementMode = PlacementMode.HATCH;
+    }
 
-  public void setArmConfiguration(int armConfig){
-    this.armConfig = armConfig;
-  }
+    public void setPlacementMode(PlacementMode placementMode) {
+        this.placementMode = placementMode;
+    }
 
-  public double getArmConfiguration(){
-    return armConfig;
-  }
+    public PlacementMode getPlacementMode() {
+        return placementMode;
+    }
 
-  public void setArmFlywheelMotor(double speed){
-    armFlywheel.set(ControlMode.PercentOutput, speed);
-  }
+    public void setArmFlywheelMotor(double speed) {
+        armFlywheel.set(ControlMode.PercentOutput, speed);
+    }
 
-  public void setArmPneumatic(boolean state){
-    armPneumatic.set(state);
-  }
+    public void setArmPneumatic(boolean state) {
+        armPneumatic.set(state);
+    }
 
+    @Override
+    public void initDefaultCommand() {
+        setDefaultCommand(new XboxIntakeCommand());
+    }
 
-  @Override
-  public void initDefaultCommand() {
-    setDefaultCommand(new XboxIntakeCommand());
-  }
+    public static enum PlacementMode {
+        HATCH, CARGO
+    }
 }

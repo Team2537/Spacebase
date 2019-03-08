@@ -7,9 +7,6 @@
 
 package frc.robot.arm;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.revrobotics.CANSparkMax.IdleMode;
-
 import edu.wpi.first.wpilibj.command.Command;
 import frc.lib.util.PID;
 import frc.robot.Robot;
@@ -17,9 +14,9 @@ import frc.robot.arm.ArmSubsystem.ArmSetpoint;
 
 public class ArmCommand extends Command {
     private PID armPID, wristPID;
-    private static final double kP_arm = 0.004, kI_arm = 0.0002, kD_arm = 0.002;
-    private static final double kP_wrist = 0.004, kI_wrist = 0.0002, kD_wrist = 0.002;
-    private static final double TOLERANCE_arm = 2, TOLERANCE_wrist = 2;
+    private static final double kP_arm = 0.01, kI_arm = 0.00004, kD_arm = 0.008;
+    private static final double kP_wrist = 0.004, kI_wrist = 0.00003, kD_wrist = 0.002;
+    private static final double TOLERANCE_arm = 1, TOLERANCE_wrist = 1;
 
     public ArmCommand() {
         requires(Robot.armSys);
