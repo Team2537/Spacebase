@@ -65,6 +65,7 @@ public class Clothoid {
 
     public Pose2dCurved getPose(Pose2d start, double s){
         if(s < 0 || s > length) return null;
+        if(Double.isInfinite(Kp)) return new Pose2dCurved(start.vec, start.ang+dTheta, Kp);
 
         final double curvature = Kp*s + K0;
         final Vec2 pos = FresnelMath.integrate(Kp, K0, 0, 0, s);

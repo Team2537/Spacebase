@@ -11,10 +11,10 @@ import frc.lib.motion.Pose2dCurved;
 import frc.lib.util.Vec2;
 
 public class MotionProfileGenerator {
-    public static Vec2[] ptstemp;
-    public static void generate(MotionProfile profile, Waypoint[] waypoints, double timestep){
+    //public static Vec2[] ptstemp;
+    public static void generate(MotionProfile profile, Waypoint[] waypoints, double diststep){
         Path path = new Path(waypoints);
-        List<Pose2dCurved> states = path.split(0.01);
+        List<Pose2dCurved> states = path.split(diststep);
 
         final double kEpsilon = 1e-6;
 
@@ -170,10 +170,11 @@ public class MotionProfileGenerator {
             successor = constraint_state;
         }
 
+        /*
         ptstemp = new Vec2[states.size()];
         for(int i = 0; i < states.size(); i++){
             ptstemp[i] = states.get(i).vec;
-        }
+        }*/
 
         // Integrate the constrained states forward in time to obtain the TimedStates.
         double t = 0.0, s = 0.0, v = 0.0, K = 0.0;
@@ -210,10 +211,10 @@ public class MotionProfileGenerator {
     }
 
     public static MotionProfile generate(DriveSpecs drive, Pose2d start,
-            Waypoint[] waypoints, double timestep){
+            Waypoint[] waypoints, double diststep){
 
         MotionProfile profile = new MotionProfile(drive, start);
-        generate(profile, waypoints, timestep);
+        generate(profile, waypoints, diststep);
         return profile;
     }
 

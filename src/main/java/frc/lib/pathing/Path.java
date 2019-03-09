@@ -146,13 +146,12 @@ public class Path {
         
         List<Pose2dCurved> out = new ArrayList<>();
         Pose2d currentPose = new Pose2d(start,startAngle);
-        out.add(new Pose2dCurved(currentPose, 0));
 
         double s;
         for(Clothoid c : clothoids){
             
-            s = ds;
-            while(s < c.length) {
+            s = 0;
+            while(s <= c.length) {
                 out.add(c.getPose(currentPose, s));
                 s += ds;
             }

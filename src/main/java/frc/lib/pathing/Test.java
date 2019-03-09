@@ -28,7 +28,7 @@ public class Test {
         waypoints = new Waypoint[points.length];
         for(int i = 0; i < points.length; i++) waypoints[i] = new Waypoint(points[i], 10);
 
-        MotionProfile profile = MotionProfileGenerator.generate(drive, new Pose2d(0,0,Math.PI/4), waypoints, 0.003);
+        MotionProfile profile = MotionProfileGenerator.generate(drive, new Pose2d(0,0,Math.PI/4), waypoints, 0.1);
         
         Vec2[] newPoints = new Vec2[(int)(profile.dt()/dt)];
         for(int i = 0; i < newPoints.length; i++){
@@ -39,7 +39,7 @@ public class Test {
         turtle.animateProfile(profile);
         turtle.addPoints(points, new Color(255, 140, 0));
         turtle.addPoints(newPoints, Color.blue);
-        turtle.addPoints(MotionProfileGenerator.ptstemp, Color.green);
+        //turtle.addPoints(MotionProfileGenerator.ptstemp, Color.green);
 
         System.out.println(profile.endState().pose.vec);
         System.out.println("Time: "+profile.endTime());
