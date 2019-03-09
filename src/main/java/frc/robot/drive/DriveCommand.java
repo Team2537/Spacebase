@@ -12,7 +12,7 @@ import frc.robot.Robot;
 import frc.robot.input.HumanInput;
 
 public class DriveCommand extends Command {
-    private double PERCENT_OUTPUT_MAX = 1.0;
+    private double PERCENT_OUTPUT_MAX = 1;
 
     public DriveCommand() {
         requires(Robot.driveSys);
@@ -44,7 +44,7 @@ public class DriveCommand extends Command {
             );
         }
         
-        System.out.println("ULTRASONIC: " + Robot.driveSys.getUltrasonic());
+        //System.out.println("ULTRASONIC: " + Robot.driveSys.getUltrasonic());
 
     }
 

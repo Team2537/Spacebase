@@ -4,11 +4,17 @@ public class PID {
     private double error, errorSum, actualPrev;
     private double setpoint, output;
     private double kP, kI, kD;
+    private Double tolerance;
 
-    public PID(double kP, double kI, double kD){
+    public PID(double kP, double kI, double kD, Double tolerance){
         this.kP = kP;
         this.kI = kI;
         this.kD = kD;
+        this.tolerance = tolerance == null ? null : Math.abs(tolerance);
+    }
+
+    public PID(double kP, double kI, double kD){
+        this(kP, kI, kD, null);
     }
 
     public void setSetpoint(double setpoint){
@@ -20,11 +26,17 @@ public class PID {
 
     public void update(double actual){
         error = setpoint - actual;
-        errorSum += error;
         final double actualChange = actual - actualPrev;
         actualPrev = actual;
 
-        output = kP*error + kI*errorSum - kD*actualChange;
+        if(tolerance == null || !withinTolerance()){
+            errorSum += error;
+            output = kP*error + kI*errorSum - kD*actualChange;
+        } else {
+            errorSum = 0;
+            output = 0;
+        }
+
     }
 
     public void update(double actual, double feedForward){
@@ -36,7 +48,7 @@ public class PID {
         return output;
     }
 
-    public boolean withinTolerance(double tolerance){
+    public boolean withinTolerance(){
         return Math.abs(error) < tolerance;
     }
 }

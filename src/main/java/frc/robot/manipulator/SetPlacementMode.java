@@ -11,50 +11,40 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import frc.robot.manipulator.ManipulatorSubsystem.PlacementMode;
 
-public class XboxIntakeCommand extends Command {
-    public XboxIntakeCommand() {
-        requires(Robot.manipSys);
+public class SetPlacementMode extends Command {
+    private PlacementMode mode;
+
+    public SetPlacementMode(PlacementMode mode) {
+        this.mode = mode;
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        Robot.manipSys.setPlacementMode(mode);
+        System.out.println("ARM CONFIGURATION NOW " + Robot.armSys.getCurrentSetpointArray());
 
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (Robot.input.getXboxAxis(2) >= 0.8) {
-            Robot.manipSys.setArmFlywheelMotor(-1);
-        } else if (Robot.input.getXboxAxis(3) >= 0.8) {
-            if (Robot.manipSys.getPlacementMode() == PlacementMode.HATCH) {
-                new ArmPneumaticCommand();
-            } else {
-                Robot.manipSys.setArmFlywheelMotor(1);
-            }
-        } else {
-            Robot.manipSys.setArmFlywheelMotor(-0.2);
-        }
-
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.manipSys.setArmFlywheelMotor(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.manipSys.setArmFlywheelMotor(0);
     }
 }

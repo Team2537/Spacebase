@@ -297,25 +297,6 @@ public class DriveSubsystem extends Subsystem {
 	/*                          MISC. SENSOR METHODS                            */
 	/****************************************************************************/
 
-    /*
-    // FALSE MEANS ON THE LINE
-    /*
-    public boolean getIR_frontUpper() {
-        System.out.println("IR Front Upper: " + IR_frontUpper.get());
-        return !IR_frontUpper.get();
-    }
-
-    public boolean getIR_frontLower() {
-        System.out.println("IR Front Lower: " + IR_frontLower.get());
-        return !IR_frontLower.get();
-    }
-
-    public boolean getIR_center() {
-        System.out.println("IR Center: " + IR_center.get());
-        return !IR_center.get();
-    }
-    */
-
     // @return the range of the drive ultrasonic in inches 
     public double getUltrasonic() {
         return frontUltrasonic.getRangeInches();
