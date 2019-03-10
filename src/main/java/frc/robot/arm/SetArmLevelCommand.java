@@ -9,6 +9,7 @@ package frc.robot.arm;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.manipulator.ManipulatorSubsystem.PlacementMode;
 
 public class SetArmLevelCommand extends Command {
     private int level;
@@ -36,7 +37,11 @@ public class SetArmLevelCommand extends Command {
         if(setSetpoint == 0){
             Robot.armSys.setLevel(level);
         } else if (setSetpoint == 1){
-            Robot.armSys.setLevel(0);
+            if(Robot.manipSys.getPlacementMode() == PlacementMode.CARGO){
+                Robot.armSys.setLevel(2);
+            } else {
+                Robot.armSys.setLevel(0);
+            }
         }  else {
             Robot.armSys.setLevel(Robot.armSys.getCurrentSetpointArray().length - 1);
             // TODO fix the hell out of this

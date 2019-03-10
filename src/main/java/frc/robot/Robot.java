@@ -9,15 +9,18 @@ package frc.robot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.climb.ClimbSubsystem;
 import frc.robot.drive.DriveSubsystem;
 import frc.robot.drive.RobotStateUpdater;
 import frc.robot.input.HumanInputManipulatorXbox;
 import frc.robot.intake.IntakeSubsystem;
 import frc.robot.manipulator.ManipulatorSubsystem;
-import frc.robot.test.PreLaunchSequence;
+// import frc.robot.test.PreLaunchSequence;
 import frc.lib.motion.Pose2d;
 import frc.lib.motion.RobotStateEstimator;
+import frc.lib.vision.CoordinateSystems;
+import frc.lib.vision.Target;
 import frc.lib.vision.VisionInput;
 import frc.robot.arm.ArmSubsystem;
 import frc.robot.auto.VisionAlignmentCommand;
@@ -45,34 +48,37 @@ public class Robot extends TimedRobot {
         armSys = new ArmSubsystem();
         manipSys = new ManipulatorSubsystem();
 
-        visionInput = new VisionInput();
+        //visionInput = new VisionInput();
         cameras = new Cameras();
-        robotState = new RobotStateEstimator(Specs.DRIVE_SPECS, new Pose2d());
+
+        //robotState = new RobotStateEstimator(Specs.DRIVE_SPECS, new Pose2d());
         //pdp = new PowerDistributionPanel();
 
         input.registerButtons();
-        cameras.start();
     }
 
     // Called periodically regardless of the game period
     @Override
     public void robotPeriodic() {
         Scheduler.getInstance().run();
+        System.out.println(Robot.armSys.getArmPotentiometer());
+        SmartDashboard.putNumber("ULTRASONIC", Robot.driveSys.getUltrasonic());
+        //SmartDashboard.putNumber("VISION TARGET", Target.getMidpoint(Robot.visionInput.getVisionPacket()).getX(CoordinateSystems.CARTESIAN_NORMALIZED));
+        
     }
 
     /* Sandstorm Period */
-    // Called at the beginning of the Sandstorm
+    // Called at the beginning of the Sandstorma
     @Override
     public void autonomousInit() {
-        Scheduler.getInstance().add(new RobotStateUpdater());
-        Scheduler.getInstance().add(new VisionAlignmentCommand());
+        //Scheduler.getInstance().add(new RobotStateUpdater());
+        // Scheduler.getInstance().add(new VisionAlignmentCommand());
     }
 
     // Called periodically during the Sandstorm
     @Override
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-
     }
 
     /* Teleop Period */
@@ -86,14 +92,14 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        //System.out.println("ARM POT: "+armSys.getArmPotentiometer());
+        System.out.println("ARM POT: "+armSys.getArmPotentiometer());
         //System.out.println("WST POT: "+armSys.getWristPotentiometer());
     }
 
     @Override
     public void testInit() {
         Scheduler.getInstance().removeAll();
-        Scheduler.getInstance().add(new PreLaunchSequence());
+        // Scheduler.getInstance().add(new PreLaunchSequence());
 
     }
 

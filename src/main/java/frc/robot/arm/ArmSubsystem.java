@@ -27,7 +27,7 @@ public class ArmSubsystem extends Subsystem {
     private int armLevel;
 
     public static final double
-        OFFSET_ARM = -105,
+        OFFSET_ARM = -91,
         OFFSET_WRIST = 228
     ;
     
@@ -55,8 +55,8 @@ public class ArmSubsystem extends Subsystem {
 
     public static final ArmSetpoint[] CARGO_SETPOINTS_LEVELS = {
         SETPOINT_INTAKE,
-        SETPOINT_SHIP_CARGO,
         SETPOINT_ROCKET_CARGO_1,
+        SETPOINT_SHIP_CARGO,
         SETPOINT_ROCKET_CARGO_2,
         SETPOINT_ROCKET_CARGO_3
     };
@@ -188,6 +188,9 @@ public class ArmSubsystem extends Subsystem {
             this.arm = arm;
             this.wrist = wrist;
             this.name = name;
+        }
+        public String toString(){
+            return "Name: "+name+", Arm: "+arm+", Wrist: "+wrist;
         }
     }
 

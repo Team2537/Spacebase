@@ -23,7 +23,6 @@ public class IncreaseArmCommand extends Command {
     protected void initialize() {
         startTime = System.currentTimeMillis();
         Robot.armSys.increaseLevel();
-        Robot.intakeSys.setIntakeFlywheels(-0.3);
         
         
     }

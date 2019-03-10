@@ -22,7 +22,7 @@ import frc.robot.arm.IncreaseArmCommand;
 import frc.robot.arm.SetArmLevelCommand;
 import frc.robot.auto.VisionAlignmentCommand;
 import frc.robot.climb.ClimbCommand;
-import frc.robot.manipulator.ArmPneumaticCommand;
+import frc.robot.manipulator.ExpelCommand;
 import frc.robot.manipulator.SetPlacementMode;
 import frc.robot.manipulator.ManipulatorSubsystem.PlacementMode;
 import frc.robot.intake.FlywheelCommand;
@@ -38,6 +38,7 @@ public class HumanInputManipulatorXbox {
         increasearmbutton, decreasearmbutton, armSetIntakeButton, armSetHighButton, armManualButton,
         climbEngageClutch, 
         cameraButton,
+        expelRightButton, expelLeftButton,
         visionAlignment,
         hatchConfig, cargoConfig
     ;
@@ -55,13 +56,14 @@ public class HumanInputManipulatorXbox {
         cameraButton            = new JoystickButton(joystickLeft, 2);
         expelCargo              = new JoystickButton(joystickLeft, 3);
         // UNUSED               = new JoystickButton(joystickLeft, 4);
-        // UNUSED               = new JoystickButton(joystickLeft, 5);
+        expelLeftButton          = new JoystickButton(joystickLeft, 5);
         armSolExtend            = new JoystickButton(joystickLeft, 8);
 
         // Right Joystick
         intakeFlywheelsRight    = new JoystickButton(joystickRight, 1);
         visionAlignment         = new JoystickButton(joystickRight, 2);
         intakeSolExtend         = new JoystickButton(joystickRight, 3);
+        expelRightButton        = new JoystickButton(joystickRight, 5);
         climbEngageClutch       = new JoystickButton(joystickRight, 10);
 
 
@@ -81,12 +83,13 @@ public class HumanInputManipulatorXbox {
         whileHeldCommand(intakeFlywheelsLeft, new FlywheelCommand(true));
         whileHeldCommand(intakeFlywheelsRight, new FlywheelCommand(false));
         whileHeldCommand(armManualButton, new ArmManualCommand());
-        whenPressedCommand(armSolExtend, new ArmPneumaticCommand());
+        whenPressedCommand(expelLeftButton, new ExpelCommand());
+        whenPressedCommand(expelRightButton, new ExpelCommand());
         whenPressedCommand(increasearmbutton, new IncreaseArmCommand());
         whenPressedCommand(decreasearmbutton, new DecreaseArmCommand());
         whenPressedCommand(climbEngageClutch, new ClimbCommand());
         whenPressedCommand(intakeSolExtend, new PneumaticExtendCommand());
-        whenPressedCommand(armSetHighButton, new SetArmLevelCommand(2));//TODO FIX THIS
+        whenPressedCommand(armSetHighButton, new SetArmLevelCommand(2));
         whenPressedCommand(armSetIntakeButton, new SetArmLevelCommand(1));
         whenPressedCommand(visionAlignment, new VisionAlignmentCommand());
         whenPressedCommand(hatchConfig, new SetPlacementMode(PlacementMode.HATCH));

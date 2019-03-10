@@ -9,13 +9,19 @@ package frc.robot.drive;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.input.HumanInput;
+import frc.robot.Specs;
+import frc.robot.input.HumanInputManipulatorXbox;
 
 public class DriveCommand extends Command {
-    private double PERCENT_OUTPUT_MAX = 1;
+    private double PERCENT_OUTPUT_MAX = 0.66;
+    private double RAMP_UP_TIME = 0.2;
+    private double RAMP_UP_AMT =  Specs.ROBOT_PERIOD_SECONDS / RAMP_UP_TIME;
+    private double inputLeftPrev, inputRightPrev;
 
     public DriveCommand() {
         requires(Robot.driveSys);
+        inputLeftPrev = 0;
+        inputRightPrev = 0;
     }
 
     // Called just before this Command runs the first time
@@ -27,23 +33,43 @@ public class DriveCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if(!Robot.climbSys.getClimbSolenoid()){
-            Robot.driveSys.setMotors(
-                -Robot.input.getJoystickAxisLeft(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX,
-                -Robot.input.getJoystickAxisRight(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX
-            );
-        } else if(Robot.climbSys.getClimbSolenoid()) {
-            Robot.driveSys.setMotors(
-                -Robot.input.getJoystickAxisLeft(Math.abs(HumanInput.AXIS_Y)) * PERCENT_OUTPUT_MAX,
-                -Robot.input.getJoystickAxisRight(Math.abs(HumanInput.AXIS_Y)) * PERCENT_OUTPUT_MAX
-            );
-        } else {
-            Robot.driveSys.setMotors(
-                -Robot.input.getJoystickAxisLeft(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX,
-                -Robot.input.getJoystickAxisRight(HumanInput.AXIS_Y) * PERCENT_OUTPUT_MAX
-            );
+        // joystick Y-axes are backwards, so invert
+        double 
+            inputLeft = -Robot.input.getJoystickAxisLeft(HumanInputManipulatorXbox.AXIS_Y),
+            inputRight = -Robot.input.getJoystickAxisRight(HumanInputManipulatorXbox.AXIS_Y)
+        ;
+
+
+        // only go backwards when climb is enabled
+        if(Robot.climbSys.getClimbSolenoid()) {
+            inputLeft = -Math.abs(inputLeft);
+            inputRight = -Math.abs(inputRight);
         }
-        
+
+        if(RAMP_UP_TIME != 0) {
+            if(inputLeft - inputLeftPrev > 0) {
+                inputLeft = Math.min(inputLeft, inputLeftPrev + RAMP_UP_AMT);
+            } else {
+                inputLeft = Math.max(inputLeft, inputLeftPrev - RAMP_UP_AMT);
+            }
+
+            if(inputRight - inputRightPrev > 0) {
+                inputRight = Math.min(inputRight, inputRightPrev + RAMP_UP_AMT);
+            } else {
+                inputRight = Math.max(inputRight, inputRightPrev - RAMP_UP_AMT);
+            }
+        }
+        inputLeftPrev = inputLeft;
+        inputRightPrev = inputRight;
+
+
+        inputLeft *= PERCENT_OUTPUT_MAX;
+        inputRight *= PERCENT_OUTPUT_MAX;
+
+        Robot.driveSys.setMotors(
+            inputLeft, inputRight
+        );
+    
         //System.out.println("ULTRASONIC: " + Robot.driveSys.getUltrasonic());
 
     }

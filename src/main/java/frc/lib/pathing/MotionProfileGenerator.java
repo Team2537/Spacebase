@@ -8,7 +8,6 @@ import frc.lib.motion.DriveSpecs;
 import frc.lib.motion.MotionProfile;
 import frc.lib.motion.Pose2d;
 import frc.lib.motion.Pose2dCurved;
-import frc.lib.util.Vec2;
 
 public class MotionProfileGenerator {
     //public static Vec2[] ptstemp;

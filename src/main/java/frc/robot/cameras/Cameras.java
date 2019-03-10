@@ -12,34 +12,32 @@ package frc.robot.cameras;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSink;
 import edu.wpi.first.cameraserver.CameraServer;
-import frc.robot.Robot;
 
 /**
  * Add your docs here.
  */
-public class Cameras extends Thread{
-    private UsbCamera cam0, cam1;
+public class Cameras /*extends Thread*/{
+    private UsbCamera cam0;
     private VideoSink server;
-    private boolean camBoolean;
-    private long lastSwitched;
+    //private boolean camBoolean;
+    //private long lastSwitched;
 
 
     public Cameras(){
         cam0 = CameraServer.getInstance().startAutomaticCapture(0);
-        cam1 = CameraServer.getInstance().startAutomaticCapture(1);
         server = CameraServer.getInstance().getServer();
         server.setSource(cam0);
         cam0.setResolution(160, 120);
-        cam1.setResolution(160, 120);
 
-        camBoolean = false;
-        lastSwitched = 0;
-
+        //camBoolean = false;
+        //lastSwitched = 0;
 
     }
 
+    /*
     @Override
     public void run(){
+        
         while(true){
             if(Robot.input.cameraButton.get() && System.currentTimeMillis() > lastSwitched + 200){
                 if(camBoolean){
@@ -54,6 +52,7 @@ public class Cameras extends Thread{
                 }
             }
         }
-    }
+        
+    }*/
 
 }

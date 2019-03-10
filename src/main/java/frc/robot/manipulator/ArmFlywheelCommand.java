@@ -11,35 +11,32 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class ArmFlywheelCommand extends Command {
-  private boolean commandState;
-    private static final double FLYWHEEL_SPEED = 0.6;
+    private long timeout;
+    private long startTime;
 
-    public ArmFlywheelCommand(boolean state) {
+    public ArmFlywheelCommand(long timeout) {
         requires(Robot.manipSys);
-        commandState = state;
+        this.timeout = timeout;
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        startTime = System.currentTimeMillis();
+        Robot.manipSys.setArmFlywheelMotor(1);
         
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-      if (commandState) {
-        Robot.manipSys.setArmFlywheelMotor(FLYWHEEL_SPEED);
-        Robot.intakeSys.setIntakeFlywheels(-0);
-    } else {
-        Robot.manipSys.setArmFlywheelMotor(-FLYWHEEL_SPEED);
-    }
+    
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return (System.currentTimeMillis() - startTime >= timeout);
     }
 
     // Called once after isFinished returns true

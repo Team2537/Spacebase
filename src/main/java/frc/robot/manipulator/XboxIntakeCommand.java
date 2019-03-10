@@ -9,7 +9,6 @@ package frc.robot.manipulator;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.manipulator.ManipulatorSubsystem.PlacementMode;
 
 public class XboxIntakeCommand extends Command {
     public XboxIntakeCommand() {
@@ -27,12 +26,8 @@ public class XboxIntakeCommand extends Command {
     protected void execute() {
         if (Robot.input.getXboxAxis(2) >= 0.8) {
             Robot.manipSys.setArmFlywheelMotor(-1);
-        } else if (Robot.input.getXboxAxis(3) >= 0.8) {
-            if (Robot.manipSys.getPlacementMode() == PlacementMode.HATCH) {
-                new ArmPneumaticCommand();
-            } else {
-                Robot.manipSys.setArmFlywheelMotor(1);
-            }
+        } else if (Robot.input.getXboxAxis(3) >= 0.8){
+            Robot.intakeSys.setIntakeFlywheels(-0.4);
         } else {
             Robot.manipSys.setArmFlywheelMotor(-0.2);
         }
