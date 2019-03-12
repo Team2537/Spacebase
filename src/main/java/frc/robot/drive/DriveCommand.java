@@ -13,8 +13,8 @@ import frc.robot.Specs;
 import frc.robot.input.HumanInputManipulatorXbox;
 
 public class DriveCommand extends Command {
-    private double PERCENT_OUTPUT_MAX = 0.66;
-    private double RAMP_UP_TIME = 0.2;
+    private double PERCENT_OUTPUT_MAX = 0.73;
+    private double RAMP_UP_TIME = 0.8;
     private double RAMP_UP_AMT =  Specs.ROBOT_PERIOD_SECONDS / RAMP_UP_TIME;
     private double inputLeftPrev, inputRightPrev;
 

@@ -27,8 +27,8 @@ public class ArmSubsystem extends Subsystem {
     private int armLevel;
 
     public static final double
-        OFFSET_ARM = -91,
-        OFFSET_WRIST = 228
+        OFFSET_ARM = -99,
+        OFFSET_WRIST = 190
     ;
     
     public static final ArmSetpoint 

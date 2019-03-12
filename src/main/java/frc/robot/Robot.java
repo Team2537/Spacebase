@@ -61,9 +61,10 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         Scheduler.getInstance().run();
-        System.out.println(Robot.armSys.getArmPotentiometer());
+        SmartDashboard.putNumber("ARM POT", armSys.getArmPotentiometer());
+        SmartDashboard.putNumber("WRIST POT", armSys.getWristPotentiometer());
         SmartDashboard.putNumber("ULTRASONIC", Robot.driveSys.getUltrasonic());
-        //SmartDashboard.putNumber("VISION TARGET", Target.getMidpoint(Robot.visionInput.getVisionPacket()).getX(CoordinateSystems.CARTESIAN_NORMALIZED));
+        //SmartDashboard.putNumber("VISION TARGET", Target.getMidpoint(Robot.visionInput.getVisionPacket()).x);
         
     }
 
@@ -92,8 +93,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        System.out.println("ARM POT: "+armSys.getArmPotentiometer());
-        //System.out.println("WST POT: "+armSys.getWristPotentiometer());
     }
 
     @Override

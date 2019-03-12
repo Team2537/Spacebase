@@ -1,5 +1,7 @@
 package frc.robot.auto;
 import edu.wpi.first.wpilibj.command.Command;
+import frc.lib.util.PID;
+import frc.lib.util.Util;
 import frc.lib.vision.Point;
 import frc.lib.vision.Target;
 import frc.robot.Robot;
@@ -30,14 +32,10 @@ public class VisionTurnCommand extends Command{
 
 //CAM dimensions: 640 width, 480 height
 
-    public static final int LOWERTHRESHOLD = 300; 
-    public static final int HIGHERTHRESHOLD = 340;
-    public static final int OUTERLOWERTHRESHOLD = 100; 
-    public static final int OUTERHIGHERTHRESHOLD = 550;
+    public static final double THRESHOLD = 20;
    
-    public double TURNSPEED = 0.15;
     private double MaxVelocity = 0.2;
-    private double PValue = 0.025;
+    private PID pid;
    
     private Point MidPoint;
     private Target[] targets;
@@ -45,12 +43,13 @@ public class VisionTurnCommand extends Command{
 
     public VisionTurnCommand(){
         requires(Robot.driveSys);  
-        
+        pid = new PID(0.025, 0.0, 0.0, THRESHOLD);
+        pid.setSetpoint(half);
     }
 
     @Override
     protected void initialize(){
-      System.out.println("VISION STARTS!!! ");        
+        System.out.println("VISION STARTS!!! "); 
     }
 
     @Override
@@ -59,51 +58,15 @@ public class VisionTurnCommand extends Command{
         MidPoint = Target.getMidpoint(targets);
         
         System.out.println("MIDPOINT: "+ MidPoint);
-        
-        if(MidPoint.x > HIGHERTHRESHOLD || MidPoint.x < LOWERTHRESHOLD){
-            /*
-            if(TURNSPEED > MaxVelocity) {
-                TURNSPEED = MaxVelocity;
-            } */
-           
-            if(MidPoint.x > OUTERLOWERTHRESHOLD && MidPoint.x < OUTERHIGHERTHRESHOLD) {
-               System.out.println("OUTER THRESHOLD REACHED!!");
-
-               
-               Robot.driveSys.setMotorsLeft(TURNSPEED*Math.signum(MidPoint.x - half));
-               Robot.driveSys.setMotorsRight(-TURNSPEED*Math.signum(MidPoint.x - half));
-               
-                //slows down proportionally to distance from midpoint
-                /*
-                if(MidPoint.x < half) { // if midpoint is too far left
-                    Robot.driveSys.setMotorsLeft(-TURNSPEED);
-                    //320 - midpoint = distance from middle of screen; 220 is half of full inner threshold range [200-440]
-                    Robot.driveSys.setMotorsRight(TURNSPEED); 
-                }
-
-                //slows down proportionally to distance from midpoint
-                if(MidPoint.x > half) { // if midpoint is too far right
-                    Robot.driveSys.setMotorsLeft(TURNSPEED);
-                    Robot.driveSys.setMotorsRight(-TURNSPEED); 
-                }
-                */
-
-                TURNSPEED -= PValue; //as robot approaches midpoint, speed decreases
-            }
             
-            else{
-                TURNSPEED = MaxVelocity; //anywhere out side tolerance range, speed is set at max
-                Robot.driveSys.setMotors(TURNSPEED, -TURNSPEED);
-            }
-        }
-        else{
-            Robot.driveSys.setMotors(0, 0);
-        }
+        pid.update(MidPoint.x);
+        double percentOutput = MaxVelocity*Util.clamp(pid.getOutput(), -1, 1);
+        Robot.driveSys.setMotors(-percentOutput, percentOutput);
     }
     
 
     public boolean isFinished(){
-        return(MidPoint.x < HIGHERTHRESHOLD && MidPoint.x > LOWERTHRESHOLD);
+        return pid.withinTolerance();
     }
 
     public void end(){
