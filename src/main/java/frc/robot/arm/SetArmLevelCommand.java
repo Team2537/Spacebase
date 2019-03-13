@@ -44,7 +44,6 @@ public class SetArmLevelCommand extends Command {
             }
         }  else {
             Robot.armSys.setLevel(Robot.armSys.getCurrentSetpointArray().length - 1);
-            // TODO fix the hell out of this
         }
         
     }
