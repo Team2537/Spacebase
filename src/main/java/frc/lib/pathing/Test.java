@@ -10,7 +10,7 @@ import frc.lib.util.Vec2;
 
 public class Test {
     private static Waypoint[] waypoints;
-    private static DriveSpecs drive = new DriveSpecs(12, 6);
+    private static DriveSpecs drive = new DriveSpecs(12, 6, 0.83, 0.1, 1.8, 9.0);
     public static void main(String[] args) {
         final double dt = 0.001;
         Vec2[] points = new Vec2[]{

@@ -3,18 +3,21 @@ package frc.lib.motion;
 public class DriveSpecs {
     public final double wheelAxleLength;
     public final double wheelDiameter;
-    public final double voltage_kV, voltage_kA, voltage_min;
+    public final double voltage_kV, voltage_kA, voltage_min, voltage_max;
     
-    public DriveSpecs(double wheelAxleLength, double wheelDiameter, double voltage_kA, double voltage_kV, double voltage_min){
+    public DriveSpecs(
+        double wheelAxleLength, double wheelDiameter, 
+        double voltage_kA, double voltage_kV, double voltage_min, double voltage_max){
         this.wheelAxleLength = wheelAxleLength;
         this.wheelDiameter = wheelDiameter;
         this.voltage_kA = voltage_kA;
         this.voltage_kV = voltage_kV;
         this.voltage_min = voltage_min;
+        this.voltage_max = voltage_max;
     }
 
     public DriveSpecs(double wheelAxleLength, double wheelDiameter){
-        this(wheelAxleLength, wheelDiameter, 0,0,0);
+        this(wheelAxleLength, wheelDiameter, 0,0,0,0);
     }
 
     public ChassisState toChassis(WheelState wheels){
@@ -36,20 +39,23 @@ public class DriveSpecs {
     }
 
     public MinMaxAcceleration getMinMaxAcceleration(Pose2dCurved state, double velMax){
-        return new MinMaxAcceleration(-Double.MAX_VALUE, Double.MAX_VALUE); //TODO: temp
+        return new MinMaxAcceleration(
+            (voltage_min - voltage_max - voltage_kV*velMax)/voltage_kA,
+            (voltage_max - voltage_min - voltage_kV*velMax)/voltage_kA
+        ); //TODO: temp
     }
 
     public double[] encode(){
         return new double[]{
             wheelAxleLength, wheelDiameter,
-            voltage_kA, voltage_kV, voltage_min
+            voltage_kA, voltage_kV, voltage_min, voltage_max
         };
     }
 
     public static DriveSpecs decode(double[] p){
         return new DriveSpecs(
             p[0], p[1],
-            p[2], p[3], p[4]
+            p[2], p[3], p[4], p[5]
         );
     }
 

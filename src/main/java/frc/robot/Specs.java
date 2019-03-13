@@ -10,6 +10,7 @@ public class Specs {
 
     // TODO: these values are temp
     public static final double DRIVE_VOLTAGE_MIN = 1.0;
+    public static final double DRIVE_VOLTAGE_MAX = 9.0;
     public static final double DRIVE_VOLTAGE_kV  = 1.0;
     public static final double DRIVE_VOLTAGE_kA  = 1.0;
     
@@ -18,7 +19,7 @@ public class Specs {
 
     public static final DriveSpecs DRIVE_SPECS = new DriveSpecs(
         DRIVE_AXLE_LENGTH, DRIVE_WHEEL_DIAMETER,
-        DRIVE_VOLTAGE_kV, DRIVE_VOLTAGE_kA, DRIVE_VOLTAGE_MIN
+        DRIVE_VOLTAGE_kV, DRIVE_VOLTAGE_kA, DRIVE_VOLTAGE_MIN, DRIVE_VOLTAGE_MAX
     );
 
     public static final double DRIVE_GEARBOX_RATIO = (12/50)*(14/60);
