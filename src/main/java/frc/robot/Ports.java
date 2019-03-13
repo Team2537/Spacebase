@@ -11,10 +11,10 @@ public class Ports {
         DRIVE_MOTOR_LEFT_TOP    = 5,
         DRIVE_MOTOR_LEFT_BACK   = 6, 
         ARM_MOTOR = 7,
-        WRIST_MOTOR =10,
-        INTAKE_ARM_FLYWHEEL =11,
         INTAKE_FLYWHEEL_ONE = 8,
-        INTAKE_FLYWHEEL_TWO = 9
+        INTAKE_FLYWHEEL_TWO = 9,
+        WRIST_MOTOR =10,
+        INTAKE_ARM_FLYWHEEL =11
     ;
 
     //Analog Ports
@@ -38,9 +38,9 @@ public class Ports {
 
     // solenoid ports
     public static final int
+        CLIMB_CLUTCH_SOLENOID_TWO = 0 ,
+        CLIMB_CLUTCH_SOLENOID_ONE = 1, 
         INTAKE_PNEUMATIC_ONE = 2 ,
-        CLIMB_SOLENOID_TWO = 0 ,
-        CLIMB_SOLENOID_ONE = 1, 
         ARM_SOLENOID_ONE = 3,
         CLIMB_SOLENOID_THREE = 4,
         CLIMB_SOLENOID_FOUR = 5

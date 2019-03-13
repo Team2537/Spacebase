@@ -41,7 +41,7 @@ public class DriveCommand extends Command {
 
 
         // only go backwards when climb is enabled
-        if(Robot.climbSys.getClimbSolenoid()) {
+        if(Robot.climbSys.getClutchSolenoid()) {
             inputLeft = -Math.abs(inputLeft);
             inputRight = -Math.abs(inputRight);
         }

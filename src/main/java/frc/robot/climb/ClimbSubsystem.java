@@ -15,31 +15,31 @@ import frc.robot.Ports;
  * Add your docs here.
  */
 public class ClimbSubsystem extends Subsystem {
-    private Solenoid climbSolOne, climbSolTwo, climbSolThree, climbSolFour;
+    private Solenoid clutchSolOne, clutchSolTwo, boosterSolOne, boosterSolTwo;
 
     public ClimbSubsystem() {
-        climbSolOne = new Solenoid(Ports.CLIMB_SOLENOID_ONE);
-        climbSolTwo = new Solenoid(Ports.CLIMB_SOLENOID_TWO);
-        climbSolThree = new Solenoid(Ports.CLIMB_SOLENOID_THREE);
-        climbSolFour = new Solenoid(Ports.CLIMB_SOLENOID_FOUR);
+        clutchSolOne = new Solenoid(Ports.CLIMB_CLUTCH_SOLENOID_ONE);
+        clutchSolTwo = new Solenoid(Ports.CLIMB_CLUTCH_SOLENOID_TWO);
+        boosterSolOne = new Solenoid(Ports.CLIMB_SOLENOID_THREE);
+        boosterSolTwo = new Solenoid(Ports.CLIMB_SOLENOID_FOUR);
     }
 
     public void setClimbSolenoid(boolean state) {
-        climbSolOne.set(state);
-        climbSolTwo.set(!state);
+        clutchSolOne.set(state);
+        clutchSolTwo.set(!state);
     }
 
     public void setBoosterSolenoid(boolean state){
-        climbSolThree.set(state);
-        climbSolFour.set(!state);
+        boosterSolOne.set(state);
+        boosterSolTwo.set(!state);
     }
 
     public boolean getBoosterSolenoid(){
-        return climbSolThree.get();
+        return boosterSolOne.get();
     }
 
-    public boolean getClimbSolenoid() {
-        return climbSolOne.get();
+    public boolean getClutchSolenoid() {
+        return clutchSolOne.get();
     }
 
     @Override
