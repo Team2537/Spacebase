@@ -5,22 +5,39 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.intake;
+package frc.robot.climb;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class PneumaticExtendCommand extends Command {
-    public PneumaticExtendCommand() {
+public class ClimbEngageClutchCommand extends Command {
+    private int caseNumber;
 
-        requires(Robot.intakeSys);
+    public ClimbEngageClutchCommand(int caseNumber) {
+        requires(Robot.climbSys);
+        this.caseNumber = caseNumber;
+    }
 
+    public ClimbEngageClutchCommand(){
+        this(0);
+        
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.intakeSys.setPneumatic(!Robot.intakeSys.getIntakePneumatic());
+        switch(caseNumber){
+            case 0:
+                Robot.climbSys.setClimbSolenoid(!Robot.climbSys.getClimbSolenoid());
+                break;
+            case 1:
+                Robot.climbSys.setBoosterSolenoid(!Robot.climbSys.getBoosterSolenoid());
+                break;
+            default:
+                Robot.climbSys.setClimbSolenoid(!Robot.climbSys.getClimbSolenoid());
+                
+        }
+        
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -37,13 +54,11 @@ public class PneumaticExtendCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-
     }
 }

@@ -5,50 +5,45 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.manipulator;
+package frc.robot.intake;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ArmFlywheelCommand extends Command {
-    private long timeout;
-    private long startTime;
+public class IntakeExtendCommand extends Command {
+    public IntakeExtendCommand() {
 
-    public ArmFlywheelCommand(long timeout) {
-        requires(Robot.manipSys);
-        this.timeout = timeout;
+        requires(Robot.intakeSys);
+
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        startTime = System.currentTimeMillis();
-        Robot.manipSys.setArmFlywheelMotor(1);
-        
+        Robot.intakeSys.setPneumatic(!Robot.intakeSys.getIntakePneumatic());
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-    
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return (System.currentTimeMillis() - startTime >= timeout);
+        return true;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Robot.manipSys.setArmFlywheelMotor(0);
+
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        end();
+
     }
 }

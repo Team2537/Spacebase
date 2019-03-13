@@ -5,39 +5,30 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.climb;
+package frc.robot.intake;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ClimbCommand extends Command {
-    private int caseNumber;
+public class IntakeFlywheelCommand extends Command {
+    private boolean commandState;
+    private static final double FLYWHEEL_SPEED = 0.4;
 
-    public ClimbCommand(int caseNumber) {
-        requires(Robot.climbSys);
-        this.caseNumber = caseNumber;
-    }
+    public IntakeFlywheelCommand(boolean state) {
+        requires(Robot.intakeSys);
+        commandState = state;
 
-    public ClimbCommand(){
-        this(0);
-        
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        switch(caseNumber){
-            case 0:
-                Robot.climbSys.setClimbSolenoid(!Robot.climbSys.getClimbSolenoid());
-                break;
-            case 1:
-                Robot.climbSys.setBoosterSolenoid(!Robot.climbSys.getBoosterSolenoid());
-                break;
-            default:
-                Robot.climbSys.setClimbSolenoid(!Robot.climbSys.getClimbSolenoid());
-                
+        System.out.println("flywheels");
+        if (commandState) {
+            Robot.intakeSys.setIntakeFlywheels(FLYWHEEL_SPEED);
+        } else {
+            Robot.intakeSys.setIntakeFlywheels(-FLYWHEEL_SPEED);
         }
-        
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -48,17 +39,19 @@ public class ClimbCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.intakeSys.setIntakeFlywheels(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        Robot.intakeSys.setIntakeFlywheels(0);
     }
 }

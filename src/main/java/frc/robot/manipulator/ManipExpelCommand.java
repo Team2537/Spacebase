@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
 import frc.robot.manipulator.ManipulatorSubsystem.PlacementMode;
 
-public class ExpelCommand extends Command {
-  public ExpelCommand() {
+public class ManipExpelCommand extends Command {
+  public ManipExpelCommand() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
   }
@@ -22,9 +22,9 @@ public class ExpelCommand extends Command {
   @Override
   protected void initialize() {
     if(Robot.manipSys.getPlacementMode() == PlacementMode.HATCH){
-      Scheduler.getInstance().add(new ArmPneumaticCommand());
+      Scheduler.getInstance().add(new ManipPneumaticCommand());
     } else {
-      Scheduler.getInstance().add(new ArmFlywheelCommand(1000));
+      Scheduler.getInstance().add(new ManipFlywheelCommand(1000));
     }
   }
 
