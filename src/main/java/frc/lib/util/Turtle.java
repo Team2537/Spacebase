@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 
 import javax.swing.*;
 
@@ -20,12 +21,26 @@ public class Turtle {
         f.pack();    
         f.setVisible(true);
     }
+
     public Turtle(int width, int height, double scale){
         this(width, height, scale, new Vec2(0,0));
     }
 
+    public void addMouseAdapter(MouseAdapter listener){
+        panel.addMouseListener(listener);
+        panel.addMouseMotionListener(listener);
+    }
+
     public void addPoints(Vec2[] points, Color color){
         panel.addPoints(points, color);
+    }
+
+    public void addPoints(List<Vec2> points, Color color){
+        Vec2[] arr = new Vec2[points.size()];
+        for(int i = 0; i < arr.length; i++){
+            arr[i] = points.get(i);
+        }
+        addPoints(arr,color);
     }
 
     public void appendPoints(Vec2[] points){
@@ -40,12 +55,24 @@ public class Turtle {
         panel.clearPoints();
     }
 
+    public void clearPoints(Color color){
+        panel.clearPoints(color);
+    }
+
     public void animateProfile(MotionProfile profile){
         panel.animateProfile(profile);
     }
 
     public void drawState(DriveSpecs drive, MotionState state){
         panel.drawState(drive, state);
+    }
+
+    public Vec2 toPanelSpace(Vec2 v){
+        return panel.toPanelSpace(v);
+    }
+
+    public Vec2 toWorldSpace(Vec2 v){
+        return panel.toWorldSpace(v);
     }
 
     private static class DrawPanel extends JPanel {
@@ -56,6 +83,7 @@ public class Turtle {
         private MotionProfile profile;
         private MotionState state;
         private DriveSpecs drive;
+        private long startTime;
 
         public final int width, height;
         public final double scale;
@@ -69,12 +97,14 @@ public class Turtle {
             this.center = center;
             this.pointsList = new ArrayList<>();
             this.colors = new ArrayList<>();
+
             Thread t = new Thread(){
                 public void run() { while(true) repaint(); }
             };
+            startTime = System.currentTimeMillis();
             t.start();
         }
-
+        
         public void addPoints(Vec2[] points, Color color){
             pointsList.add(new ArrayList<>(Arrays.asList(points)));;
             colors.add(color);
@@ -93,6 +123,15 @@ public class Turtle {
             colors.clear();
         }
 
+        public void clearPoints(Color color){
+            for(int i = colors.size() - 1; i >= 0; i--){
+                if(colors.get(i).equals(color)){
+                    colors.remove(i);
+                    pointsList.remove(i);
+                }
+            }
+        }
+
         public void animateProfile(MotionProfile profile){
             this.profile = profile;
         }
@@ -103,12 +142,17 @@ public class Turtle {
         }
 
         public Vec2 toPanelSpace(Vec2 v){
-            Vec2 off = v.diff(center);
-            return new Vec2(off.x*scale, -off.y*scale).add(new Vec2(width/2, height/2));
+            v = v.diff(center);
+            return new Vec2(v.x*scale, -v.y*scale).add(new Vec2(width/2, height/2));
         }
 
         public Vec2 toPanelSpace(Vec2 v, MotionState center){
             return toPanelSpace(v.rotateBy(center.pose.ang).add(center.pose.vec));
+        }
+
+        public Vec2 toWorldSpace(Vec2 v){
+            v = v.diff(new Vec2(width/2, height/2));
+            return new Vec2(v.x/scale, -v.y/scale).add(center);
         }
         
         @Override
@@ -138,9 +182,13 @@ public class Turtle {
             }
 
             if(profile != null){
-                final double tTotal = System.currentTimeMillis()/1000.0;
-                final double t = tTotal - (int)(tTotal/profile.dt())*profile.dt() + profile.startTime();
-                final MotionState curState = profile.getState(t);
+                final long currentTime = System.currentTimeMillis();
+                double dt = (currentTime - startTime)/1000.0;
+                if(dt >= profile.dt()){
+                    dt = 0;
+                    startTime = currentTime;
+                }
+                final MotionState curState = profile.getState(profile.startTime()+dt);
                 paintMotionState(g, g2, profile.getDriveSpecs(), curState);
             }
             if(state != null){

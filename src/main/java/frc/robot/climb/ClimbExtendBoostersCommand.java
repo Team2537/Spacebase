@@ -10,34 +10,40 @@ package frc.robot.climb;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class ClimbEngageBoostersCommand extends Command {
+public class ClimbExtendBoostersCommand extends Command {
 
-    public ClimbEngageBoostersCommand() {
+    public ClimbExtendBoostersCommand() {
         requires(Robot.climbSys);
     }
 
-    // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        // Only extend boosters if the clutch is already engaged
-        if(Robot.climbSys.getClutchSolenoid()) {
-            Robot.climbSys.setBoosterSolenoid(!Robot.climbSys.getBoosterSolenoid());      
+        if(!Robot.climbSys.getBoosterSolenoid()){
+            if(Robot.climbSys.getClutchSolenoid()) {
+                // Only extend boosters if the clutch is already engaged.
+                Robot.climbSys.setBoosterSolenoid(true);
+                
+                // Disengage clutch so that the robot can drive forward
+                // without the cams bumping against the HAB.
+                Robot.climbSys.setClutchSolenoid(false);
+            }
+
+        } else {
+            // We should always be able to retract the boosters.
+            Robot.climbSys.setBoosterSolenoid(false);
         }
+        
     }
 
-    // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
         return true;
     }
 
-    // Called once after isFinished returns true
     @Override
     protected void end() {
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
     @Override
     protected void interrupted() {
         end();

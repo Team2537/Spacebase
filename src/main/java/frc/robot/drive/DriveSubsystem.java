@@ -30,7 +30,10 @@ public class DriveSubsystem extends Subsystem {
     public static final double ENCODER_VELOCITY_FACTOR = 
         Units.revoltionsPerMinute_to_inchesPerSecond(1, Specs.DRIVE_WHEEL_DIAMETER*Specs.DRIVE_GEARBOX_RATIO);
     
-    public static final double SIGN_LEFT = 1.0, SIGN_RIGHT = -1.0;
+    // TODO: Revert before comp
+    // public static final double SIGN_LEFT = 1.0, SIGN_RIGHT = -1.0;
+    public static final double SIGN_LEFT = -1.0, SIGN_RIGHT = 1.0;
+
 
     public static final IdleMode DEFAULT_IDLE_MODE = IdleMode.kCoast;
     public static final MotorType MOTOR_TYPE = MotorType.kBrushless;

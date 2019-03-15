@@ -12,9 +12,7 @@ import frc.robot.Robot;
 
 public class IntakeExtendCommand extends Command {
     public IntakeExtendCommand() {
-
         requires(Robot.intakeSys);
-
     }
 
     // Called just before this Command runs the first time

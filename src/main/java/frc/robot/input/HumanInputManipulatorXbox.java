@@ -22,6 +22,7 @@ import frc.robot.arm.IncreaseArmCommand;
 import frc.robot.arm.SetArmLevelCommand;
 import frc.robot.auto.VisionAlignmentCommand;
 import frc.robot.climb.ClimbEngageClutchCommand;
+import frc.robot.climb.ClimbExtendBoostersCommand;
 import frc.robot.manipulator.ManipExpelCommand;
 import frc.robot.manipulator.SetPlacementMode;
 import frc.robot.manipulator.ManipulatorSubsystem.PlacementMode;
@@ -35,7 +36,7 @@ public class HumanInputManipulatorXbox {
     private final JoystickButton 
         intakeFlywheelIntake, intakeFlywheelExpel, intakeExtend, 
         armIncreaseLevel, armDecreaseLevel, armSetLevelLowest, armSetLevelHighest, armManualToggle,
-        climbEngageClutch,
+        climbEngageClutch, climbExtendBoosters,
         manipExpel_right, manipExpel_left,
         visionAlignment,
         hatchConfig, cargoConfig
@@ -51,14 +52,14 @@ public class HumanInputManipulatorXbox {
         /* --- Button Aliases --- */
         // Left Joystick
         intakeFlywheelIntake    = new JoystickButton(joystickLeft, 1);
-        // cameraButton         = new JoystickButton(joystickLeft, 2);
-        // UNUSED               = new JoystickButton(joystickLeft, 3);
+        visionAlignment         = new JoystickButton(joystickLeft, 2);
+        // cameraButton         = new JoystickButton(joystickLeft, 3);
         // UNUSED               = new JoystickButton(joystickLeft, 4);
         manipExpel_left         = new JoystickButton(joystickLeft, 5);
 
         // Right Joystick
         intakeFlywheelExpel     = new JoystickButton(joystickRight, 1);
-        visionAlignment         = new JoystickButton(joystickRight, 2);
+        climbExtendBoosters     = new JoystickButton(joystickRight, 2);
         intakeExtend            = new JoystickButton(joystickRight, 3);
         manipExpel_right        = new JoystickButton(joystickRight, 5);
         climbEngageClutch       = new JoystickButton(joystickRight, 10);
@@ -76,18 +77,24 @@ public class HumanInputManipulatorXbox {
     }
 
     public void registerButtons() {
+
+        whenPressedCommand(climbEngageClutch, new ClimbEngageClutchCommand());
+        whenPressedCommand(climbExtendBoosters, new ClimbExtendBoostersCommand());
+
+        whenPressedCommand(intakeExtend, new IntakeExtendCommand());
         whileHeldCommand(intakeFlywheelIntake, new IntakeFlywheelCommand(true));
         whileHeldCommand(intakeFlywheelExpel, new IntakeFlywheelCommand(false));
+
         whileHeldCommand(armManualToggle, new ArmManualCommand());
-        whenPressedCommand(manipExpel_left, new ManipExpelCommand());
-        whenPressedCommand(manipExpel_right, new ManipExpelCommand());
         whenPressedCommand(armIncreaseLevel, new IncreaseArmCommand());
         whenPressedCommand(armDecreaseLevel, new DecreaseArmCommand());
-        whenPressedCommand(climbEngageClutch, new ClimbEngageClutchCommand());
-        whenPressedCommand(intakeExtend, new IntakeExtendCommand());
         whenPressedCommand(armSetLevelHighest, new SetArmLevelCommand(2));
         whenPressedCommand(armSetLevelLowest, new SetArmLevelCommand(1));
+
         //whenPressedCommand(visionAlignment, new VisionAlignmentCommand());
+
+        whenPressedCommand(manipExpel_left, new ManipExpelCommand());
+        whenPressedCommand(manipExpel_right, new ManipExpelCommand());
         whenPressedCommand(hatchConfig, new SetPlacementMode(PlacementMode.HATCH));
         whenPressedCommand(cargoConfig, new SetPlacementMode(PlacementMode.CARGO));
     }

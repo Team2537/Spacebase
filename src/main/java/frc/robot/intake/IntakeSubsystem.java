@@ -41,6 +41,7 @@ public class IntakeSubsystem extends Subsystem {
 
     public void setPneumatic(boolean state){
         intakePneumatic.set(state);
+        System.out.println("INTAKE PNEUMATIC "+state);
     }
     public boolean getIntakePneumatic() {
         return intakePneumatic.get();
