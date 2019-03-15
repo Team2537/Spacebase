@@ -19,10 +19,12 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.SPI;
 //import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.Solenoid;
+
 
 public class DriveSubsystem extends Subsystem {
-    private NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    private NetworkTable table = inst.getTable("datatable");
+    //private NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    //private NetworkTable table = inst.getTable("datatable");
     
     private WPI_TalonSRX RightFront, LeftFront;
     private Encoder RightEnc, LeftEnc;
@@ -55,6 +57,8 @@ public class DriveSubsystem extends Subsystem {
     private Ultrasonic driveUltrasonic;
     private DigitalInput IR_frontUpper, IR_frontLower, IR_center;
 
+    private Solenoid clutchSolOne;
+
     public DriveSubsystem() {
         //MAKE SURE ULTRASONIC IS CORRECT FOR PEANUT!!
         driveUltrasonic = new Ultrasonic(Ports.FRONT_ULTRASONIC_INPUT, Ports.FRONT_ULTRASONIC_OUTPUT);
@@ -66,6 +70,8 @@ public class DriveSubsystem extends Subsystem {
         pdp = new PowerDistributionPanel(0);
         pdp.clearStickyFaults();
         pdp.resetTotalEnergy();
+
+        //clutchSolOne = new Solenoid(0);
         //motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
         //encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
         /*
@@ -217,11 +223,15 @@ public class DriveSubsystem extends Subsystem {
         return pdp.getTotalCurrent();
     }
     public double getUltrasonic() {
-        NetworkTableEntry UltraDistance = table.getEntry("Ultra");
-        UltraDistance.setDouble(driveUltrasonic.getRangeInches());
+        //NetworkTableEntry UltraDistance = table.getEntry("Ultra");
+        //UltraDistance.setDouble(driveUltrasonic.getRangeInches());
         
         return driveUltrasonic.getRangeInches();
     }
 
+    //public boolean getClutchSolenoid() {
+        //return clutchSolOne.get();
+      //  return false;
+    //}
     
 }

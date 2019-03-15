@@ -4,8 +4,8 @@ public class Ports {
 
     
     public static final int
-        DRIVE_MOTOR_RIGHT_FRONT = 1,
-        DRIVE_MOTOR_LEFT_FRONT  = 0//1
+        DRIVE_MOTOR_RIGHT_FRONT = 2,
+        DRIVE_MOTOR_LEFT_FRONT  = 1//1
     ;
     
 
@@ -22,8 +22,8 @@ public class Ports {
     */
     
     public static final int
-        FRONT_ULTRASONIC_INPUT = 5, //INPUT IS ALWAYS SINGLE WIRED ONE
-        FRONT_ULTRASONIC_OUTPUT = 4
+        FRONT_ULTRASONIC_INPUT = 9, //INPUT IS ALWAYS SINGLE WIRED ONE
+        FRONT_ULTRASONIC_OUTPUT = 8
     ;
 
     public static final int

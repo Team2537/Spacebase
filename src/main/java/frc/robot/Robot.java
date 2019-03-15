@@ -29,10 +29,10 @@ public class Robot extends TimedRobot {
         super(Specs.ROBOT_PERIOD_SECONDS);
     }
 
-    NetworkTableEntry UltrasonicDistance;
-    NetworkTableEntry yEntry;
-    private static NetworkTableInstance inst;
-    private static NetworkTable table;
+    //NetworkTableEntry UltrasonicDistance;
+    //NetworkTableEntry yEntry;
+    //private static NetworkTableInstance inst;
+    //private static NetworkTable table;
 
     public static DriveSubsystem driveSys;
     public static VisionInput visionInput;
@@ -89,8 +89,7 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         
-
-        //System.out.println("ULTRA: " + Robot.driveSys.getUltrasonic());
+        System.out.println("ULTRA: " + Robot.driveSys.getUltrasonic());
     }
 
     @Override
