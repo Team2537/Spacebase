@@ -137,7 +137,8 @@ public class ArmSubsystem extends Subsystem {
     public void setArmMotor(double percentOutput){
         // Safety feature: don't let the arm go below the lowest potentiometer value
         if(getArmPotentiometer() >= SETPOINT_DEFAULT.arm) {
-             percentOutput = Math.max(percentOutput, 0);
+            // TODO: Revert this before comp
+            //percentOutput = Math.max(percentOutput, 0);
         }
 
         armMotor.set(percentOutput);
