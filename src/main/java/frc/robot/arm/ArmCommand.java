@@ -8,6 +8,7 @@
 package frc.robot.arm;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.util.PID;
 import frc.robot.Robot;
 import frc.robot.arm.ArmSubsystem.ArmSetpoint;
@@ -34,7 +35,7 @@ public class ArmCommand extends Command {
     @Override
     protected void execute() {
         ArmSetpoint setpoint = Robot.armSys.getSetpoint();
-        Robot.armSys.updateSmartDash();
+        SmartDashboard.putString("Arm Setpoint", Robot.armSys.updateSmartDash());
  
         if(setpoint == null){
             Robot.armSys.setArmMotor(0);

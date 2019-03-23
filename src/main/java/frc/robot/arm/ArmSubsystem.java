@@ -121,9 +121,9 @@ public class ArmSubsystem extends Subsystem {
         setLevel(armLevel + 1);
     }
 
-    public void updateSmartDash(){
-        final String name = currentSetpoint == null ? "NONE" : currentSetpoint.name;
-        SmartDashboard.putString("Arm Level", name);
+    public String updateSmartDash(){
+        return currentSetpoint == null ? "NONE" : currentSetpoint.name;
+        
     }
 
     public void decreaseLevel(){

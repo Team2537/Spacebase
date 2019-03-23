@@ -4,22 +4,14 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import frc.robot.Robot;
+import frc.lib.vision.Target;
+import frc.lib.vision.Point;
 
 public class CustomDashboardCommand extends Command {
-
     private NetworkTableInstance inst;
     private NetworkTable table;
-    private NetworkTableEntry PdpEntry1;
-    private NetworkTableEntry PdpEntry2;
-    private NetworkTableEntry UltraDistance;
-    private NetworkTableEntry EncoderEntry;
-    private NetworkTableEntry ClutchCompressor;
-    private NetworkTableEntry BoostCompressor;
-    private NetworkTableEntry ArmPot;
-    private NetworkTableEntry WristPot;
-    private NetworkTableEntry ArmAmp;
-    private NetworkTableEntry WristAmp;
-    private NetworkTableEntry IntakeAmp;
+    private NetworkTableEntry PdpEntry1,  PdpEntry2, UltraDistance, EncoderEntry, ClutchCompressor, BoostCompressor, 
+                              ArmPot, WristPot, ArmAmp, WristAmp, IntakeAmp, ArmSetpoint, VisionInput, LeftSpeed, RightSpeed;
 
     public CustomDashboardCommand() {
         inst = NetworkTableInstance.getDefault();
@@ -35,7 +27,10 @@ public class CustomDashboardCommand extends Command {
         ArmAmp = table.getEntry("ArmAmp");
         WristAmp = table.getEntry("WristAmp");
         IntakeAmp = table.getEntry("IntakeAmp");
-        
+        ArmSetpoint = table.getEntry("ArmSetpoint");
+        VisionInput = table.getEntry("VisionInput");
+        LeftSpeed = table.getEntry("LeftSpeed");
+        RightSpeed = table.getEntry("RightSpeed");
         
     }
     @Override
@@ -59,6 +54,10 @@ public class CustomDashboardCommand extends Command {
         ArmAmp.setDouble(Robot.armSys.getArmAmperage());
         WristAmp.setDouble(Robot.armSys.getWristAmperage());
         IntakeAmp.setDouble(Robot.intakeSys.getIntakeAmperage());
+        ArmSetpoint.setString(Robot.armSys.updateSmartDash());
+        VisionInput.setDouble(Target.getMidpoint(Robot.visionInput.getVisionPacket()).x);
+        LeftSpeed.setDouble(Robot.driveSys.getLeftSpeed());
+        RightSpeed.setDouble(Robot.driveSys.getRightSpeed());
 
       }
        

@@ -142,6 +142,22 @@ public class DriveSubsystem extends Subsystem {
         //motorsRight[0].set(percentOutput);
     }
 
+    public double getLeftSpeed(){
+        double leftMotors = 0;
+        for(CANSparkMax motor : motorsLeft) {
+            leftMotors = motor.get();
+        }
+        return leftMotors;
+    }
+
+    public double getRightSpeed(){
+        double rightMotors = 0;
+        for(CANSparkMax motor : motorsLeft) {
+            rightMotors = motor.get();
+        }
+        return rightMotors;
+    }
+
     public void setMotors(double percentOutputLeft, double percentOutputRight) {
         setMotorsLeft(percentOutputLeft);
         setMotorsRight(percentOutputRight);

@@ -21,6 +21,7 @@ import frc.lib.vision.VisionInput;
 import frc.robot.arm.ArmSubsystem;
 import frc.robot.cameras.Cameras;
 import frc.robot.CustomDashboardCommand;
+import frc.lib.vision.Target;
 
 public class Robot extends TimedRobot {
 	public static HumanInputManipulatorXbox input;
