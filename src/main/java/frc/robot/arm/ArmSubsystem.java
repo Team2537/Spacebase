@@ -155,8 +155,16 @@ public class ArmSubsystem extends Subsystem {
         return wristPot.get();
     }
 
+    public double getWristAmperage(){
+        return wristMotor.getOutputCurrent();
+    }
+
     public double getArmPotentiometer(){
         return armPot.get();
+    }
+
+    public double getArmAmperage(){
+        return armMotor.getOutputCurrent();
     }
 
     public void setArmIdleMode(IdleMode mode){
@@ -190,7 +198,7 @@ public class ArmSubsystem extends Subsystem {
             this.name = name;
         }
         public String toString(){
-            return "Name: "+name+", Arm: "+arm+", Wrist: "+wrist;
+            return "Name: "+ name + ", Arm: "+arm+", Wrist: "+wrist;
         }
     }
 

@@ -8,6 +8,7 @@ import frc.robot.Ports;
 import frc.robot.Specs;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
 //import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
@@ -58,12 +59,15 @@ public class DriveSubsystem extends Subsystem {
 
     private AHRS navX;
     private Ultrasonic frontUltrasonic;
+    private PowerDistributionPanel pdp;
 
     private Notifier accelUpdater;
     private double[] encoderVelWindowLeft, encoderVelWindowRight;
     private double accelLeft, accelRight;
+    
 
     public DriveSubsystem() {
+        
         /*********************************/
 	    /*   INIT LEFT MOTORS/ENCODERS   */
 	    /*********************************/
@@ -300,6 +304,18 @@ public class DriveSubsystem extends Subsystem {
     // @return the range of the drive ultrasonic in inches 
     public double getUltrasonic() {
         return frontUltrasonic.getRangeInches();
+    }
+
+    public double getTemperature() {
+        //NetworkTableEntry PdpEntry = table.getEntry("Temperature");
+        //PdpEntry.setDouble(pdp.getTemperature());
+        
+        return pdp.getTemperature();
+    }
+    public double getCurrent() {
+        //NetworkTableEntry PdpEntry = table.getEntry("Current");
+        //PdpEntry.setDouble(pdp.getTotalCurrent());
+        return pdp.getTotalCurrent();
     }
     
 }

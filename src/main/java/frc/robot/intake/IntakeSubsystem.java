@@ -37,7 +37,9 @@ public class IntakeSubsystem extends Subsystem {
 
     }
 
-
+    public double getIntakeAmperage() {
+        return intakeFlywheelOne.getOutputCurrent();
+    }
 
     public void setPneumatic(boolean state){
         intakePneumatic.set(state);

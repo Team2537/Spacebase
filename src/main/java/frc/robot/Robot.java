@@ -20,6 +20,7 @@ import frc.lib.motion.RobotStateEstimator;
 import frc.lib.vision.VisionInput;
 import frc.robot.arm.ArmSubsystem;
 import frc.robot.cameras.Cameras;
+import frc.robot.CustomDashboardCommand;
 
 public class Robot extends TimedRobot {
 	public static HumanInputManipulatorXbox input;
@@ -69,6 +70,7 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         //Scheduler.getInstance().add(new RobotStateUpdater());
         // Scheduler.getInstance().add(new VisionAlignmentCommand());
+        Scheduler.getInstance().add(new CustomDashboardCommand());
     }
 
     // Called periodically during the Sandstorm
