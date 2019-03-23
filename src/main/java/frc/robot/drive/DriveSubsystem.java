@@ -33,6 +33,7 @@ public class DriveSubsystem extends Subsystem {
     
     public static final double SIGN_LEFT = 1.0, SIGN_RIGHT = -1.0;
 
+
     public static final IdleMode DEFAULT_IDLE_MODE = IdleMode.kCoast;
     public static final MotorType MOTOR_TYPE = MotorType.kBrushless;
     private static final int NUM_VELS_TO_SAMPLE = 4;

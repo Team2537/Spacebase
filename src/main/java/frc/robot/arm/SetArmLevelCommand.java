@@ -16,7 +16,7 @@ public class SetArmLevelCommand extends Command {
     private int setSetpoint;
 
     /**
-     * 
+     * sets the arm level on the robot, need to run arm command to actually move the arm
      * @param level
      * @param setSetpoint 0 if just want to set level, 1 to set lowest point, 2 to set highest point
      */

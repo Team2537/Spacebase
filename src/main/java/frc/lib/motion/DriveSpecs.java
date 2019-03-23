@@ -35,7 +35,7 @@ public class DriveSpecs {
     }
 
     public double getMaxVelocity(Pose2dCurved state){
-        return Double.MAX_VALUE; //TODO: temp
+        return 40/(1 + 20*Math.abs(state.curvature)); //TODO: temp
     }
 
     public MinMaxAcceleration getMinMaxAcceleration(Pose2dCurved state, double velMax){

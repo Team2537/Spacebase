@@ -18,6 +18,12 @@ import frc.robot.Specs;
 import frc.robot.manipulator.ManipulatorSubsystem.PlacementMode;
 
 public class ArmSubsystem extends Subsystem {
+
+    @Override
+    public void initDefaultCommand() {
+        setDefaultCommand(new ArmManualCommand()); // TODO: Revert before comp
+    }
+
     public static final IdleMode DEFAULT_ARM_IDLE_MODE = IdleMode.kBrake;
     public static final NeutralMode DEFAULT_WRIST_IDLE_MODE = NeutralMode.Brake;
 
@@ -131,7 +137,8 @@ public class ArmSubsystem extends Subsystem {
     public void setArmMotor(double percentOutput){
         // Safety feature: don't let the arm go below the lowest potentiometer value
         if(getArmPotentiometer() >= SETPOINT_DEFAULT.arm) {
-            percentOutput = Math.max(percentOutput, 0);
+            // TODO: Revert this before comp
+            //percentOutput = Math.max(percentOutput, 0);
         }
 
         armMotor.set(percentOutput);
@@ -182,11 +189,6 @@ public class ArmSubsystem extends Subsystem {
     public void setManualEnabled(){
         enableManual = !enableManual;
         SmartDashboard.putBoolean("armEnabled", !enableManual);
-    }
-
-    @Override
-    public void initDefaultCommand() {
-        setDefaultCommand(new ArmCommand());
     }
 
     public static class ArmSetpoint {

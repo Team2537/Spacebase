@@ -19,7 +19,7 @@ public class ClimbEngageClutchCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Robot.climbSys.setClimbSolenoid(!Robot.climbSys.getClutchSolenoid());
+        Robot.climbSys.setClutchSolenoid(!Robot.climbSys.getClutchSolenoid());
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -20,26 +20,26 @@ public class ClimbSubsystem extends Subsystem {
     public ClimbSubsystem() {
         clutchSolOne = new Solenoid(Ports.CLIMB_CLUTCH_SOLENOID_ONE);
         clutchSolTwo = new Solenoid(Ports.CLIMB_CLUTCH_SOLENOID_TWO);
-        boosterSolOne = new Solenoid(Ports.CLIMB_SOLENOID_THREE);
-        boosterSolTwo = new Solenoid(Ports.CLIMB_SOLENOID_FOUR);
+        boosterSolOne = new Solenoid(Ports.CLIMB_BOOSTER_SOLENOID_ONE);
+        boosterSolTwo = new Solenoid(Ports.CLIMB_BOOSTER_SOLENOID_TWO);
     }
 
-    public void setClimbSolenoid(boolean state) {
-        clutchSolOne.set(state);
-        clutchSolTwo.set(!state);
+    public void setClutchSolenoid(boolean state) {
+        clutchSolOne.set(!state);
+        clutchSolTwo.set(state);  // TODO: test climb solenoid direction on the comp bot?
     }
 
     public void setBoosterSolenoid(boolean state){
-        boosterSolOne.set(state);
-        boosterSolTwo.set(!state);
+        boosterSolOne.set(!state);  // TODO: test climb solenoid direction on the comp bot?
+        boosterSolTwo.set(state);
     }
 
     public boolean getBoosterSolenoid(){
-        return boosterSolOne.get();
+        return boosterSolTwo.get();
     }
 
     public boolean getClutchSolenoid() {
-        return clutchSolOne.get();
+        return clutchSolTwo.get(); // TODO: test climb solenoid direction on the comp bot?
     }
 
     @Override
