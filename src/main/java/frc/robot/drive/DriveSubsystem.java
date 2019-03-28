@@ -327,12 +327,14 @@ public class DriveSubsystem extends Subsystem {
         //NetworkTableEntry PdpEntry = table.getEntry("Temperature");
         //PdpEntry.setDouble(pdp.getTemperature());
         
-        return pdp.getTemperature();
+        //return pdp.getTemperature();
+        return 1; // temp
     }
     public double getCurrent() {
         //NetworkTableEntry PdpEntry = table.getEntry("Current");
         //PdpEntry.setDouble(pdp.getTotalCurrent());
-        return pdp.getTotalCurrent();
+        //return pdp.getTotalCurrent();
+        return 2; // temp
     }
     
 }

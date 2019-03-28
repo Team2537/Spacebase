@@ -20,7 +20,7 @@ public class Test {
         Vec2[] points = new Vec2[]{
             new Vec2(0.0, 0.0),
             new Vec2(20.0, 20.0),
-            new Vec2(10.0, 50.0),
+            new Vec2(10.0, 50.0) ,
             new Vec2(30.0, 60.0),
             new Vec2(40.0, 55.0),
             new Vec2(40.0, 35.0),

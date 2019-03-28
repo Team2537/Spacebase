@@ -24,7 +24,7 @@ public class IntakeSubsystem extends Subsystem {
     public IntakeSubsystem() {
         intakeFlywheelOne = new TalonSRX(Ports.INTAKE_FLYWHEEL_ONE);
         intakeFlywheelTwo = new TalonSRX(Ports.INTAKE_FLYWHEEL_TWO);
-        intakePneumatic = new Solenoid(Ports.INTAKE_PNEUMATIC_ONE);
+        intakePneumatic = new Solenoid(Ports.INTAKE_SOLENOID);
         
         intakeFlywheelOne.setNeutralMode(NeutralMode.Coast);
         intakeFlywheelTwo.setNeutralMode(NeutralMode.Coast);

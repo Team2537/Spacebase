@@ -23,7 +23,8 @@ import frc.robot.arm.SetArmLevelCommand;
 import frc.robot.auto.VisionAlignmentCommand;
 import frc.robot.climb.ClimbEngageClutchCommand;
 import frc.robot.climb.ClimbExtendBoostersCommand;
-import frc.robot.manipulator.ManipExpelCommand;
+import frc.robot.manipulator.ManipFlywheelCommand;
+import frc.robot.manipulator.ManipPneumaticCommand;
 import frc.robot.manipulator.SetPlacementMode;
 import frc.robot.manipulator.ManipulatorSubsystem.PlacementMode;
 import frc.robot.intake.IntakeFlywheelCommand;
@@ -37,7 +38,8 @@ public class HumanInputManipulatorXbox {
         intakeFlywheelIntake, intakeFlywheelExpel, intakeExtend, 
         armIncreaseLevel, armDecreaseLevel, armSetLevelLowest, armSetLevelHighest, armManualToggle,
         climbEngageClutch, climbExtendBoosters,
-        manipExpel_right, manipExpel_left,
+        manipFlywheel_right, manipFlywheel_left,
+        manipPneumaticToggle,
         visionAlignment,
         hatchConfig, cargoConfig
     ;
@@ -55,13 +57,13 @@ public class HumanInputManipulatorXbox {
         visionAlignment         = new JoystickButton(joystickLeft, 2);
         // cameraButton         = new JoystickButton(joystickLeft, 3);
         // UNUSED               = new JoystickButton(joystickLeft, 4);
-        manipExpel_left         = new JoystickButton(joystickLeft, 5);
+        manipFlywheel_left         = new JoystickButton(joystickLeft, 5);
 
         // Right Joystick
         intakeFlywheelExpel     = new JoystickButton(joystickRight, 1);
         climbExtendBoosters     = new JoystickButton(joystickRight, 2);
         intakeExtend            = new JoystickButton(joystickRight, 3);
-        manipExpel_right        = new JoystickButton(joystickRight, 5);
+        manipFlywheel_right        = new JoystickButton(joystickRight, 5);
         climbEngageClutch       = new JoystickButton(joystickRight, 10);
 
         // Xbox Controller
@@ -70,7 +72,7 @@ public class HumanInputManipulatorXbox {
         armSetLevelLowest       = new JoystickButton(xbox, 3); // X
         armIncreaseLevel        = new JoystickButton(xbox, 4); // Y
         armManualToggle         = new JoystickButton(xbox, 5); // LB
-        // UNUSED               = new JoystickButton(xbox, 6); // RB
+        manipPneumaticToggle    = new JoystickButton(xbox, 6); // RB
         cargoConfig             = new JoystickButton(xbox, 7); // BACK
         hatchConfig             = new JoystickButton(xbox, 8); // START
 
@@ -93,8 +95,11 @@ public class HumanInputManipulatorXbox {
 
         //whenPressedCommand(visionAlignment, new VisionAlignmentCommand());
 
-        whenPressedCommand(manipExpel_left, new ManipExpelCommand());
-        whenPressedCommand(manipExpel_right, new ManipExpelCommand());
+        whenPressedCommand(manipFlywheel_left, new ManipFlywheelCommand(1000));
+        whenPressedCommand(manipFlywheel_right, new ManipFlywheelCommand(1000));
+
+        whenPressedCommand(manipPneumaticToggle, new ManipPneumaticCommand());
+
         whenPressedCommand(hatchConfig, new SetPlacementMode(PlacementMode.HATCH));
         whenPressedCommand(cargoConfig, new SetPlacementMode(PlacementMode.CARGO));
     }

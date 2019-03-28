@@ -40,8 +40,8 @@ public class Ports {
     public static final int
         CLIMB_CLUTCH_SOLENOID_TWO = 0 ,
         CLIMB_CLUTCH_SOLENOID_ONE = 1, 
-        INTAKE_PNEUMATIC_ONE = 2 ,
-        ARM_SOLENOID_ONE = 3,
+        INTAKE_SOLENOID = 2 ,
+        MANIPULATOR_SOLENOID = 3,
         CLIMB_BOOSTER_SOLENOID_ONE = 4,
         CLIMB_BOOSTER_SOLENOID_TWO = 5
     ;

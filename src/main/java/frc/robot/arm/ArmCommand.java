@@ -16,8 +16,8 @@ import frc.robot.arm.ArmSubsystem.ArmSetpoint;
 public class ArmCommand extends Command {
     private PID armPID, wristPID;
     private static final double kP_arm = 0.01, kI_arm = 0.00004, kD_arm = 0.010;
-    private static final double kP_wrist = 0.004, kI_wrist = 0.00003, kD_wrist = 0.002;
-    private static final double TOLERANCE_arm = 1, TOLERANCE_wrist = 1;
+    private static final double kP_wrist = 0.015, kI_wrist = 0.0004, kD_wrist = 0.002;
+    private static final double TOLERANCE_arm = 1, TOLERANCE_wrist = 0.5;
 
     public ArmCommand() {
         requires(Robot.armSys);

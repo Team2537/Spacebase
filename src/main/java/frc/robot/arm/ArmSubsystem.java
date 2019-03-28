@@ -21,7 +21,7 @@ public class ArmSubsystem extends Subsystem {
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new ArmManualCommand()); // TODO: Revert before comp
+        setDefaultCommand(new ArmCommand()); // TODO: Revert before comp
     }
 
     public static final IdleMode DEFAULT_ARM_IDLE_MODE = IdleMode.kBrake;
@@ -33,14 +33,14 @@ public class ArmSubsystem extends Subsystem {
     private int armLevel;
 
     public static final double
-        OFFSET_ARM = -99,
-        OFFSET_WRIST = 190
+        OFFSET_ARM = -50,
+        OFFSET_WRIST = -112
     ;
     
     public static final ArmSetpoint 
         SETPOINT_DEFAULT = new ArmSetpoint(515, 743, "FRAME PERIMETER"),
 
-        SETPOINT_INTAKE = new ArmSetpoint(486, 503, "INTAKE"),
+        //SETPOINT_INTAKE = new ArmSetpoint(486, 503, "INTAKE"),
 
         SETPOINT_SHIP_HATCH = new ArmSetpoint(487, 701, "SHIP HATCH"),
         SETPOINT_ROCKET_HATCH_2 = new ArmSetpoint(442, 643, "MID ROCKET HATCH"),
@@ -60,7 +60,7 @@ public class ArmSubsystem extends Subsystem {
     };
 
     public static final ArmSetpoint[] CARGO_SETPOINTS_LEVELS = {
-        SETPOINT_INTAKE,
+        //SETPOINT_INTAKE,
         SETPOINT_ROCKET_CARGO_1,
         SETPOINT_SHIP_CARGO,
         SETPOINT_ROCKET_CARGO_2,
@@ -97,11 +97,12 @@ public class ArmSubsystem extends Subsystem {
 
     public void setSetpoint(ArmSetpoint setpoint){
         // Safety feature: make sure nothing is inside intake before we go back to default position
-        if(setpoint != SETPOINT_DEFAULT 
-            || Robot.driveSys.getUltrasonic() >= Specs.FRONT_ULTRASONIC_TO_BALL){
+        
+        //if(setpoint != SETPOINT_DEFAULT 
+        //    || Robot.driveSys.getUltrasonic() >= Specs.FRONT_ULTRASONIC_TO_BALL){
             
             this.currentSetpoint = setpoint;
-        }
+        //}
     }
 
     public void setLevel(int level){

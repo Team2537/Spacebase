@@ -41,8 +41,8 @@ public class CustomDashboardCommand extends Command {
   
     @Override
       protected void execute(){
-        System.out.println("CustomDashboardCommand RUNNING");
-        System.out.println(Robot.driveSys.getTemperature());
+        //System.out.println("CustomDashboardCommand RUNNING");
+        //System.out.println(Robot.driveSys.getTemperature());
         PdpEntry1.setDouble(Robot.driveSys.getTemperature());
         PdpEntry2.setDouble(Robot.driveSys.getCurrent());
         UltraDistance.setDouble(Robot.driveSys.getUltrasonic());
@@ -55,7 +55,7 @@ public class CustomDashboardCommand extends Command {
         WristAmp.setDouble(Robot.armSys.getWristAmperage());
         IntakeAmp.setDouble(Robot.intakeSys.getIntakeAmperage());
         ArmSetpoint.setString(Robot.armSys.updateSmartDash());
-        VisionInput.setDouble(Target.getMidpoint(Robot.visionInput.getVisionPacket()).x);
+        //VisionInput.setDouble(Target.getMidpoint(Robot.visionInput.getVisionPacket()).x);
         LeftSpeed.setDouble(Robot.driveSys.getLeftSpeed());
         RightSpeed.setDouble(Robot.driveSys.getRightSpeed());
 

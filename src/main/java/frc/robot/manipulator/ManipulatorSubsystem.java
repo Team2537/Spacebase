@@ -26,7 +26,7 @@ public class ManipulatorSubsystem extends Subsystem {
 
     public ManipulatorSubsystem() {
         armFlywheel = new TalonSRX(Ports.INTAKE_ARM_FLYWHEEL);
-        armPneumatic = new Solenoid(Ports.ARM_SOLENOID_ONE);
+        armPneumatic = new Solenoid(Ports.MANIPULATOR_SOLENOID);
         placementMode = PlacementMode.HATCH;
     }
 

@@ -52,6 +52,9 @@ public class Robot extends TimedRobot {
         //pdp = new PowerDistributionPanel();
 
         input.registerButtons();
+
+        Scheduler.getInstance().add(new CustomDashboardCommand());
+
     }
 
     // Called periodically regardless of the game period
@@ -71,7 +74,6 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         //Scheduler.getInstance().add(new RobotStateUpdater());
         // Scheduler.getInstance().add(new VisionAlignmentCommand());
-        Scheduler.getInstance().add(new CustomDashboardCommand());
     }
 
     // Called periodically during the Sandstorm
@@ -85,6 +87,8 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         Scheduler.getInstance().removeAll();
+        Scheduler.getInstance().add(new CustomDashboardCommand());
+
     }
 
     // Called periodically during the Teleop period
