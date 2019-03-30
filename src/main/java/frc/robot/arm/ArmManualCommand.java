@@ -11,41 +11,44 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class ArmManualCommand extends Command {
-  public ArmManualCommand() {
-    requires(Robot.armSys);
-  }
+    public ArmManualCommand() {
+        requires(Robot.armSys);
+        requires(Robot.wristSys);
+    }
 
-  // Called just before this Command runs the first time
-  @Override
-  protected void initialize() {
-   
-  }
+    // Called just before this Command runs the first time
+    @Override
+    protected void initialize() {
+        Robot.armSys.disable();
+        Robot.wristSys.disable();
+    }
 
-  // Called repeatedly when this Command is scheduled to run
-  @Override
-  protected void execute() {
-    Robot.armSys.setArmMotor(-Robot.input.getXboxAxis(1));
-    Robot.armSys.setWristMotor(-Robot.input.getXboxAxis(5));
+    // Called repeatedly when this Command is scheduled to run
+    @Override
+    protected void execute() {
+        // flipped because joystick y-axes are flipped
+        Robot.armSys.setMotor(-Robot.input.getXboxAxis(1));
+        Robot.wristSys.setMotor(-Robot.input.getXboxAxis(5));
 
     }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  protected boolean isFinished() {
-    return false;
-  }
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    protected boolean isFinished() {
+        return false;
+    }
 
-  // Called once after isFinished returns true
-  @Override
-  protected void end() {
-    Robot.armSys.setArmMotor(0);
-    Robot.armSys.setWristMotor(0);
-  }
+    // Called once after isFinished returns true
+    @Override
+    protected void end() {
+        Robot.armSys.enable();
+        Robot.wristSys.enable();
+    }
 
-  // Called when another command which requires one or more of the same
-  // subsystems is scheduled to run
-  @Override
-  protected void interrupted() {
-    end();
-  }
+    // Called when another command which requires one or more of the same
+    // subsystems is scheduled to run
+    @Override
+    protected void interrupted() {
+        end();
+    }
 }

@@ -6,6 +6,9 @@
 /*----------------------------------------------------------------------------*/
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -19,8 +22,10 @@ import frc.robot.manipulator.ManipulatorSubsystem;
 import frc.lib.motion.RobotStateEstimator;
 import frc.lib.vision.VisionInput;
 import frc.robot.arm.ArmSubsystem;
+import frc.robot.arm.ArmWristSetpoints;
+import frc.robot.arm.WristSubsystem;
 import frc.robot.cameras.Cameras;
-import frc.robot.CustomDashboardCommand;
+import frc.robot.CustomDashboardLogger;
 import frc.lib.vision.Target;
 
 public class Robot extends TimedRobot {
@@ -28,12 +33,15 @@ public class Robot extends TimedRobot {
     public static DriveSubsystem driveSys;
     public static IntakeSubsystem intakeSys;
     public static ArmSubsystem armSys;
+    public static WristSubsystem wristSys;
+    public static ArmWristSetpoints awSetpoints;
     public static ClimbSubsystem climbSys;
     public static ManipulatorSubsystem manipSys;
     public static PowerDistributionPanel pdp;
     public static VisionInput visionInput;
     public static RobotStateEstimator robotState;
     private static Cameras cameras;
+    public static CustomDashboardLogger logger;
 
     // Use this function for all initialization code
     @Override
@@ -43,6 +51,8 @@ public class Robot extends TimedRobot {
         intakeSys = new IntakeSubsystem();
         driveSys = new DriveSubsystem();
         armSys = new ArmSubsystem();
+        wristSys = new WristSubsystem();
+        awSetpoints = new ArmWristSetpoints();
         manipSys = new ManipulatorSubsystem();
 
         //visionInput = new VisionInput();
@@ -53,19 +63,25 @@ public class Robot extends TimedRobot {
 
         input.registerButtons();
 
-        Scheduler.getInstance().add(new CustomDashboardCommand());
-
+        logger = new CustomDashboardLogger();
     }
 
     // Called periodically regardless of the game period
     @Override
     public void robotPeriodic() {
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("ARM POT", armSys.getArmPotentiometer());
-        SmartDashboard.putNumber("WRIST POT", armSys.getWristPotentiometer());
+        logger.log();
+        SmartDashboard.putNumber("ARM POT", armSys.getPotentiometer());
+        SmartDashboard.putNumber("WRIST POT", wristSys.getPotentiometer());
         SmartDashboard.putNumber("ULTRASONIC", Robot.driveSys.getUltrasonic());
         //SmartDashboard.putNumber("VISION TARGET", Target.getMidpoint(Robot.visionInput.getVisionPacket()).x);
         
+    }
+    
+    @Override
+    public void disabledInit() {
+        armSys.disable();
+        wristSys.disable();
     }
 
     /* Sandstorm Period */
@@ -87,7 +103,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         Scheduler.getInstance().removeAll();
-        Scheduler.getInstance().add(new CustomDashboardCommand());
 
     }
 

@@ -13,7 +13,7 @@ import frc.robot.Specs;
 import frc.robot.input.HumanInputManipulatorXbox;
 
 public class DriveCommand extends Command {
-    private double PERCENT_OUTPUT_MAX = 0.9;
+    private double PERCENT_OUTPUT_MAX_DEFAULT = 0.9, PERCENT_OUTPUT_MAX_PRECISION = 0.4;
     private double RAMP_UP_TIME = 0.7;
     private double RAMP_UP_AMT =  Specs.ROBOT_PERIOD_SECONDS / RAMP_UP_TIME;
     private double inputLeftPrev, inputRightPrev;
@@ -63,8 +63,8 @@ public class DriveCommand extends Command {
         inputRightPrev = inputRight;
 
 
-        inputLeft *= PERCENT_OUTPUT_MAX;
-        inputRight *= PERCENT_OUTPUT_MAX;
+        inputLeft *= getPercentOutputMax();
+        inputRight *= getPercentOutputMax();
 
         Robot.driveSys.setMotors(
             inputLeft, inputRight
@@ -72,6 +72,14 @@ public class DriveCommand extends Command {
     
         //System.out.println("ULTRASONIC: " + Robot.driveSys.getUltrasonic());
 
+    }
+
+    public double getPercentOutputMax() {
+        if(Robot.driveSys.getDrivePrecision()){
+            return PERCENT_OUTPUT_MAX_PRECISION;
+        } else {
+            return PERCENT_OUTPUT_MAX_DEFAULT;
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -83,11 +91,13 @@ public class DriveCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Robot.driveSys.setMotors(0,0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        end();
     }
 }

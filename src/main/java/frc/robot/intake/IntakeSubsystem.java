@@ -18,27 +18,26 @@ public class IntakeSubsystem extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    private TalonSRX intakeFlywheelOne, intakeFlywheelTwo;
+    private TalonSRX intakeFlywheelLeft, intakeFlywheelRight;
     private Solenoid intakePneumatic;
 
     public IntakeSubsystem() {
-        intakeFlywheelOne = new TalonSRX(Ports.INTAKE_FLYWHEEL_ONE);
-        intakeFlywheelTwo = new TalonSRX(Ports.INTAKE_FLYWHEEL_TWO);
+        intakeFlywheelLeft = new TalonSRX(Ports.INTAKE_FLYWHEEL_LEFT);
+        intakeFlywheelRight = new TalonSRX(Ports.INTAKE_FLYWHEEL_RIGHT);
         intakePneumatic = new Solenoid(Ports.INTAKE_SOLENOID);
         
-        intakeFlywheelOne.setNeutralMode(NeutralMode.Coast);
-        intakeFlywheelTwo.setNeutralMode(NeutralMode.Coast);
+        intakeFlywheelLeft.setNeutralMode(NeutralMode.Coast);
+        intakeFlywheelRight.setNeutralMode(NeutralMode.Coast);
 
     }
 
     public void setIntakeFlywheels(double speed) {
-        intakeFlywheelOne.set(ControlMode.PercentOutput, speed);
-        intakeFlywheelTwo.set(ControlMode.PercentOutput, speed);
-
+        intakeFlywheelLeft.set(ControlMode.PercentOutput, /*speed*/ -speed); // TODO: intake motor messed up on test bot, REVERT BEFORE COMP
+        intakeFlywheelRight.set(ControlMode.PercentOutput, speed);
     }
 
     public double getIntakeAmperage() {
-        return intakeFlywheelOne.getOutputCurrent();
+        return intakeFlywheelLeft.getOutputCurrent();
     }
 
     public void setPneumatic(boolean state){

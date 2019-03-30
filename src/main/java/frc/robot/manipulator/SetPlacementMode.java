@@ -8,7 +8,9 @@
 package frc.robot.manipulator;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
+import frc.robot.arm.SetAWLevelCommand;
 import frc.robot.manipulator.ManipulatorSubsystem.PlacementMode;
 
 public class SetPlacementMode extends Command {
@@ -22,7 +24,8 @@ public class SetPlacementMode extends Command {
     @Override
     protected void initialize() {
         Robot.manipSys.setPlacementMode(mode);
-        System.out.println("ARM CONFIGURATION NOW " + Robot.armSys.getCurrentSetpointArray());
+        Scheduler.getInstance().add(new SetAWLevelCommand(Robot.awSetpoints.getCurrentLevelIndex()));
+        System.out.println("ARM CONFIGURATION NOW " + Robot.awSetpoints.getCurrentLevel());
 
     }
 

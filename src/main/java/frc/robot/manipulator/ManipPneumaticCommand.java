@@ -8,18 +8,19 @@
 package frc.robot.manipulator;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.Robot;
-import frc.robot.Specs;
-import frc.robot.arm.ArmSubsystem.ArmSetpoint;
+import frc.robot.arm.WaitForWristCommand;
 
 public class ManipPneumaticCommand extends Command {
 
-    public static final double WRIST_TILT_OFFSET = -20.0;
+    public static final double WRIST_TILT_OFFSET_DOWN = -15.0, WRIST_TILT_OFFSET_UP = 5.0;
 
-    private ArmSetpoint prevSetpoint, curSetpoint;
+    private double prevSetpointArm, prevSetpointWrist;
 
     private static enum CurrentState {
-        UP_AND_IN, DOWN_AND_OUT, UP_AND_OUT
+        UP_AND_IN, DOWN_AND_OUT
     }
     private CurrentState currentState;
 
@@ -37,23 +38,29 @@ public class ManipPneumaticCommand extends Command {
         case UP_AND_IN:
             currentState = CurrentState.DOWN_AND_OUT;
             Robot.manipSys.setArmPneumatic(true);
-            prevSetpoint = Robot.armSys.getSetpoint();
-            if(prevSetpoint != null) {
-                curSetpoint = new ArmSetpoint(prevSetpoint.arm, prevSetpoint.wrist + WRIST_TILT_OFFSET, prevSetpoint.name+" + TILT DOWN");
-                Robot.armSys.setSetpoint(curSetpoint);
-            }
+
+            prevSetpointArm = Robot.armSys.getSetpoint();
+            prevSetpointWrist = Robot.awSetpoints.getCurrentLevel().wrist;
+            Robot.wristSys.setSetpoint(prevSetpointWrist + WRIST_TILT_OFFSET_DOWN);
             break;
 
         case DOWN_AND_OUT:
-            currentState = CurrentState.UP_AND_OUT;
-            if(prevSetpoint != null && Robot.armSys.getSetpoint() == curSetpoint) {
-                Robot.armSys.setSetpoint(prevSetpoint);
-            }
-            break;
-
-        case UP_AND_OUT:
             currentState = CurrentState.UP_AND_IN;
-            Robot.manipSys.setArmPneumatic(false);
+            if(Robot.armSys.getSetpoint() == prevSetpointArm) {
+
+                CommandGroup group = new CommandGroup();
+                group.addSequential(new WaitForWristCommand());
+                group.addSequential(new Command(){
+                    protected void initialize() { Robot.manipSys.setArmPneumatic(false); }
+                    protected boolean isFinished() { return true; }
+                });
+
+                Robot.wristSys.setSetpoint(prevSetpointWrist + WRIST_TILT_OFFSET_UP);
+                Scheduler.getInstance().add(group);
+
+            } else {
+                Robot.manipSys.setArmPneumatic(false);
+            }
             break;
             
         }

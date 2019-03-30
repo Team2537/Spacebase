@@ -1,42 +1,42 @@
 package frc.robot.arm;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.interfaces.Potentiometer;
 import frc.lib.util.Util;
 import frc.robot.Ports;
-import frc.robot.Robot;
 import frc.robot.Specs;
 
-public class ArmSubsystem extends PIDSubsystem {
+public class WristSubsystem extends PIDSubsystem {
 
     public static final double
-        MIN = 0, MAX = 165,
-        OFFSET = 565,
-        kP = 0.01, kI = 0.00004, kD = 0.010,
-        TOLERANCE = 1.5
+        MIN = 0, MAX = 258,
+        OFFSET = -597,
+        kP = 0.015, kI = 0.0004, kD = 0.002,
+        TOLERANCE = 0.5
     ;
-    public static final IdleMode DEFAULT_IDLE_MODE = IdleMode.kBrake;
+    public static final NeutralMode DEFAULT_IDLE_MODE = NeutralMode.Brake;
 
-    private CANSparkMax motor;
+    private TalonSRX motor;
     private Potentiometer pot;
     private boolean hasSetpoint;
     private boolean enabled;
 
-    public ArmSubsystem(){
+    public WristSubsystem(){
         super(kP, kI, kD, Specs.ROBOT_PERIOD_SECONDS);
         setOutputRange(-1.0, 1.0);
         setAbsoluteTolerance(TOLERANCE);
 
-        pot = new AnalogPotentiometer(Ports.ARM_POTENTIOMETER, -1080, OFFSET);
-        motor = new CANSparkMax(Ports.ARM_MOTOR, MotorType.kBrushless);
+        pot = new AnalogPotentiometer(Ports.WRIST_POTENTIOMETER, 1080, OFFSET);
+        motor = new TalonSRX(Ports.WRIST_MOTOR);
         setIdleMode(DEFAULT_IDLE_MODE);
 
         hasSetpoint = false;
+        enabled = false;
     }
 
     public double getPotentiometer(){
@@ -48,7 +48,7 @@ public class ArmSubsystem extends PIDSubsystem {
     }
 
     public void setMotor(double percentOutput){
-        // Safety feature: don't let the arm go below the lowest potentiometer value
+        // Safety feature: don't let the wrist go below the lowest potentiometer value
         // or above the highest potentiometer value
         if(getPotentiometer() <= MIN) {
             percentOutput = Math.max(percentOutput, 0);
@@ -57,26 +57,26 @@ public class ArmSubsystem extends PIDSubsystem {
             percentOutput = Math.min(percentOutput, 0);
         }
 
-        motor.set(percentOutput);
+        motor.set(ControlMode.PercentOutput, -percentOutput);
         if(Util.epsilonEquals(percentOutput, 0, 1e-2)){
-            setIdleMode(IdleMode.kBrake);
+            setIdleMode(NeutralMode.Brake);
         } else {
-            setIdleMode(IdleMode.kCoast);
+            setIdleMode(NeutralMode.Coast);
         }
     }
 
-    public void setIdleMode(IdleMode mode){
-        motor.setIdleMode(mode);
+    public void setIdleMode(NeutralMode mode){
+        motor.setNeutralMode(mode);
     }
 
-    public String getIdleMode(){
-        return motor.getIdleMode() == IdleMode.kBrake ? "Brake" : "Coast";
+    public void reset() {
+        getPIDController().reset();
+        enable();
     }
 
     @Override
     public void enable(){
         if(hasSetpoint){
-            getPIDController().reset();
             super.enable();
             enabled = true;
         }
@@ -95,13 +95,8 @@ public class ArmSubsystem extends PIDSubsystem {
 
     @Override
     public void setSetpoint(double setpoint){
-        // Safety feature: make sure nothing is inside intake before we go back to default position
-        //if(setpoint > ArmWristSetpoints.SETPOINT_DEFAULT.arm 
-        //    || Robot.driveSys.getUltrasonic() >= Specs.FRONT_ULTRASONIC_TO_BALL){
-            
-            super.setSetpoint(Util.clamp(setpoint, MIN, MAX));
-            hasSetpoint = true;
-        //}
+        super.setSetpoint(Util.clamp(setpoint, MIN, MAX));
+        hasSetpoint = true;
     }
 
     @Override

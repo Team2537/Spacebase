@@ -4,15 +4,25 @@ public class Ports {
 
     // CAN Bus ports
     public static final int
+        /*
         DRIVE_MOTOR_RIGHT_BACK  = 1,
         DRIVE_MOTOR_RIGHT_TOP   = 2,
         DRIVE_MOTOR_RIGHT_FRONT = 3,
         DRIVE_MOTOR_LEFT_FRONT  = 4,
         DRIVE_MOTOR_LEFT_TOP    = 5,
         DRIVE_MOTOR_LEFT_BACK   = 6, 
+        */
+        // TODO: drive motor ports on test bot are flipped, CHANGE BACK BEFORE COMPETITION
+        DRIVE_MOTOR_LEFT_BACK  = 1,
+        DRIVE_MOTOR_LEFT_TOP   = 2,
+        DRIVE_MOTOR_LEFT_FRONT = 3,
+        DRIVE_MOTOR_RIGHT_FRONT  = 4,
+        DRIVE_MOTOR_RIGHT_TOP    = 5,
+        DRIVE_MOTOR_RIGHT_BACK   = 6, 
+
         ARM_MOTOR = 7,
-        INTAKE_FLYWHEEL_ONE = 8,
-        INTAKE_FLYWHEEL_TWO = 9,
+        INTAKE_FLYWHEEL_LEFT = 8,
+        INTAKE_FLYWHEEL_RIGHT = 9,
         WRIST_MOTOR =10,
         INTAKE_ARM_FLYWHEEL =11
     ;
@@ -24,8 +34,8 @@ public class Ports {
     ;
     
     public static final int
-        FRONT_ULTRASONIC_INPUT = 0, //INPUT IS ALWAYS SINGLE WIRED ONE
-        FRONT_ULTRASONIC_OUTPUT = 1
+        FRONT_ULTRASONIC_TRIGGER = 0, //TRIGGER IS ALWAYS SINGLE WIRED ONE
+        FRONT_ULTRASONIC_ECHO = 1
     ;
 
     // Drive station USB ports
