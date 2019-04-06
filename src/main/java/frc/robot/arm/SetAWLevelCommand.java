@@ -31,6 +31,12 @@ public class SetAWLevelCommand extends CommandGroup {
             index = 0;
         } else if(mode == AWLevelMode.HIGHEST){
             index = Robot.awSetpoints.getHighestLevelIndex();
+        } else if(mode == AWLevelMode.INDEX1){ //TEMPORARY
+            index = 1;
+        } else if(mode == AWLevelMode.INDEX2){
+            index = 2;
+        } else if(mode == AWLevelMode.INDEX3){
+            index = 3;
         }
         
         Robot.awSetpoints.setLevelIndex(index);
@@ -40,7 +46,7 @@ public class SetAWLevelCommand extends CommandGroup {
     }
 
     public static enum AWLevelMode {
-        DEFAULT, LOWEST, HIGHEST
+        DEFAULT, LOWEST, HIGHEST, INDEX1, INDEX2, INDEX3;
     }
 
 }

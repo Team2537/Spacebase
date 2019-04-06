@@ -32,7 +32,7 @@ public class UltrasonicFrontDriveCommand extends Command {
   @Override
     protected void execute(){
       final double percentOutput;
-      pid.update(-Robot.driveSys.getUltrasonic());
+      /*pid.update(-Robot.driveSys.getUltrasonic());
       if(Robot.driveSys.getUltrasonic() <= 35) { //gotta love arbitrary values
          percentOutput = pid.getOutput();
       } else {
@@ -41,13 +41,14 @@ public class UltrasonicFrontDriveCommand extends Command {
       
       Robot.driveSys.setMotors(percentOutput, percentOutput);
      System.out.println("ULTRA: " + Robot.driveSys.getUltrasonic());
-
+      */
+      Robot.driveSys.setMotors(.4, .4);
     }
      
 
   @Override
   protected boolean isFinished() {
-    return (Robot.driveSys.getUltrasonic() <= targetDistInches ||
+    return (/*Robot.driveSys.getUltrasonic() <= targetDistInches ||*/
       System.currentTimeMillis() - startTime >= timeout);
   }
 

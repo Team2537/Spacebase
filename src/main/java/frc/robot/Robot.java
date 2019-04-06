@@ -24,9 +24,11 @@ import frc.lib.vision.VisionInput;
 import frc.robot.arm.ArmSubsystem;
 import frc.robot.arm.ArmWristSetpoints;
 import frc.robot.arm.WristSubsystem;
+import frc.robot.auto.VisionAlignmentCommand;
 import frc.robot.cameras.Cameras;
 import frc.robot.CustomDashboardLogger;
 import frc.lib.vision.Target;
+
 
 public class Robot extends TimedRobot {
 	public static HumanInputManipulatorXbox input;
@@ -55,7 +57,7 @@ public class Robot extends TimedRobot {
         awSetpoints = new ArmWristSetpoints();
         manipSys = new ManipulatorSubsystem();
 
-        //visionInput = new VisionInput();
+        visionInput = new VisionInput();
         cameras = new Cameras();
 
         //robotState = new RobotStateEstimator(Specs.DRIVE_SPECS, new Pose2d());
@@ -89,7 +91,8 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         //Scheduler.getInstance().add(new RobotStateUpdater());
-        // Scheduler.getInstance().add(new VisionAlignmentCommand());
+        Scheduler.getInstance().add(new VisionAlignmentCommand());
+        //Scheduler.getInstance().add(new VisionInput());
     }
 
     // Called periodically during the Sandstorm

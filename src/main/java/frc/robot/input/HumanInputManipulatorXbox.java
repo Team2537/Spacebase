@@ -96,7 +96,7 @@ public class HumanInputManipulatorXbox {
         whenPressedCommand(armSetLevelHighest, new SetAWLevelCommand(AWLevelMode.HIGHEST));
         whenPressedCommand(armSetLevelLowest, new SetAWLevelCommand(AWLevelMode.LOWEST));
 
-        //whenPressedCommand(visionAlignment, new VisionAlignmentCommand());
+        whenPressedCommand(visionAlignment, new VisionAlignmentCommand());
 
         whenPressedCommand(manipFlywheel_left, new ManipFlywheelCommand(1000));
         whenPressedCommand(manipFlywheel_right, new ManipFlywheelCommand(1000));
