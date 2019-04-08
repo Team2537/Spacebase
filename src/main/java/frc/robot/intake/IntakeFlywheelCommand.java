@@ -23,7 +23,6 @@ public class IntakeFlywheelCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        System.out.println("flywheels");
         if (commandState) {
             Robot.intakeSys.setIntakeFlywheels(FLYWHEEL_SPEED);
         } else {
@@ -52,6 +51,7 @@ public class IntakeFlywheelCommand extends Command {
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
-        Robot.intakeSys.setIntakeFlywheels(0);
+        end();
     }
+
 }

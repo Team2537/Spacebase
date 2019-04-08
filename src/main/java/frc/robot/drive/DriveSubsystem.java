@@ -2,11 +2,13 @@ package frc.robot.drive;
 
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.units.Units;
 import frc.robot.Ports;
 import frc.robot.Specs;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 
@@ -31,24 +33,13 @@ public class DriveSubsystem extends Subsystem {
     public static final double ENCODER_VELOCITY_FACTOR = 
         Units.revoltionsPerMinute_to_inchesPerSecond(1, Specs.DRIVE_WHEEL_DIAMETER*Specs.DRIVE_GEARBOX_RATIO);
     
-    public static final double SIGN_LEFT = 1.0, SIGN_RIGHT = -1.0;
+    public static final double SIGN_LEFT = 1.0, SIGN_RIGHT = 1.0; // TODO: revert before comp
 
 
     public static final IdleMode DEFAULT_IDLE_MODE = IdleMode.kCoast;
     public static final MotorType MOTOR_TYPE = MotorType.kBrushless;
     private static final int NUM_VELS_TO_SAMPLE = 4;
     private static final double RUNNING_CURRENT = 2.0;
-
-    public static final int[] MOTOR_PORTS_LEFT = { 
-        Ports.DRIVE_MOTOR_LEFT_FRONT, 
-        Ports.DRIVE_MOTOR_LEFT_TOP,
-        Ports.DRIVE_MOTOR_LEFT_BACK 
-    };
-    public static final int[] MOTOR_PORTS_RIGHT = { 
-        Ports.DRIVE_MOTOR_RIGHT_FRONT, 
-        Ports.DRIVE_MOTOR_RIGHT_TOP,
-        Ports.DRIVE_MOTOR_RIGHT_BACK 
-    };
 
 
     /****************************************************************************/
@@ -65,6 +56,11 @@ public class DriveSubsystem extends Subsystem {
     private Notifier accelUpdater;
     private double[] encoderVelWindowLeft, encoderVelWindowRight;
     private double accelLeft, accelRight;
+
+    private DifferentialDrive driveTrain;
+    private SpeedControllerGroup motorsControllerLeft, motorsControllerRight;
+
+    private boolean drivePrecision;
     
 
     public DriveSubsystem() {
@@ -72,12 +68,18 @@ public class DriveSubsystem extends Subsystem {
         /*********************************/
 	    /*   INIT LEFT MOTORS/ENCODERS   */
 	    /*********************************/
-        motorsLeft = new CANSparkMax[MOTOR_PORTS_LEFT.length];
-        encodersLeft = new CANEncoder[MOTOR_PORTS_LEFT.length];
-        for (int i = 0; i < MOTOR_PORTS_LEFT.length; i++) {
-            motorsLeft[i] = new CANSparkMax(MOTOR_PORTS_LEFT[i], MOTOR_TYPE);
-            //if (i > 0) motorsLeft[i].follow(motorsLeft[0]);
+        motorsLeft = new CANSparkMax[] {
+            new CANSparkMax(Ports.DRIVE_MOTOR_LEFT_FRONT, MOTOR_TYPE),
+            new CANSparkMax(Ports.DRIVE_MOTOR_LEFT_TOP, MOTOR_TYPE),
+            new CANSparkMax(Ports.DRIVE_MOTOR_LEFT_BACK, MOTOR_TYPE)
+        };
 
+        motorsControllerLeft = new SpeedControllerGroup(
+            motorsLeft[0], motorsLeft[1], motorsLeft[2]
+        );
+
+        encodersLeft = new CANEncoder[motorsLeft.length];
+        for (int i = 0; i < motorsLeft.length; i++) {
             CANEncoder enc = motorsLeft[i].getEncoder();
             enc.setPositionConversionFactor(SIGN_LEFT*ENCODER_POSITION_FACTOR);
             enc.setVelocityConversionFactor(SIGN_LEFT*ENCODER_VELOCITY_FACTOR);
@@ -88,12 +90,18 @@ public class DriveSubsystem extends Subsystem {
         /*********************************/
 	    /*  INIT RIGHT MOTORS/ENCODERS   */
 	    /*********************************/
-        motorsRight = new CANSparkMax[MOTOR_PORTS_RIGHT.length];
-        encodersRight = new CANEncoder[MOTOR_PORTS_RIGHT.length];
-        for (int i = 0; i < MOTOR_PORTS_RIGHT.length; i++) {
-            motorsRight[i] = new CANSparkMax(MOTOR_PORTS_RIGHT[i], MOTOR_TYPE);
-            //if (i > 0) motorsRight[i].follow(motorsRight[0]);
+        motorsRight = new CANSparkMax[] {
+            new CANSparkMax(Ports.DRIVE_MOTOR_RIGHT_FRONT, MOTOR_TYPE),
+            new CANSparkMax(Ports.DRIVE_MOTOR_RIGHT_TOP, MOTOR_TYPE),
+            new CANSparkMax(Ports.DRIVE_MOTOR_RIGHT_BACK, MOTOR_TYPE)
+        };
 
+        motorsControllerRight = new SpeedControllerGroup(
+            motorsRight[0], motorsRight[1], motorsRight[2]
+        );
+
+        encodersRight = new CANEncoder[motorsRight.length];
+        for (int i = 0; i < motorsRight.length; i++) {
             CANEncoder enc = motorsRight[i].getEncoder();
             enc.setPositionConversionFactor(SIGN_RIGHT*ENCODER_POSITION_FACTOR);
             enc.setVelocityConversionFactor(SIGN_RIGHT*ENCODER_VELOCITY_FACTOR);
@@ -101,6 +109,8 @@ public class DriveSubsystem extends Subsystem {
             encodersRight[i] = enc;
         }
 
+        
+        driveTrain = new DifferentialDrive(motorsControllerLeft, motorsControllerRight);
         setIdleMode(DEFAULT_IDLE_MODE);
 
 
@@ -114,8 +124,10 @@ public class DriveSubsystem extends Subsystem {
         accelUpdater.startPeriodic(Specs.ROBOT_PERIOD_SECONDS);
         
         navX = new AHRS(SPI.Port.kMXP);
-        frontUltrasonic = new Ultrasonic(Ports.FRONT_ULTRASONIC_INPUT, Ports.FRONT_ULTRASONIC_OUTPUT);
+        frontUltrasonic = new Ultrasonic(Ports.FRONT_ULTRASONIC_TRIGGER, Ports.FRONT_ULTRASONIC_ECHO);
         frontUltrasonic.setAutomaticMode(true);
+
+        drivePrecision = false;
     }
 
     @Override
@@ -127,20 +139,6 @@ public class DriveSubsystem extends Subsystem {
     /****************************************************************************/
 	/*                              MOTOR METHODS                               */
 	/****************************************************************************/
-
-    public void setMotorsLeft(double percentOutput) {
-        for(CANSparkMax motor : motorsLeft) {
-            motor.set(SIGN_LEFT*percentOutput);
-        }
-        // motorsLeft[2].set(-percentOutput);
-    }
-
-    public void setMotorsRight(double percentOutput) {
-        for(CANSparkMax motor : motorsRight) {
-            motor.set(SIGN_RIGHT*percentOutput);
-        }
-        //motorsRight[0].set(percentOutput);
-    }
 
     public double getLeftSpeed(){
         double leftMotors = 0;
@@ -159,13 +157,16 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public void setMotors(double percentOutputLeft, double percentOutputRight) {
-        setMotorsLeft(percentOutputLeft);
-        setMotorsRight(percentOutputRight);
+        driveTrain.tankDrive(SIGN_LEFT*percentOutputLeft, SIGN_RIGHT*percentOutputRight);
     }
 
     public void setIdleMode(IdleMode mode){
         for(CANSparkMax motor : motorsLeft) motor.setIdleMode(mode);
         for(CANSparkMax motor : motorsRight) motor.setIdleMode(mode);
+    }
+
+    public DifferentialDrive getDriveTrain(){
+        return driveTrain;
     }
 
 
@@ -323,16 +324,12 @@ public class DriveSubsystem extends Subsystem {
         return frontUltrasonic.getRangeInches();
     }
 
-    public double getTemperature() {
-        //NetworkTableEntry PdpEntry = table.getEntry("Temperature");
-        //PdpEntry.setDouble(pdp.getTemperature());
-        
-        return pdp.getTemperature();
+    public boolean getDrivePrecision(){
+        return drivePrecision;
     }
-    public double getCurrent() {
-        //NetworkTableEntry PdpEntry = table.getEntry("Current");
-        //PdpEntry.setDouble(pdp.getTotalCurrent());
-        return pdp.getTotalCurrent();
+
+    public void toggleDrivePrecision(){
+        drivePrecision = !drivePrecision;
     }
     
 }

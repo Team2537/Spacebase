@@ -32,9 +32,9 @@ public class VisionTurnCommand extends Command{
 
 //CAM dimensions: 640 width, 480 height
 
-    public static final double THRESHOLD = 20;
+    public static final double THRESHOLD = 10;
    
-    private double MaxVelocity = 0.2;
+    private double MaxVelocity = 0.3;
     private PID pid;
    
     private Point MidPoint;

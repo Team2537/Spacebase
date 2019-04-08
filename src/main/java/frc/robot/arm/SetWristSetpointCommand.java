@@ -10,15 +10,15 @@ package frc.robot.arm;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class SetArmSetpointCommand extends Command {
+public class SetWristSetpointCommand extends Command {
     private Double setpoint;
 
-    public SetArmSetpointCommand(Double setpoint){
-        requires(Robot.armSys);
+    public SetWristSetpointCommand(Double setpoint){
+        requires(Robot.wristSys);
         updateSetpoint(setpoint);
     }
 
-    public SetArmSetpointCommand(){
+    public SetWristSetpointCommand(){
         this(null);
     }
 
@@ -30,10 +30,10 @@ public class SetArmSetpointCommand extends Command {
     @Override
     protected void initialize() {
         if(setpoint == null){
-            throw new IllegalStateException("A SetArmSetpointCommand was run with a null setpoint");
+            throw new IllegalStateException("A SetWristSetpointCommand was run with a null setpoint");
         }
-        Robot.armSys.setSetpoint(setpoint);
-        Robot.armSys.enable();
+        Robot.wristSys.setSetpoint(setpoint);
+        Robot.wristSys.enable();
     }
 
     // Make this return true when this Command no longer needs to run execute()
