@@ -60,13 +60,14 @@ public class HumanInputManipulatorXbox {
         intakeFlywheelIntake    = new JoystickButton(joystickLeft, 1);
         visionAlignment         = new JoystickButton(joystickLeft, 2);
         drivePrecisionToggle    = new JoystickButton(joystickLeft, 3);
-        driveStraight           = new JoystickButton(joystickLeft, 4);
+        // UNUSED               = new JoystickButton(joystickLeft, 4);
         manipFlywheel_left      = new JoystickButton(joystickLeft, 5);
 
         // Right Joystick
         intakeFlywheelExpel     = new JoystickButton(joystickRight, 1);
         climbExtendBoosters     = new JoystickButton(joystickRight, 2);
         intakeExtend            = new JoystickButton(joystickRight, 3);
+        driveStraight           = new JoystickButton(joystickRight, 4);
         manipFlywheel_right     = new JoystickButton(joystickRight, 5);
         climbEngageClutch       = new JoystickButton(joystickRight, 10);
 
