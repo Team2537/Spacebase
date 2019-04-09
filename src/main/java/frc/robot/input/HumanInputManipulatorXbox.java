@@ -21,6 +21,7 @@ import frc.robot.arm.DecreaseAWLevelCommand;
 import frc.robot.arm.IncreaseAWLevelCommand;
 import frc.robot.arm.SetAWLevelCommand;
 import frc.robot.arm.SetAWLevelCommand.AWLevelMode;
+import frc.robot.auto.DriveStraightCommand;
 import frc.robot.auto.VisionAlignmentCommand;
 import frc.robot.climb.ClimbEngageClutchCommand;
 import frc.robot.climb.ClimbExtendBoostersCommand;
@@ -43,7 +44,7 @@ public class HumanInputManipulatorXbox {
         manipFlywheel_right, manipFlywheel_left,
         manipPneumaticToggle,
         drivePrecisionToggle,
-        visionAlignment,
+        visionAlignment, driveStraight,
         hatchConfig, cargoConfig
     ;
     public boolean configState;
@@ -59,7 +60,7 @@ public class HumanInputManipulatorXbox {
         intakeFlywheelIntake    = new JoystickButton(joystickLeft, 1);
         visionAlignment         = new JoystickButton(joystickLeft, 2);
         drivePrecisionToggle    = new JoystickButton(joystickLeft, 3);
-        // UNUSED               = new JoystickButton(joystickLeft, 4);
+        driveStraight           = new JoystickButton(joystickLeft, 4);
         manipFlywheel_left      = new JoystickButton(joystickLeft, 5);
 
         // Right Joystick
@@ -97,6 +98,7 @@ public class HumanInputManipulatorXbox {
         whenPressedCommand(armSetLevelLowest, new SetAWLevelCommand(AWLevelMode.LOWEST));
 
         whenPressedCommand(visionAlignment, new VisionAlignmentCommand());
+        whileHeldCommand(driveStraight, new DriveStraightCommand(0.4));
 
         whenPressedCommand(manipFlywheel_left, new ManipFlywheelCommand(1000));
         whenPressedCommand(manipFlywheel_right, new ManipFlywheelCommand(1000));
