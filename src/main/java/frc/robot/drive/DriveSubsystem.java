@@ -33,7 +33,7 @@ public class DriveSubsystem extends Subsystem {
     public static final double ENCODER_VELOCITY_FACTOR = 
         Units.revoltionsPerMinute_to_inchesPerSecond(1, Specs.DRIVE_WHEEL_DIAMETER*Specs.DRIVE_GEARBOX_RATIO);
     
-    public static final double SIGN_LEFT = -1.0, SIGN_RIGHT = -1.0; // TODO: revert before comp
+    public static final double SIGN_LEFT = 1.0, SIGN_RIGHT = 1.0; // TODO: revert before comp
 
 
     public static final IdleMode DEFAULT_IDLE_MODE = IdleMode.kCoast;
@@ -308,9 +308,9 @@ public class DriveSubsystem extends Subsystem {
                 rightErrorArray[i] = (motorsRight[i] + "All Clear");
             }
         }
-        SmartDashboard.putStringArray("leftErrorArray", leftErrorArray);
-        SmartDashboard.putStringArray("rightErrorArray", rightErrorArray);
-        SmartDashboard.putBoolean("driveTest", noError);
+        // SmartDashboard.putStringArray("leftErrorArray", leftErrorArray);
+        // SmartDashboard.putStringArray("rightErrorArray", rightErrorArray);
+        // SmartDashboard.putBoolean("driveTest", noError);
         
 
     }
