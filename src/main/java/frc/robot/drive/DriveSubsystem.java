@@ -308,9 +308,9 @@ public class DriveSubsystem extends Subsystem {
                 rightErrorArray[i] = (motorsRight[i] + "All Clear");
             }
         }
-        SmartDashboard.putStringArray("leftErrorArray", leftErrorArray);
-        SmartDashboard.putStringArray("rightErrorArray", rightErrorArray);
-        SmartDashboard.putBoolean("driveTest", noError);
+        // SmartDashboard.putStringArray("leftErrorArray", leftErrorArray);
+        // SmartDashboard.putStringArray("rightErrorArray", rightErrorArray);
+        // SmartDashboard.putBoolean("driveTest", noError);
         
 
     }

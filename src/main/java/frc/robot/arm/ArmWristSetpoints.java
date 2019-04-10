@@ -1,6 +1,5 @@
 package frc.robot.arm;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.manipulator.ManipulatorSubsystem.PlacementMode;
 
@@ -64,7 +63,6 @@ public class ArmWristSetpoints {
 
         final ArmSetpoint currentSetpoint = getCurrentLevel();
         final String name = currentSetpoint == null ? "NONE" : currentSetpoint.name;
-        SmartDashboard.putString("Arm Level", name);
     }
 
     public void increaseLevelIndex(){

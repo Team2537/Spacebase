@@ -114,7 +114,7 @@ public class VisionInput {
 				Point[] bb = target.getBoundingBox();
 				targetsString += bb[0].x+","+bb[0].y+"|"+bb[1].x+","+bb[1].y+" ";
 			}
-			SmartDashboard.putString("targets", targetsString);
+			//SmartDashboard.putString("targets", targetsString);
 		}
 		
 		@Override

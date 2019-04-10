@@ -6,13 +6,9 @@
 /*----------------------------------------------------------------------------*/
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.revrobotics.CANSparkMax.IdleMode;
-
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.climb.ClimbSubsystem;
 import frc.robot.drive.DriveSubsystem;
 import frc.robot.input.HumanInputManipulatorXbox;
@@ -24,10 +20,8 @@ import frc.lib.vision.VisionInput;
 import frc.robot.arm.ArmSubsystem;
 import frc.robot.arm.ArmWristSetpoints;
 import frc.robot.arm.WristSubsystem;
-import frc.robot.auto.VisionAlignmentCommand;
 import frc.robot.cameras.Cameras;
 import frc.robot.CustomDashboardLogger;
-import frc.lib.vision.Target;
 
 
 public class Robot extends TimedRobot {
@@ -73,11 +67,6 @@ public class Robot extends TimedRobot {
     public void robotPeriodic() {
         Scheduler.getInstance().run();
         logger.log();
-        SmartDashboard.putNumber("ARM POT", armSys.getPotentiometer());
-        SmartDashboard.putNumber("WRIST POT", wristSys.getPotentiometer());
-        SmartDashboard.putNumber("ULTRASONIC", Robot.driveSys.getUltrasonic());
-        //SmartDashboard.putNumber("VISION TARGET", Target.getMidpoint(Robot.visionInput.getVisionPacket()).x);
-        
     }
     
     @Override
@@ -91,8 +80,6 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         //Scheduler.getInstance().add(new RobotStateUpdater());
-        Scheduler.getInstance().add(new VisionAlignmentCommand());
-        //Scheduler.getInstance().add(new VisionInput());
     }
 
     // Called periodically during the Sandstorm

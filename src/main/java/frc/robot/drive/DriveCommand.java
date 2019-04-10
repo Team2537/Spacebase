@@ -33,8 +33,7 @@ public class DriveCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        // joystick Y-axes are backwards, so invert on NEO
-        // BUZZ is wired backwards, so do not reverse
+        // joystick Y-axes are backwards, so invert
         double 
             inputLeft = -Robot.input.getJoystickAxisLeft(HumanInputManipulatorXbox.AXIS_Y),
             inputRight = -Robot.input.getJoystickAxisRight(HumanInputManipulatorXbox.AXIS_Y)

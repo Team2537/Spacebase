@@ -1,13 +1,8 @@
 package frc.robot.auto;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import frc.robot.arm.DecreaseAWLevelCommand;
-import frc.robot.arm.IncreaseAWLevelCommand;
 import frc.robot.arm.SetAWLevelCommand;
 import frc.robot.arm.SetAWLevelCommand.AWLevelMode;
-import frc.robot.drive.DrivePrecisionToggleCommand;
-import frc.robot.manipulator.SetPlacementMode;
-import frc.robot.manipulator.ManipulatorSubsystem.PlacementMode;
 public class VisionAlignmentCommand extends CommandGroup {
 
     public VisionAlignmentCommand() {
