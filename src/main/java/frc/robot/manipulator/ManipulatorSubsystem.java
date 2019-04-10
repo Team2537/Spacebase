@@ -46,6 +46,10 @@ public class ManipulatorSubsystem extends Subsystem {
         armPneumatic.set(state);
     }
 
+    public boolean getArmPneumatic(){
+        return armPneumatic.get();
+    }
+
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new XboxIntakeCommand());

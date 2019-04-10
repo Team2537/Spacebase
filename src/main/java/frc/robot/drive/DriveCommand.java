@@ -36,8 +36,8 @@ public class DriveCommand extends Command {
         // joystick Y-axes are backwards, so invert on NEO
         // BUZZ is wired backwards, so do not reverse
         double 
-            inputLeft = Robot.input.getJoystickAxisLeft(HumanInputManipulatorXbox.AXIS_Y),
-            inputRight = Robot.input.getJoystickAxisRight(HumanInputManipulatorXbox.AXIS_Y)
+            inputLeft = -Robot.input.getJoystickAxisLeft(HumanInputManipulatorXbox.AXIS_Y),
+            inputRight = -Robot.input.getJoystickAxisRight(HumanInputManipulatorXbox.AXIS_Y)
         ;
 
 

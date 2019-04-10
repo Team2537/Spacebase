@@ -26,44 +26,45 @@ public class ManipPneumaticCommand extends Command {
 
     public ManipPneumaticCommand() {
         requires(Robot.manipSys);
-        currentState = CurrentState.UP_AND_IN;
+        // currentState = CurrentState.UP_AND_IN;
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
 
-        switch(currentState) {
+        // switch(currentState) {
 
-        case UP_AND_IN:
-            currentState = CurrentState.DOWN_AND_OUT;
-            Robot.manipSys.setArmPneumatic(true);
+        // case UP_AND_IN:
+        //     currentState = CurrentState.DOWN_AND_OUT;
+        //     Robot.manipSys.setArmPneumatic(true);
 
-            prevSetpointArm = Robot.armSys.getSetpoint();
-            prevSetpointWrist = Robot.awSetpoints.getCurrentLevel().wrist;
-            Robot.wristSys.setSetpoint(prevSetpointWrist + WRIST_TILT_OFFSET_DOWN);
-            break;
+        //     prevSetpointArm = Robot.armSys.getSetpoint();
+        //     prevSetpointWrist = Robot.awSetpoints.getCurrentLevel().wrist;
+        //     Robot.wristSys.setSetpoint(prevSetpointWrist + WRIST_TILT_OFFSET_DOWN);
+        //     break;
 
-        case DOWN_AND_OUT:
-            currentState = CurrentState.UP_AND_IN;
-            if(Robot.armSys.getSetpoint() == prevSetpointArm) {
+        // case DOWN_AND_OUT:
+        //     currentState = CurrentState.UP_AND_IN;
+        //     if(Robot.armSys.getSetpoint() == prevSetpointArm) {
 
-                CommandGroup group = new CommandGroup();
-                group.addSequential(new WaitForWristCommand());
-                group.addSequential(new Command(){
-                    protected void initialize() { Robot.manipSys.setArmPneumatic(false); }
-                    protected boolean isFinished() { return true; }
-                });
+        //         CommandGroup group = new CommandGroup();
+        //         group.addSequential(new WaitForWristCommand());
+        //         group.addSequential(new Command(){
+        //             protected void initialize() { Robot.manipSys.setArmPneumatic(false); }
+        //             protected boolean isFinished() { return true; }
+        //         });
 
-                Robot.wristSys.setSetpoint(prevSetpointWrist + WRIST_TILT_OFFSET_UP);
-                Scheduler.getInstance().add(group);
+        //         Robot.wristSys.setSetpoint(prevSetpointWrist + WRIST_TILT_OFFSET_UP);
+        //         Scheduler.getInstance().add(group);
 
-            } else {
-                Robot.manipSys.setArmPneumatic(false);
-            }
-            break;
+        //     } else {
+        //         Robot.manipSys.setArmPneumatic(false);
+        //     }
+        //     break;
+            Robot.manipSys.setArmPneumatic(!Robot.manipSys.getArmPneumatic());
             
-        }
+        // }
     }
 
     // Make this return true when this Command no longer needs to run execute()

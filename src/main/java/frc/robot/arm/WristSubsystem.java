@@ -15,7 +15,7 @@ public class WristSubsystem extends PIDSubsystem {
 
     public static final double
         MIN = 0, MAX = 258,
-        OFFSET = -597,
+        OFFSET = -594,
         kP = 0.015, kI = 0.0004, kD = 0.002,
         TOLERANCE = 0.5
     ;

@@ -1,0 +1,36 @@
+KOLYAS JOYSTICKS
+
+
+/* --- Button Aliases --- */
+        // Left Joystick
+        manipFlywheel_left      = new JoystickButton(joystickLeft, 1);
+        drivePrecisionToggle    = new JoystickButton(joystickLeft, 2);
+        // UNUSED               = new JoystickButton(joystickLeft, 4);
+        climbExtendBoosters     = new JoystickButton(joystickLeft, 8);
+        climbEngageClutch       = new JoystickButton(joystickLeft, 14);
+
+        // Right Joystick
+        manipFlywheel_right     = new JoystickButton(joystickRight, 1);
+        intakeExtend            = new JoystickButton(joystickRight, 2);
+        intakeFlywheelIntake    = new JoystickButton(joystickRight, 4)
+        visionAlignment         = new JoystickButton(joystickRight, 8);
+        driveStraight           = new JoystickButton(joystickRight, 14);
+
+
+OUR JOYSTICKS
+
+ /* --- Button Aliases --- */
+        // Left Joystick
+        intakeFlywheelIntake    = new JoystickButton(joystickLeft, 1);
+        visionAlignment         = new JoystickButton(joystickLeft, 2);
+        drivePrecisionToggle    = new JoystickButton(joystickLeft, 3);
+        // UNUSED               = new JoystickButton(joystickLeft, 4);
+        manipFlywheel_left      = new JoystickButton(joystickLeft, 5);
+
+        // Right Joystick
+        intakeFlywheelExpel     = new JoystickButton(joystickRight, 1);
+        climbExtendBoosters     = new JoystickButton(joystickRight, 2);
+        intakeExtend            = new JoystickButton(joystickRight, 3);
+        manipFlywheel_right     = new JoystickButton(joystickRight, 5);
+        climbEngageClutch       = new JoystickButton(joystickRight, 10);
+        

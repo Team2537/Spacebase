@@ -37,13 +37,13 @@ public class HumanInputManipulatorXbox {
     public final Joystick joystickLeft, joystickRight;
     public final XboxController xbox;
     private final JoystickButton 
-        intakeFlywheelIntake, intakeFlywheelExpel, intakeExtend, 
+        intakeFlywheelIntake, intakeExtend, 
         armIncreaseLevel, armDecreaseLevel, armSetLevelLowest, armSetLevelHighest, armManualToggle,
         climbEngageClutch, climbExtendBoosters,
         manipFlywheel_right, manipFlywheel_left,
         manipPneumaticToggle,
         drivePrecisionToggle,
-        visionAlignment,
+        visionAlignment, driveStraight,
         hatchConfig, cargoConfig
     ;
     public boolean configState;
@@ -56,18 +56,19 @@ public class HumanInputManipulatorXbox {
           
         /* --- Button Aliases --- */
         // Left Joystick
-        intakeFlywheelIntake    = new JoystickButton(joystickLeft, 1);
-        visionAlignment         = new JoystickButton(joystickLeft, 2);
-        drivePrecisionToggle    = new JoystickButton(joystickLeft, 3);
+        manipFlywheel_left      = new JoystickButton(joystickLeft, 1);
+        drivePrecisionToggle    = new JoystickButton(joystickLeft, 2);
         // UNUSED               = new JoystickButton(joystickLeft, 4);
-        manipFlywheel_left      = new JoystickButton(joystickLeft, 5);
+        climbExtendBoosters     = new JoystickButton(joystickLeft, 8);
+        climbEngageClutch       = new JoystickButton(joystickLeft, 14);
 
         // Right Joystick
-        intakeFlywheelExpel     = new JoystickButton(joystickRight, 1);
-        climbExtendBoosters     = new JoystickButton(joystickRight, 2);
-        intakeExtend            = new JoystickButton(joystickRight, 3);
-        manipFlywheel_right     = new JoystickButton(joystickRight, 5);
-        climbEngageClutch       = new JoystickButton(joystickRight, 10);
+        manipFlywheel_right     = new JoystickButton(joystickRight, 1);
+        intakeExtend            = new JoystickButton(joystickRight, 2);
+        intakeFlywheelIntake    = new JoystickButton(joystickRight, 4);
+        visionAlignment         = new JoystickButton(joystickRight, 8);
+        driveStraight           = new JoystickButton(joystickRight, 14);
+
 
         // Xbox Controller
         armDecreaseLevel        = new JoystickButton(xbox, 1); // A
@@ -88,7 +89,7 @@ public class HumanInputManipulatorXbox {
 
         whenPressedCommand(intakeExtend, new IntakeExtendCommand());
         whileHeldCommand(intakeFlywheelIntake, new IntakeFlywheelCommand(true));
-        whileHeldCommand(intakeFlywheelExpel, new IntakeFlywheelCommand(false));
+        // whileHeldCommand(intakeFlywheelExpel, new IntakeFlywheelCommand(false));
 
         whileHeldCommand(armManualToggle, new ArmManualCommand());
         whenPressedCommand(armIncreaseLevel, new IncreaseAWLevelCommand());
